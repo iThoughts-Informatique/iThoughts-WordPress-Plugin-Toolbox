@@ -4,8 +4,11 @@ if(!class_exists("ithoughts_toolbox")){
 	class ithoughts_toolbox {
 		public static function concat_attrs($attrs){
 			$str = "";
-			foreach($attrs as $key => $value)
-				$str .= ' '.$key.'="'.$value.'"';
+			foreach($attrs as $key => $value){
+				if(isset($value) && $value != NULL){
+					$str .= ' '.$key.'="'.$value.'"';
+				}
+			}
 			return $str;
 		}
 		public static function generate_input_select($name, $options){
@@ -27,7 +30,12 @@ if(!class_exists("ithoughts_toolbox")){
 					}
 				} else {
 					foreach($options["options"] as $key => $value){
-						$strret .= '<option value="'.$key.'"';
+						$strret .= '<option value="'.$key.'" ';
+						if(is_array($value)){
+							if(!isset($value["attributes"]))
+								$options["attributes"] = array();
+							$strret .= ithoughts_toolbox::concat_attrs($value["attributes"]);
+						}
 						if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($key, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $key)))
 							$strret .= ' selected="selected"';
 						$strret .= '>';
@@ -48,11 +56,11 @@ if(!class_exists("ithoughts_toolbox")){
 			$strret .= "</select>";
 			return $strret;
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		/* Format:
 		$ret = ithoughts_toolbox::generate_input_check(
 			"name",
@@ -73,14 +81,15 @@ if(!class_exists("ithoughts_toolbox")){
 				)
 			)
 		);
-		
+
 		// Will return an array, then display each checkbox that way:
 		> echo $ret["opt2"];
-		
+
 		>> <input type="checkbox" checked="checked" style="color:#fff;" name="name" value="opt2" id="name_opt2"/>
 		*/
 		public static function generate_input_check($name, $options){
 			$ret = array();
+			$allLabeled = true;
 			if(!isset($options["options"]))
 				return $ret;
 
@@ -88,7 +97,26 @@ if(!class_exists("ithoughts_toolbox")){
 				$options["options"] = array($options["options"]);
 
 			foreach($options["options"] as $option => $data){
-				$str = '<input name="'.$name.'"';
+				$str = "";
+				$strLabel = NULL;
+				if(isset($data["label"]) && $data["label"]){
+					if($data["label"] != null && is_array($data["label"])){
+						if(isset($data["label"]["text"])){
+							$strLabel = $data["label"]["text"];
+							$attrs = "";
+							if(isset($data["label"]["attributes"]) && is_array($data["label"]["attributes"])){
+								$attrs = ithoughts_toolbox::concat_attrs($data["label"]["attributes"]);
+							}
+							$str .= '<label for="'.$name."_".$option.' '.$attrs.'">&nbsp;';
+						}
+					} else {
+						$str .= '<label for="'.$name."_".$option.'">&nbsp;';
+						$strLabel = $data["label"];
+					}
+				} else {
+					$allLabeled = false;
+				}
+				$str .= '<input name="'.$name.'"';
 				if(isset($options["radio"]) && $options["radio"])
 					$str .= ' type="radio"';
 				else
@@ -103,11 +131,18 @@ if(!class_exists("ithoughts_toolbox")){
 				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $option)))
 					$str .= ' checked="checked"';
 				$str .= '/>';
+				if($strLabel != NULL){
+					$str .= '&nbsp;'.$strLabel.'</label>'
+				}
 
 				$ret[$option] = $str;
 			}
+			if($allLabeled && isset($options["implode"])){
+				$ret = implode($options["implode"], $ret);
+			}
 			return $ret;
 		}
+
 		function generate_input_color($name, $value){
 
 		}
