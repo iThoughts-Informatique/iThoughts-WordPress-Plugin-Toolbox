@@ -48,6 +48,37 @@ if(!class_exists("ithoughts_toolbox")){
 			$strret .= "</select>";
 			return $strret;
 		}
+		
+		
+		
+		
+		
+		/* Format:
+		$ret = ithoughts_toolbox::generate_input_check(
+			"name",
+			array(
+				"radio" => false, // Will display the inputs as radio buttons if true, checkboxes elsewhere
+				"selected" => array("opt1", "opt2"), // The current value(s) selected. If one single, accepts string
+				"options" => array(
+					"opt1" => array(
+						"attributes" => array() // Optionnal. All attributes in this array will be concatenated in the input, eg styles, ID, class, etc
+					),
+					"opt2" => array(
+						"attributes" => array(
+							"style" => "color: #fff;"
+						)
+					),
+					"opt3" => array()
+					),
+				)
+			)
+		);
+		
+		// Will return an array, then display each checkbox that way:
+		> echo $ret["opt2"];
+		
+		>> <input type="checkbox" checked="checked" style="color:#fff;" name="name" value="opt2" id="name_opt2"/>
+		*/
 		public static function generate_input_check($name, $options){
 			$ret = array();
 			if(!isset($options["options"]))
@@ -66,7 +97,7 @@ if(!class_exists("ithoughts_toolbox")){
 				if(!isset($data["attributes"]))
 					$data["attributes"] = array();
 				if(!isset($data["attributes"]["id"]))
-					$data["attributes"]["id"] = $option;
+					$data["attributes"]["id"] = $name."_".$option;
 
 				$str .= ithoughts_toolbox::concat_attrs($data["attributes"]);
 				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $option)))
