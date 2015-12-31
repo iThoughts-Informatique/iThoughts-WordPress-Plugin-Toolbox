@@ -17,6 +17,8 @@ if(!class_exists("ithoughts_toolbox")){
 				$options["attributes"] = array();
 			if(!isset($options["attributes"]["id"]))
 				$options["attributes"]["id"] = $name;
+			if(!isset($options["attributes"]["autocomplete"]))
+				$options["attributes"]["autocomplete"] = "off";
 
 			$strret .= ithoughts_toolbox::concat_attrs($options["attributes"]);
 			if(isset($options["multiple"]) && $options["multiple"])
@@ -126,6 +128,8 @@ if(!class_exists("ithoughts_toolbox")){
 					$data["attributes"] = array();
 				if(!isset($data["attributes"]["id"]))
 					$data["attributes"]["id"] = $name."_".$option;
+				if(!isset($data["attributes"]["autocomplete"]))
+					$data["attributes"]["autocomplete"] = "off";
 
 				$str .= ithoughts_toolbox::concat_attrs($data["attributes"]);
 				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $option)))
@@ -139,11 +143,13 @@ if(!class_exists("ithoughts_toolbox")){
 			}
 			if($allLabeled && isset($options["implode"])){
 				$ret = implode($options["implode"], $ret);
+			} else if(count($ret) == 1){
+				return $ret[array_keys($ret)[1]];
 			}
 			return $ret;
 		}
 
-		function generate_input_color($name, $value){
+		public static function generate_input_color($name, $value){
 
 		}
 		public static function generate_input_text($name, $options){
@@ -157,10 +163,16 @@ if(!class_exists("ithoughts_toolbox")){
 				$options["attributes"] = array();
 			if(!isset($options["attributes"]["id"]))
 				$options["attributes"]["id"] = $name;
+			if(!isset($options["attributes"]["autocomplete"]))
+				$options["attributes"]["autocomplete"] = "off";
 
 			$str .= ithoughts_toolbox::concat_attrs($options["attributes"]);
 			$str .= '/>';
 			return $str;
+		}
+
+		public static function checkbox_to_bool(){
+
 		}
 	}
 }
