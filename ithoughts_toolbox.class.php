@@ -144,7 +144,8 @@ if(!class_exists("ithoughts_toolbox")){
 			if($allLabeled && isset($options["implode"])){
 				$ret = implode($options["implode"], $ret);
 			} else if(count($ret) == 1){
-				return $ret[array_keys($ret)[0]];
+				$keys = array_keys($ret);
+				return $ret[$keys[0]];
 			}
 			return $ret;
 		}
