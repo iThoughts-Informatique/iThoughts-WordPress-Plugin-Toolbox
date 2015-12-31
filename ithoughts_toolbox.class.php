@@ -58,11 +58,6 @@ if(!class_exists("ithoughts_toolbox")){
 			$strret .= "</select>";
 			return $strret;
 		}
-
-
-
-
-
 		/* Format:
 		$ret = ithoughts_toolbox::generate_input_check(
 			"name",
@@ -149,7 +144,6 @@ if(!class_exists("ithoughts_toolbox")){
 			}
 			return $ret;
 		}
-
 		public static function generate_input_color($name, $value){
 
 		}
@@ -171,9 +165,49 @@ if(!class_exists("ithoughts_toolbox")){
 			$str .= '/>';
 			return $str;
 		}
+		/**************************************************************************************************************************************************************************************************************\
+|**************************************************************************************************************************************************************************************************************|
+\**************************************************************************************************************************************************************************************************************/
+		public static function unaccent( $text, $from = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", $to = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn", $encoding = "UTF-8" ){
+			$l = mb_strlen($text, $encoding);
+			$out = "";
+			for($i = 0; $i < $l; $i++){
+				$c = mb_substr($text, $i, 1, $encoding);
+				$t = mb_strpos($from,$c,0,$encoding);
+				if($t === false)
+					$out .= $c;
+				else
+					$out .= mb_substr($to, $t, 1, $encoding);
+			}
+			return $out;
+		}
+		public static function decode_json_attr($str){
+			return json_decode(html_entity_decode($attr), true);
+		}
+		public static function encode_json_attr($obj){
+			return htmlentities(json_encode($attr));
+		}
+		public static function array_flatten($array) {
+			$return = array();
+			foreach ($array as $key => $value) {
+				if (is_array($value)){
+					$return = array_merge($return, ithoughts_toolbox::array_flatten($value));
+				} else {
+					$return[$key] = $value;
+				}
+			}
 
-		public static function checkbox_to_bool(){
-
+			return $return;
+		}
+		/**************************************************************************************************************************************************************************************************************\
+|**************************************************************************************************************************************************************************************************************|
+\**************************************************************************************************************************************************************************************************************/
+		public static function checkbox_to_bool($array,$key, $truevalue){
+			if(!isset($array[$key]))
+				return false;
+			if($array[$key] === true)
+				return true;
+			return $array[$key] === $truevalue;
 		}
 	}
 }
