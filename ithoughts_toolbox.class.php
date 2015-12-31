@@ -6,7 +6,7 @@ if(!class_exists("ithoughts_toolbox")){
 			$str = "";
 			foreach($attrs as $key => $value){
 				if(isset($value) && $value != NULL){
-					$str .= ' '.$key.'="'.$value.'"';
+					$str .= ' '.$key.'="'.str_replace(array('"', "'"), array("&quot;", "&apos;"), $value).'"';
 				}
 			}
 			return $str;
