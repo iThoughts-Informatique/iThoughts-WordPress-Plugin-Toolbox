@@ -132,7 +132,7 @@ if(!class_exists("ithoughts_toolbox")){
 					$str .= ' checked="checked"';
 				$str .= '/>';
 				if($strLabel != NULL){
-					$str .= '&nbsp;'.$strLabel.'</label>'
+					$str .= '&nbsp;'.$strLabel.'</label>';
 				}
 
 				$ret[$option] = $str;
