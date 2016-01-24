@@ -182,10 +182,10 @@ if(!class_exists("ithoughts_toolbox")){
 			return $out;
 		}
 		public static function decode_json_attr($str){
-			return json_decode(html_entity_decode($str), true);
+			return json_decode(str_replace('\\"', '"', $str), true);
 		}
 		public static function encode_json_attr($obj){
-			return htmlentities(json_encode($obj));
+			return str_replace('"', "&aquot;", json_encode($obj));
 		}
 		public static function array_flatten($array) {
 			$return = array();
