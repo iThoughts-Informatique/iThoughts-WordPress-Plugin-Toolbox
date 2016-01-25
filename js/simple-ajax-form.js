@@ -57,9 +57,9 @@
             });
         }
     });
-})(jQuery);
+})();
 
-(function($){
+(function(){
     $doc.ready(function(){
         $('.simpleajaxform').simpleAjaxForm();
     });
