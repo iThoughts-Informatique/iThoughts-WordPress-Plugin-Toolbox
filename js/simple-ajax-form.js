@@ -1,5 +1,10 @@
 /**
- * Simple jQuery extension to AjaxiFy a form
+ * Simple AJAX Form - Version 2.0
+ *
+ * jQuery extension to make forms AJAX enabled.
+ * Mainly used in WordPress projects
+ *
+ * By tcbarrett: https://github.com/tcbarrett/Simple-Ajax-Form
  */
 (function(){
     $.fn.extend({
