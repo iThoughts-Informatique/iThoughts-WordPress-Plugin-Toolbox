@@ -1,13 +1,18 @@
 /**
- * Simple AJAX Form - Version 2.0
+ * @file Simple AJAX Form
+ * @description  jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
+ * @author tcbarrett
  *
- * jQuery extension to make forms AJAX enabled.
- * Mainly used in WordPress projects
- *
- * By tcbarrett: https://github.com/tcbarrett/Simple-Ajax-Form
+ * @version 2.0
  */
 (function(){
     $.fn.extend({
+        /**
+         * Send a form through ajax
+		 * @method	external:"jQuery".fn.simpleAjaxForm
+         * @param   {object} opts Options to be merged with { validate: false } and jQuery elements selected attributes ["target","callback","validate"]
+         * @returns {array}	Forms handlers
+         */
         simpleAjaxForm: function( opts ){
             var defaults = { validate: false };
             var options  = $.extend( defaults, opts );

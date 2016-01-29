@@ -1,0 +1,4 @@
+Regex change text domain: 
+
+(\W_[_\w]+\(.*?,)\s*['"]ithoughts_html_snippets['"]\s*\)
+$1 'new-domain' )
