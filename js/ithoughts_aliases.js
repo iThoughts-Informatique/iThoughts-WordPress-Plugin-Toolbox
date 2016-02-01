@@ -1,4 +1,3 @@
-
 /**
  * @file iThoughts Aliases define shorthands used by iThoughts plugins
  * @author Gerkin
