@@ -14,15 +14,27 @@ namespace ithoughts;
 
 if(!interface_exists("\\ithoughts\\Singleton")){
 	/**
-	 * Singleton interface
+	 * Singleton abstract class
 	 */
-	interface Singleton{
+	abstract class Singleton{
+
+		private static $singletons = array();
+
+		private function __construct(){}
+
 		/**
 		 * Returns the instance
 		 * @author Gerkin
 		 *           
 		 * @return mixed The class instance
 		 */
-		public static function get_instance();
+		public static final function get_instance(){
+			$class = get_called_class();
+			if( !isset( self::$singletons[ $class ] ) ) {
+				$reflect  = new \ReflectionClass($class);
+				self::$singletons[ $class ] = $reflect->newInstanceArgs(array_values(func_get_args()));
+			}
+			return self::$singletons[ $class ];
+		}
 	}
 }
