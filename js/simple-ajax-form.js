@@ -70,7 +70,7 @@
 })();
 
 (function(){
-    $doc.ready(function(){
+    $d.ready(function(){
         $('.simpleajaxform').simpleAjaxForm();
     });
 })();

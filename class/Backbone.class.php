@@ -49,18 +49,55 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
 		protected $scripts;
+		
+		/**
+		 * Construct the generic backbone. Registers global scripts It MUST be called by child backbones.
+		 */
+		protected function __construct(){
+			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
+		}
+		
+		public function backbone_enqueue_scripts_hight_priority(){
+			wp_register_script('ithoughts_aliases', $this->base_url . '/submodules/iThoughts-WordPress-Plugins-Toolbox/js/ithoughts_aliases'.$this->minify.'.js',									array('jquery'), "1.0.0", false);
+		}
 
-		
-		
-		
+
+
+
 		/**
 		 * Returns the plugin options
 		 * @param boolean $defaults = false Return only default options of the plugin
 		 *                                                                  
 		 * @return array Options
 		 */
-		protected function get_options($defaults = false){
+		abstract protected function get_options($defaults = false)/*{
 			return self::$options;
+		}*/;
+
+		/**
+		 * Returns the desired plugin option
+		 * @param boolean $name				Name of the option
+		 * @param boolean $defaults = false Return only default value of this option in the plugin
+		 *                          
+		 * @return mixed   Option
+		 */
+		abstract protected function get_option($name, $defaults = false)/*{
+			return self::$options;
+		}*/;
+
+		/**
+		 * Set plugin options
+		 * @param array options		Set options of the plugin
+		 * @param boolean $update = true Update options stored in base
+		 *                        
+		 * @return array Options
+		 */
+		public function set_options($options, $update = true){
+			$this->options = array_merge($this->options, $options);
+			if($update){
+				update_option( $this->optionsName, $this->options );
+			}
+			return $this->options;
 		}
 
 		/**
@@ -70,14 +107,14 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		 *                        
 		 * @return array Options
 		 */
-		protected function set_options($options, $update = true){
-			$this->options = array_merge($this->options, $options);
+		public function set_option($name, $value, $update = true){
+			$this->options[$name] = $value;
 			if($update){
 				update_option( $this->optionsName, $this->options );
 			}
 			return $this->options;
 		}
-		
+
 		/**
 		 * Get plugin base path
 		 *                        
@@ -86,7 +123,7 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		public function get_base_path(){
 			return $this->base_path;
 		}
-		
+
 		/**
 		 * Get plugin base path to langs
 		 *                        
@@ -95,7 +132,7 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		public function get_base_lang_path(){
 			return $this->base_lang_path;
 		}
-		
+
 		/**
 		 * Get plugin base path to classes
 		 *                        
@@ -104,7 +141,7 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		public function get_base_class_path(){
 			return $this->base_class_path;
 		}
-		
+
 		/**
 		 * Get plugin base url to access resources
 		 *                        
@@ -113,7 +150,7 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		public function get_base_url(){
 			return $this->base_url;
 		}
-		
+
 		/**
 		 * Prepare enqueue of plugin script
 		 * @param string $scriptName Name of the script
@@ -123,7 +160,19 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		public function add_script($scriptName){
 			$this->scripts[$scriptName] = true;
 		}
-		
+
+		/**
+		 * Prepare enqueue of several plugin scripts
+		 * @param string[] $scriptName Name of the script
+		 *                                       
+		 * @return NULL
+		 */
+		public function add_scripts($scriptNames){
+			foreach($scriptNames as $scriptName){
+				$this->scripts[$scriptName] = true;
+			}
+		}
+
 		/**
 		 * Get the minifying prefix
 		 *                                       

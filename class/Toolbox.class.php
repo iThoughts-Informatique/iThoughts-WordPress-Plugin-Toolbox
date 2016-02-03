@@ -61,6 +61,13 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 				$strret .= " multiple";
 			$strret .= ">";
 
+			if(isset($options["allow_blank"])){ // Blank is allowed, so it is the default if no selection
+				if(!isset($options["selected"]) || $options["selected"] == NULL || $options["selected"] == "" || $options["selected"] == array())
+					$strret .= '<option value="" selected>'.$options["allow_blank"].'</option>';
+				else 
+					$strret .= '<option value="">'.$options["allow_blank"].'</option>';
+			}
+
 			if(isset($options["options"]) && is_array($options["options"])){
 				if(array_values($options["options"]) === $options["options"]){
 					foreach($options["options"] as $value){
@@ -94,9 +101,9 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 			$strret .= "</select>";
 			return $strret;
 		}
-		
-		
-		
+
+
+
 		/* Format:
 		$ret = Toolbox::generate_input_check(
 			"name",
