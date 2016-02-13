@@ -12,7 +12,7 @@
 
 namespace ithoughts;
 
-if(!interface_exists("\\ithoughts\\Singleton")){
+if(!class_exists("\\ithoughts\\Singleton")){
 	/**
 	 * Singleton abstract class
 	 */
