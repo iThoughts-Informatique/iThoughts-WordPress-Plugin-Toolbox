@@ -10,9 +10,9 @@
  * @version 1.0
  */
 
-namespace ithoughts;
+namespace ithoughts\v1_0;
 
-if(!class_exists("\\ithoughts\\Singleton")){
+if(!class_exists(__NAMESPACE__."\\Singleton")){
 	/**
 	 * Singleton abstract class
 	 */

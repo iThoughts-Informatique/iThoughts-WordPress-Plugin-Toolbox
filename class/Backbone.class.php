@@ -10,9 +10,9 @@
  * @version 1.0
  */
 
-namespace ithoughts;
+namespace ithoughts\v1_0;
 
-if(!class_exists("\\ithoughts\\Backbone")){
+if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
 	 */
@@ -58,7 +58,7 @@ if(!class_exists("\\ithoughts\\Backbone")){
 		}
 		
 		public function backbone_enqueue_scripts_hight_priority(){
-			wp_register_script('ithoughts_aliases', $this->base_url . '/submodules/iThoughts-WordPress-Plugins-Toolbox/js/ithoughts_aliases'.$this->minify.'.js',									array('jquery'), "1.0.0", false);
+			wp_register_script('ithoughts_aliases', $this->base_url . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts_aliases'.$this->minify.'.js',									array('jquery'), "1.0.0", false);
 		}
 
 

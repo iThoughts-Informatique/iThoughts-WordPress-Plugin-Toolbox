@@ -10,9 +10,9 @@
  * @version 1.0
  */
 
-namespace ithoughts;
+namespace ithoughts\v1_0;
 
-if(!class_exists("\\ithoughts\\Toolbox")){
+if(!class_exists(__NAMESPACE__."\\Toolbox")){
 	/**
 	 * General toolbox class used across all plugins
 	 */
@@ -78,7 +78,7 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 						$strret .= '<option value="'.$key.'" ';
 						if(is_array($value)){
 							if(!isset($value["attributes"]))
-								$options["attributes"] = array();
+								$value["attributes"] = array();
 							$strret .= Toolbox::concat_attrs($value["attributes"]);
 						}
 						if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($key, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $key)))
@@ -145,6 +145,7 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 		 */
 		public static final function generate_input_check($name, $options){
 			$ret = array();
+			$base_id = preg_replace("/[^\w\d_]/", "", $name);
 			$allLabeled = true;
 			if(!isset($options["options"]))
 				return $ret;
@@ -181,7 +182,7 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 				if(!isset($data["attributes"]))
 					$data["attributes"] = array();
 				if(!isset($data["attributes"]["id"]))
-					$data["attributes"]["id"] = $name."_".$option;
+					$data["attributes"]["id"] = $base_id."_".$option;
 				if(!isset($data["attributes"]["autocomplete"]))
 					$data["attributes"]["autocomplete"] = "off";
 
@@ -344,16 +345,32 @@ if(!class_exists("\\ithoughts\\Toolbox")){
 		 * 
 		 * @param mixed[] $values    The associative array supposed to contain the key $key
 		 * @param string  $key       The key to check. Usually, it is the name of the input
-		 * @param string  $truevalue The value of the checkbox
+		 * @param string|string[]  $truevalues The value of the checkbox
 		 *                           
 		 * @return bool    Returns true if the checkbox was checked
 		 */
-		public static final function checkbox_to_bool($values,$key, $truevalue){
-			if(!isset($values[$key]))
-				return false;
-			if($values[$key] === true)
-				return true;
-			return $values[$key] === $truevalue;
+		public static final function checkbox_to_bool($values,$key, $truevalues){
+			if(is_array($truevalues)){
+				$ret = array();
+				if(!isset($values[$key])){
+					foreach($truevalues as $truevalue){
+						$ret[$truevalue] = false;
+					}
+				} else {
+					if(!is_array($values[$key]))
+						$values[$key] = array($values[$key]);
+					foreach($truevalues as $truevalue){
+						$ret[$truevalue] = in_array($truevalue, $values[$key]);
+					}
+				}
+				return $ret;
+			} else {
+				if(!isset($values[$key])){
+					return false;
+				} else {
+					return $values[$key] === $truevalues;
+				}
+			}
 		}
 	}
 }

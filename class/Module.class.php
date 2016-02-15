@@ -10,9 +10,9 @@
  * @version 1.0
  */
 
-namespace ithoughts;
+namespace ithoughts\v1_0;
 
-if(!class_exists("\\ithoughts\\Module")){
+if(!class_exists(__NAMESPACE__."\\Module")){
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
 	 */
