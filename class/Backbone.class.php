@@ -10,7 +10,7 @@
  * @version 1.0
  */
 
-namespace ithoughts\v1_0;
+namespace ithoughts\v1_1;
 
 if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
@@ -204,7 +204,9 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 *                                       
 		 * @return boolean[]
 		 */
-		public function get_scripts($scriptNames){
+		public function get_scripts($scriptNames = null){
+			if($scriptName == null)
+				return $this->scripts;
 			$ret = array();
 			foreach($scriptNames as $scriptName){
 				$ret[$scriptName] = (isset($this->scripts[$scriptName]) && $this->scripts[$scriptName] === true);
