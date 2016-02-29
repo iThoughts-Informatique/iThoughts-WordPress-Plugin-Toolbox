@@ -10,7 +10,7 @@
  * @version 1.0
  */
 
-namespace ithoughts\v1_0;
+namespace ithoughts\v1_1;
 
 if(!class_exists(__NAMESPACE__."\\Singleton")){
 	/**

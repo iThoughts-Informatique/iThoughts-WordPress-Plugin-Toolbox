@@ -22,6 +22,10 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 */
 		protected $options;
 		/**
+		 * @var	mixed	$defaultOptions		Plugin default options
+		 */
+		protected $defaultOptions;
+		/**
 		 * @var	string	$optionsName		Identifier of the plugin options
 		 */
 		protected $optionsName;
@@ -48,13 +52,13 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		/**
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
-		protected $scripts;
-
+		protected $scripts = array();
 		/**
 		 * Construct the generic backbone. Registers global scripts It MUST be called by child backbones.
 		 */
 		protected function __construct(){
 			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
+			$this->options = get_option( $this->optionsName, $this->get_options(true));
 		}
 
 		public function backbone_enqueue_scripts_hight_priority(){
@@ -79,7 +83,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 */
 		public function get_options($onlyDefaults = false){
 			if($onlyDefaults)
-				return $this->defaults;
+				return $this->defaultOptions;
 
 			return $this->options;
 		}
@@ -94,7 +98,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		public function get_option($name, $onlyDefaults = false){
 			$arr = $this->options;
 			if($onlyDefaults)
-				return $this->defaults;
+				return (isset($this->defaultOptions[$name]) ? $this->defaultOptions[$name] : NULL);
 
 			if(isset($arr[$name]))
 				return $arr[$name];
@@ -188,6 +192,32 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			foreach($scriptNames as $scriptName){
 				$this->scripts[$scriptName] = true;
 			}
+		}
+
+		/**
+		 * Return true if script was enqueued with {@link add_script} or {@link add_scripts}
+		 * @param string $scriptName Name of the script
+		 *                                       
+		 * @return boolean
+		 */
+		public function get_script($scriptName){
+				return (isset($this->scripts[$scriptName]) && $this->scripts[$scriptName] === true);
+		}
+
+		/**
+		 * Return an associative array with values set to true if script was enqueued with {@link add_script} or {@link add_scripts}
+		 * @param string[] $scriptNames Name of scripts
+		 *                                       
+		 * @return boolean[]
+		 */
+		public function get_scripts($scriptNames = null){
+			if($scriptName == null)
+				return $this->scripts;
+			$ret = array();
+			foreach($scriptNames as $scriptName){
+				$ret[$scriptName] = (isset($this->scripts[$scriptName]) && $this->scripts[$scriptName] === true);
+			}
+			return $ret;
 		}
 
 		/**
