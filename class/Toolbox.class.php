@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 1.0
+ * @version 1.1
  */
 
-namespace ithoughts\v1_0;
+namespace ithoughts\v1_1;
 
 if(!class_exists(__NAMESPACE__."\\Toolbox")){
 	/**
@@ -29,7 +29,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			$str = "";
 			foreach($attrs as $key => $value){
 				if(isset($value) && $value != NULL){
-					$str .= ' '.$key.'="'.str_replace(array('"', "'"), array("&aquot;", "&apos;"), $value).'"';
+					$str .= ' '.$key.'="'.htmlentities($value).'"';
 				}
 			}
 			return $str;
@@ -235,21 +235,39 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * @return string Input generated
 		 */
 		public static final function generate_input_text($name, $options){
-			$str = '<input name="'.$name.'"';
-			if(isset($options["type"]))
-				$str .= ' type="'.$options["type"].'"';
-			if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
-				$str .= ' value="'.$options["value"].'"';
+			$str;
+			if(isset($options["textarea"]) && $options["textarea"]){
+				$str = '<textarea';
+			} else {
+				$str = '<input';
+			}
 
+			$attrs = array(
+				"name" => $name
+			);
 			if(!isset($options["attributes"]))
 				$options["attributes"] = array();
 			if(!isset($options["attributes"]["id"]))
 				$options["attributes"]["id"] = $name;
-			if(!isset($options["attributes"]["autocomplete"]))
+			if(!isset($options["attributes"]["autocomplete"]) && isset($options["textarea"]) && $options["textarea"] == false)
 				$options["attributes"]["autocomplete"] = "off";
+			$attrs = array_merge($attrs,$options["attributes"]);
 
-			$str .= Toolbox::concat_attrs($options["attributes"]);
-			$str .= '/>';
+
+			if(isset($options["textarea"]) && $options["textarea"]){
+				$str .= Toolbox::concat_attrs($attrs);
+				$str .= '>';
+				if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
+					$str .= $options["value"];
+				$str .= "</textarea>";
+			} else {
+				if(isset($options["type"]))
+					$attrs["type"] = $options["type"];
+				if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
+					$attrs["value"] = $options["value"];
+				$str .= Toolbox::concat_attrs($attrs);
+				$str .= '/>';
+			}
 			return $str;
 		}
 

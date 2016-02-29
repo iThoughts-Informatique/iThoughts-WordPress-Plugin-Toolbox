@@ -7,16 +7,16 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 1.0
+ * @version 1.1.0
  */
 
-namespace ithoughts\v1_0;
+namespace ithoughts\v1_1;
 
 if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
 	 */
-	abstract class Backbone extends Singleton{		
+	abstract class Backbone extends \ithoughts\v1_0\Singleton{		
 		/**
 		 * @var	mixed	$options			Plugin options
 		 */
@@ -49,16 +49,23 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
 		protected $scripts;
-		
+
 		/**
 		 * Construct the generic backbone. Registers global scripts It MUST be called by child backbones.
 		 */
 		protected function __construct(){
 			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
 		}
-		
+
 		public function backbone_enqueue_scripts_hight_priority(){
-			wp_register_script('ithoughts_aliases', $this->base_url . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts_aliases'.$this->minify.'.js',									array('jquery'), "1.0.0", false);
+			wp_register_script('ithoughts_aliases', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts_aliases'.$this->get_minify().'.js',									array('jquery'), "1.0.0", false);
+
+			wp_register_script(
+				'ithoughts-simple-ajax',
+				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form'.$this->get_minify().'.js',
+				array('jquery-form',"ithoughts_aliases"),
+				"1.1.0"
+			);
 		}
 
 
@@ -70,9 +77,12 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 *                                                                  
 		 * @return array Options
 		 */
-		abstract protected function get_options($defaults = false)/*{
-			return self::$options;
-		}*/;
+		public function get_options($onlyDefaults = false){
+			if($onlyDefaults)
+				return $this->defaults;
+
+			return $this->options;
+		}
 
 		/**
 		 * Returns the desired plugin option
@@ -81,9 +91,16 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 *                          
 		 * @return mixed   Option
 		 */
-		abstract protected function get_option($name, $defaults = false)/*{
-			return self::$options;
-		}*/;
+		public function get_option($name, $onlyDefaults = false){
+			$arr = $this->options;
+			if($onlyDefaults)
+				return $this->defaults;
+
+			if(isset($arr[$name]))
+				return $arr[$name];
+			else
+				return NULL;
+		}
 
 		/**
 		 * Set plugin options

@@ -33,7 +33,7 @@
 					beforeSubmit: function(formData, jqForm, options) {
 						//if( !jqForm.valid() ) return false;
 						if( formopts.target && $('#'+formopts.target).length ){
-							$('#'+formopts.target).html('<p>Updating, please wait...</p>').removeClass('updated').addClass('updating').fadeTo(100,1);
+							$('#'+formopts.target).html('<p>Updating, please wait...</p>').removeClass().addClass('clear updating').fadeTo(100,1);
 						}
 						return true;
 					},
@@ -47,10 +47,26 @@
 						}
 
 						try{
-							var res = JSON.parse(responseText);
+							var res;
+							if(responseText.constructor.name == "String"){
+								res = JSON.parse(responseText);
+							} else if(responseText.constructor.name == "Object"){
+								res = responseText;
+							} else {
+								throw "Unhandled type " + typeof responseText;
+							}
+							
+							if(res == "0" || !res){
+									$('#'+formopts.target).removeClass().addClass('clear notice notice-warning').html("<p>Server did not respond anything</p>");
+							} else {
+							if(typeof res.success != "undefined" && res.success != null && typeof res.data != "undefined" && res.data != null){ // handle wp_send_json_{success|error}
+								res.data.valid = res.success;
+								res = res.data
+							}
+							// Handle raw response
 							if(!res.valid){
 								if( formopts.target && $('#'+formopts.target).length ){
-									$('#'+formopts.target).removeClass('updating').removeClass("updated").addClass('error').html(res.text);
+									$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html(res.text);
 								}
 							} else {
 								if(res.reload){
@@ -58,15 +74,16 @@
 								}
 
 								if( formopts.target && $('#'+formopts.target).length ){
-									$('#'+formopts.target).removeClass('updating').removeClass("error").addClass('updated').html(res.text);
+									$('#'+formopts.target).removeClass().addClass('clear notice notice-success').html(res.text);
 								}
 							}
 							if(typeof $form[0].simple_ajax_callback == "function")
 								$form[0].simple_ajax_callback(res);
 							if(typeof formopts.callback == "function")
 								formopts.callback(res);
+							}
 						} catch(e){
-							$('#'+formopts.target).removeClass('updating').removeClass("updated").addClass('error').html("<p>Invalid server response</p>");
+							$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html("<p>Invalid server response</p>");
 						}
 					}	
 				});
