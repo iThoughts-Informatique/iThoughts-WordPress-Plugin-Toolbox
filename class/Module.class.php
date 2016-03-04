@@ -10,7 +10,7 @@
  * @version 1.0
  */
 
-namespace ithoughts\v1_1;
+namespace ithoughts\v1_0;
 
 if(!class_exists(__NAMESPACE__."\\Module")){
 	/**

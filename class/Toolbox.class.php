@@ -55,6 +55,8 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 				$options["attributes"]["id"] = $name;
 			if(!isset($options["attributes"]["autocomplete"]))
 				$options["attributes"]["autocomplete"] = "off";
+			if(isset($options["required"]) && $options["required"])
+				$options["attributes"]["required"] = "required";
 
 			$strret .= Toolbox::concat_attrs($options["attributes"]);
 			if(isset($options["multiple"]) && $options["multiple"])
@@ -185,6 +187,8 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 					$data["attributes"]["id"] = $base_id."_".$option;
 				if(!isset($data["attributes"]["autocomplete"]))
 					$data["attributes"]["autocomplete"] = "off";
+			if(isset($data["required"]) && $data["required"])
+				$data["attributes"]["required"] = "required";
 
 				$str .= Toolbox::concat_attrs($data["attributes"]);
 				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $option)))
@@ -251,6 +255,8 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 				$options["attributes"]["id"] = $name;
 			if(!isset($options["attributes"]["autocomplete"]) && isset($options["textarea"]) && $options["textarea"] == false)
 				$options["attributes"]["autocomplete"] = "off";
+			if(isset($options["required"]) && $options["required"])
+				$options["attributes"]["required"] = "required";
 			$attrs = array_merge($attrs,$options["attributes"]);
 
 

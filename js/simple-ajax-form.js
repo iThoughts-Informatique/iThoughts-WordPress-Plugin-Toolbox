@@ -27,21 +27,26 @@
 				}
 				$form.find("button[name=\"actionB\"]").click(function(){
 					$form.find("[name=\"action\"]").val(this.getAttribute("value"));
-				})
+				});
+				var post_text = (this.getAttribute("post_text") ? this.getAttribute("post_text") : 'Updating, please wait...');
 
 				$form.ajaxForm({
 					beforeSubmit: function(formData, jqForm, options) {
 						//if( !jqForm.valid() ) return false;
 						if( formopts.target && $('#'+formopts.target).length ){
-							$('#'+formopts.target).html('<p>Updating, please wait...</p>').removeClass().addClass('clear updating').fadeTo(100,1);
+							$('#'+formopts.target).html('<p>' + post_text + '</p>').removeClass().addClass('clear updating').fadeTo(100,1);
 						}
 						return true;
+					},
+					error: function(){
+						$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Form submission failed.</p>');
 					},
 					success: function(responseText, statusText, xhr, jQForm){
 						if( typeof(jQForm) === 'undefined' )
 							jQForm = xhr;
 
 						if( typeof(jQForm) === 'undefined' ){
+							$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html(res.text);
 							$form.append('<div class="error"><p>Cannot handle response properly</p></div>');
 							return;
 						}
@@ -55,32 +60,42 @@
 							} else {
 								throw "Unhandled type " + typeof responseText;
 							}
-							
-							if(res == "0" || !res){
-									$('#'+formopts.target).removeClass().addClass('clear notice notice-warning').html("<p>Server did not respond anything</p>");
-							} else {
-							if(typeof res.success != "undefined" && res.success != null && typeof res.data != "undefined" && res.data != null){ // handle wp_send_json_{success|error}
-								res.data.valid = res.success;
-								res = res.data
-							}
-							// Handle raw response
-							if(!res.valid){
-								if( formopts.target && $('#'+formopts.target).length ){
-									$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html(res.text);
-								}
-							} else {
-								if(res.reload){
-									window.location.href = window.location.href + "&json-res-txt=" + window.encodeURI(res.text);
-								}
 
-								if( formopts.target && $('#'+formopts.target).length ){
-									$('#'+formopts.target).removeClass().addClass('clear notice notice-success').html(res.text);
+							if(res == "0" || !res){
+								$('#'+formopts.target).removeClass().addClass('clear notice notice-warning').html("<p>Server did not respond anything</p>");
+							} else {
+								if(typeof res.success != "undefined" && res.success != null && typeof res.data != "undefined" && res.data != null){ // handle wp_send_json_{success|error}
+									res.data.valid = res.success;
+									res = res.data
 								}
-							}
-							if(typeof $form[0].simple_ajax_callback == "function")
-								$form[0].simple_ajax_callback(res);
-							if(typeof formopts.callback == "function")
-								formopts.callback(res);
+								// Handle raw response
+								if(!res.valid){
+									if( formopts.target && $('#'+formopts.target).length ){
+										$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html(res.text);
+									}
+								} else {
+									if(res.reload){
+										window.location.href = window.location.href + "&json-res-txt=" + window.encodeURI(res.text);
+									}
+
+									if( formopts.target && $('#'+formopts.target).length ){
+										$('#'+formopts.target).removeClass().addClass('clear notice notice-success').html(res.text);
+									}
+
+									if(res.redirect){
+										if(res.text){
+											setTimeout(function(){
+												window.location.href = res.redirect;
+											}, 2500);
+										} else {
+											window.location.href = res.redirect;
+										}
+									}
+								}
+								if(typeof $form[0].simple_ajax_callback == "function")
+									$form[0].simple_ajax_callback(res);
+								if(typeof formopts.callback == "function")
+									formopts.callback(res);
 							}
 						} catch(e){
 							$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html("<p>Invalid server response</p>");

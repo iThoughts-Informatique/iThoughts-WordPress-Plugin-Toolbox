@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 1.1.0
+ * @version 1.1.1
  */
 
-namespace ithoughts\v1_1;
+namespace ithoughts\v1_1_1;
 
 if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
@@ -20,7 +20,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		/**
 		 * @var	mixed	$options			Plugin options
 		 */
-		protected $options;
+		protected $options = NULL;
 		/**
 		 * @var	mixed	$defaultOptions		Plugin default options
 		 */
@@ -58,7 +58,6 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 */
 		protected function __construct(){
 			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
-			$this->options = get_option( $this->optionsName, $this->get_options(true));
 		}
 
 		public function backbone_enqueue_scripts_hight_priority(){
@@ -76,7 +75,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 
 
 		/**
-		 * Returns the plugin options
+		 * Returns the plugin options. If it's the first time that this function is called, it also auto-init the options, retrieving them from the DB
 		 * @param boolean $defaults = false Return only default options of the plugin
 		 *                                                                  
 		 * @return array Options
@@ -85,23 +84,27 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			if($onlyDefaults)
 				return $this->defaultOptions;
 
+			// If options are not set, retrieve from DB
+			if($this->options == NULL)
+				$this->options = get_option( $this->optionsName, $this->get_options(true) );
 			return $this->options;
 		}
 
 		/**
-		 * Returns the desired plugin option
+		 * Returns the desired plugin option. If it's the first time that this function is called, it also auto-init the options, retrieving them from the DB
 		 * @param boolean $name				Name of the option
 		 * @param boolean $defaults = false Return only default value of this option in the plugin
 		 *                          
 		 * @return mixed   Option
 		 */
 		public function get_option($name, $onlyDefaults = false){
-			$arr = $this->options;
 			if($onlyDefaults)
 				return (isset($this->defaultOptions[$name]) ? $this->defaultOptions[$name] : NULL);
 
-			if(isset($arr[$name]))
-				return $arr[$name];
+			if($this->options == NULL)
+				$this->options = get_option( $this->optionsName, $this->get_options(true) );
+			if(isset($this->options[$name]))
+				return $this->options[$name];
 			else
 				return NULL;
 		}
@@ -201,7 +204,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 * @return boolean
 		 */
 		public function get_script($scriptName){
-				return (isset($this->scripts[$scriptName]) && $this->scripts[$scriptName] === true);
+			return (isset($this->scripts[$scriptName]) && $this->scripts[$scriptName] === true);
 		}
 
 		/**
