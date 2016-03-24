@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 1.1.1
+ * @version 1.2
  */
 
-namespace ithoughts\v1_1_1;
+namespace ithoughts\v1_2;
 
 if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
@@ -57,6 +57,22 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 * Construct the generic backbone. Registers global scripts It MUST be called by child backbones.
 		 */
 		protected function __construct(){
+			if($this->base_path == NULL){
+				throw new \Exception("Missing definition of Backbone::\$basepath");
+			}
+			if($this->base_class_path == NULL)
+				$this->base_class_path = $this->base_path."/class";
+			if($this->base_lang_path == NULL)
+				$this->base_lang_path = $this->base_path."/lang";
+			if($this->base_url == NULL)
+				$this->base_url = plugins_url(preg_replace("/^.*[\\/]([^\\/]+)$/", "$1", $this->base_path));
+			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))
+				$this->minify = "";
+			else
+				$this->minify = ".min";
+			
+			
+			
 			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
 		}
 
@@ -106,7 +122,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			if(isset($this->options[$name]))
 				return $this->options[$name];
 			else
-				return NULL;
+				return (isset($this->defaultOptions[$name]) ? $this->defaultOptions[$name] : NULL);
 		}
 
 		/**
