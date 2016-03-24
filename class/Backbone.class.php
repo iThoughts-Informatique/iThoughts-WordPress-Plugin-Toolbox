@@ -20,7 +20,11 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		/**
 		 * @var	mixed	$options			Plugin options
 		 */
-		protected $options = NULL;
+		protected $options = NULL;	
+		/**
+		 * @var	boolean	$js_aliases_include=TRUE	Include JS Aliases
+		 */
+		protected $js_aliases_include = TRUE;
 		/**
 		 * @var	mixed	$defaultOptions		Plugin default options
 		 */
@@ -70,10 +74,11 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 				$this->minify = "";
 			else
 				$this->minify = ".min";
-			
-			
-			
-			add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
+
+
+
+			if($this->js_aliases_include)
+				add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
 		}
 
 		public function backbone_enqueue_scripts_hight_priority(){
