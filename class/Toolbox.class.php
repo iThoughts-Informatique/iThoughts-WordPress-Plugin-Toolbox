@@ -12,6 +12,10 @@
 
 namespace ithoughts\v1_2;
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit; // Exit if accessed directly
+}
+
 if(!class_exists(__NAMESPACE__."\\Toolbox")){
 	/**
 	 * General toolbox class used across all plugins
@@ -191,9 +195,9 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 					$data["attributes"]["required"] = "required";
 
 				$str .= Toolbox::concat_attrs($data["attributes"]);
-				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $option)))
+				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"], true)) || (!is_array($options["selected"]) && $options["selected"] == $option)))
 					$str .= ' checked="checked"';
-				$str .= '/>';
+				$str .= ' />';
 				if($strLabel != NULL){
 					$str .= '&nbsp;'.$strLabel.'</label>';
 				}
@@ -400,23 +404,23 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		/**
 		 * Generates the permalink for given post type depending on $post
 		 * @author Gerkin
-		 * @param  string[] $post				The      light post
+		 * @param  \WP_Post $post				The      light post
 		 * @param  {string} [$post.post_name]	The post_name (slug) of the post we generate permalink for
 		 * @param  {string} [$post.ID]	        Id of the post
 		 * @param  string   $post_type			The   post type of the given post
 		 * @return string   The post permalink
 		 * @since 1.2
 		 */
-		public static function get_permalink_light($post, $post_t){
+		public static function get_permalink_light(\WP_Post $post, $post_t){
 			global $wp_rewrite;
 
 			$post_link = $wp_rewrite->get_extra_permastruct($post_t);
 
 			$post_type = get_post_type_object($post_t);
 			if ( $post_type->hierarchical ) {
-				$slug = get_page_uri( $post["ID"] );
+				$slug = get_page_uri( $post->ID );
 			} else {
-				$slug = $post["post_name"];
+				$slug = $post->post_name;
 			}
 			if ( !empty($post_link)) {
 				$post_link = str_replace("%$post_t%", $slug, $post_link);
@@ -425,7 +429,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 				if ( $post_type->query_var )
 					$post_link = add_query_arg($post_type->query_var, $slug, '');
 				else
-					$post_link = add_query_arg(array('post_type' => $post_type, 'p' => $post["ID"]), '');
+					$post_link = add_query_arg(array('post_type' => $post_type, 'p' => $post->ID), '');
 				$post_link = home_url($post_link);
 			}
 

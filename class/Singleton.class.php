@@ -12,6 +12,10 @@
 
 namespace ithoughts\v1_0;
 
+if ( ! defined( 'ABSPATH' ) ) { 
+    exit; // Exit if accessed directly
+}
+
 if(!class_exists(__NAMESPACE__."\\Singleton")){
 	/**
 	 * Singleton abstract class

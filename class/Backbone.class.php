@@ -12,6 +12,10 @@
 
 namespace ithoughts\v1_2;
 
+if ( ! defined( 'ABSPATH' ) ) { 
+    exit; // Exit if accessed directly
+}
+
 if(!class_exists(__NAMESPACE__."\\Backbone")){
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
