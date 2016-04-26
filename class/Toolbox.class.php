@@ -13,33 +13,33 @@
 namespace ithoughts\v1_2;
 
 if ( ! defined( 'ABSPATH' ) ) { 
-	exit; // Exit if accessed directly
+    exit; // Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Toolbox")){
-	/**
+    /**
 	 * General toolbox class used across all plugins
 	 */
-	abstract class Toolbox {
+    abstract class Toolbox {
 
-		/**
+        /**
 		 * Concatenate attributes to generate a string to use in HTML tags
 		 * 
 		 * @param string[] $attrs Associative array of key/values to concatenate
 		 *                           
 		 * @return string Concatenated attributes
 		 */
-		public static final function concat_attrs($attrs){
-			$str = "";
-			foreach($attrs as $key => $value){
-				if(isset($value) && $value != NULL){
-					$str .= ' '.$key.'="'.htmlentities($value).'"';
-				}
-			}
-			return $str;
-		}
+        public static final function concat_attrs($attrs){
+            $str = "";
+            foreach($attrs as $key => $value){
+                if(isset($value) && $value != NULL){
+                    $str .= ' '.$key.'="'.htmlentities($value).'"';
+                }
+            }
+            return $str;
+        }
 
-		/**
+        /**
 		 * Generate a select input
 		 * 
 		 * @todo Describe options
@@ -51,66 +51,66 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Input generated
 		 */
-		public static final function generate_input_select($name, $options){
-			$strret = '<select name="'.$name.'"';
-			if(!isset($options["attributes"]))
-				$options["attributes"] = array();
-			if(!isset($options["attributes"]["id"]))
-				$options["attributes"]["id"] = $name;
-			if(!isset($options["attributes"]["autocomplete"]))
-				$options["attributes"]["autocomplete"] = "off";
-			if(isset($options["required"]) && $options["required"])
-				$options["attributes"]["required"] = "required";
+        public static final function generate_input_select($name, $options){
+            $strret = '<select name="'.$name.'"';
+            if(!isset($options["attributes"]))
+                $options["attributes"] = array();
+            if(!isset($options["attributes"]["id"]))
+                $options["attributes"]["id"] = $name;
+            if(!isset($options["attributes"]["autocomplete"]))
+                $options["attributes"]["autocomplete"] = "off";
+            if(isset($options["required"]) && $options["required"])
+                $options["attributes"]["required"] = "required";
 
-			$strret .= Toolbox::concat_attrs($options["attributes"]);
-			if(isset($options["multiple"]) && $options["multiple"])
-				$strret .= " multiple";
-			$strret .= ">";
+            $strret .= Toolbox::concat_attrs($options["attributes"]);
+            if(isset($options["multiple"]) && $options["multiple"])
+                $strret .= " multiple";
+            $strret .= ">";
 
-			if(isset($options["allow_blank"])){ // Blank is allowed, so it is the default if no selection
-				if(!isset($options["selected"]) || $options["selected"] == NULL || $options["selected"] == "" || $options["selected"] == array())
-					$strret .= '<option value="" selected>'.$options["allow_blank"].'</option>';
-				else 
-					$strret .= '<option value="">'.$options["allow_blank"].'</option>';
-			}
+            if(isset($options["allow_blank"])){ // Blank is allowed, so it is the default if no selection
+                if(!isset($options["selected"]) || $options["selected"] == NULL || $options["selected"] == "" || $options["selected"] == array())
+                    $strret .= '<option value="" selected>'.$options["allow_blank"].'</option>';
+                else 
+                    $strret .= '<option value="">'.$options["allow_blank"].'</option>';
+            }
 
-			if(isset($options["options"]) && is_array($options["options"])){
-				if(array_values($options["options"]) === $options["options"]){
-					foreach($options["options"] as $value){
-						$strret .= '<option value="'.$value.'">'.$value.'</option>';
-					}
-				} else {
-					foreach($options["options"] as $key => $value){
-						$strret .= '<option value="'.$key.'" ';
-						if(is_array($value)){
-							if(!isset($value["attributes"]))
-								$value["attributes"] = array();
-							$strret .= Toolbox::concat_attrs($value["attributes"]);
-						}
-						if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($key, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $key)))
-							$strret .= ' selected="selected"';
-						$strret .= '>';
-						if(is_array($value)){
-							if(isset($value["text"]) && $value["text"]){
-								$strret .= $value["text"];
-							} else {
-								$strret .= $key;
-							}
-						} else {
-							$strret .= $value;
-						}
-						$strret .= '</option>';
-					}
-				}
-			}
+            if(isset($options["options"]) && is_array($options["options"])){
+                if(array_values($options["options"]) === $options["options"]){
+                    foreach($options["options"] as $value){
+                        $strret .= '<option value="'.$value.'">'.$value.'</option>';
+                    }
+                } else {
+                    foreach($options["options"] as $key => $value){
+                        $strret .= '<option value="'.$key.'" ';
+                        if(is_array($value)){
+                            if(!isset($value["attributes"]))
+                                $value["attributes"] = array();
+                            $strret .= Toolbox::concat_attrs($value["attributes"]);
+                        }
+                        if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($key, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $key)))
+                            $strret .= ' selected="selected"';
+                        $strret .= '>';
+                        if(is_array($value)){
+                            if(isset($value["text"]) && $value["text"]){
+                                $strret .= $value["text"];
+                            } else {
+                                $strret .= $key;
+                            }
+                        } else {
+                            $strret .= $value;
+                        }
+                        $strret .= '</option>';
+                    }
+                }
+            }
 
-			$strret .= "</select>";
-			return $strret;
-		}
+            $strret .= "</select>";
+            return $strret;
+        }
 
 
 
-		/* Format:
+        /* Format:
 		$ret = Toolbox::generate_input_check(
 			"name",
 			array(
@@ -137,7 +137,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		>> <input type="checkbox" checked="checked" style="color:#fff;" name="name" value="opt2" id="name_opt2"/>
 		*/
 
-		/**
+        /**
 		 * Generate one or several check/radio input
 		 * 
 		 * @todo Describe options
@@ -149,71 +149,71 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string|string[] Input(s) generated
 		 */
-		public static final function generate_input_check($name, $options){
-			$ret = array();
-			$base_id = preg_replace("/[^\w\d_]/", "", $name);
-			$allLabeled = true;
-			if(!isset($options["options"]))
-				return $ret;
+        public static final function generate_input_check($name, $options){
+            $ret = array();
+            $base_id = preg_replace("/[^\w\d_]/", "", $name);
+            $allLabeled = true;
+            if(!isset($options["options"]))
+                return $ret;
 
-			if(!is_array($options["options"]))
-				$options["options"] = array($options["options"]);
+            if(!is_array($options["options"]))
+                $options["options"] = array($options["options"]);
 
-			foreach($options["options"] as $option => $data){
-				$str = "";
-				$strLabel = NULL;
-				if(isset($data["label"]) && $data["label"]){
-					if($data["label"] != null && is_array($data["label"])){
-						if(isset($data["label"]["text"])){
-							$strLabel = $data["label"]["text"];
-							$attrs = "";
-							if(isset($data["label"]["attributes"]) && is_array($data["label"]["attributes"])){
-								$attrs = Toolbox::concat_attrs($data["label"]["attributes"]);
-							}
-							$str .= '<label for="'.$name."_".$option.' '.$attrs.'">&nbsp;';
-						}
-					} else {
-						$str .= '<label for="'.$name."_".$option.'">&nbsp;';
-						$strLabel = $data["label"];
-					}
-				} else {
-					$allLabeled = false;
-				}
-				$str .= '<input name="'.$name.'"';
-				if(isset($options["radio"]) && $options["radio"])
-					$str .= ' type="radio"';
-				else
-					$str .= ' type="checkbox"';
-				$str .= ' value="'.$option.'"';
-				if(!isset($data["attributes"]))
-					$data["attributes"] = array();
-				if(!isset($data["attributes"]["id"]))
-					$data["attributes"]["id"] = $base_id."_".$option;
-				if(!isset($data["attributes"]["autocomplete"]))
-					$data["attributes"]["autocomplete"] = "off";
-				if(isset($data["required"]) && $data["required"])
-					$data["attributes"]["required"] = "required";
+            foreach($options["options"] as $option => $data){
+                $str = "";
+                $strLabel = NULL;
+                if(isset($data["label"]) && $data["label"]){
+                    if($data["label"] != null && is_array($data["label"])){
+                        if(isset($data["label"]["text"])){
+                            $strLabel = $data["label"]["text"];
+                            $attrs = "";
+                            if(isset($data["label"]["attributes"]) && is_array($data["label"]["attributes"])){
+                                $attrs = Toolbox::concat_attrs($data["label"]["attributes"]);
+                            }
+                            $str .= '<label for="'.$name."_".$option.' '.$attrs.'">&nbsp;';
+                        }
+                    } else {
+                        $str .= '<label for="'.$name."_".$option.'">&nbsp;';
+                        $strLabel = $data["label"];
+                    }
+                } else {
+                    $allLabeled = false;
+                }
+                $str .= '<input name="'.$name.'"';
+                if(isset($options["radio"]) && $options["radio"])
+                    $str .= ' type="radio"';
+                else
+                    $str .= ' type="checkbox"';
+                $str .= ' value="'.$option.'"';
+                if(!isset($data["attributes"]))
+                    $data["attributes"] = array();
+                if(!isset($data["attributes"]["id"]))
+                    $data["attributes"]["id"] = $base_id."_".$option;
+                if(!isset($data["attributes"]["autocomplete"]))
+                    $data["attributes"]["autocomplete"] = "off";
+                if(isset($data["required"]) && $data["required"])
+                    $data["attributes"]["required"] = "required";
 
-				$str .= Toolbox::concat_attrs($data["attributes"]);
-				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"], true)) || (!is_array($options["selected"]) && $options["selected"] == $option)))
-					$str .= ' checked="checked"';
-				$str .= ' />';
-				if($strLabel != NULL){
-					$str .= '&nbsp;'.$strLabel.'</label>';
-				}
+                $str .= Toolbox::concat_attrs($data["attributes"]);
+                if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"], true)) || (!is_array($options["selected"]) && $options["selected"] == $option)))
+                    $str .= ' checked="checked"';
+                $str .= ' />';
+                if($strLabel != NULL){
+                    $str .= '&nbsp;'.$strLabel.'</label>';
+                }
 
-				$ret[$option] = $str;
-			}
-			if($allLabeled && isset($options["implode"])){
-				$ret = implode($options["implode"], $ret);
-			} else if(count($ret) == 1){
-				$keys = array_keys($ret);
-				return $ret[$keys[0]];
-			}
-			return $ret;
-		}
+                $ret[$option] = $str;
+            }
+            if($allLabeled && isset($options["implode"])){
+                $ret = implode($options["implode"], $ret);
+            } else if(count($ret) == 1){
+                $keys = array_keys($ret);
+                return $ret[$keys[0]];
+            }
+            return $ret;
+        }
 
-		/**
+        /**
 		 * Generate a color input
 		 * 
 		 * @todo Describe options
@@ -226,11 +226,11 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Input generated
 		 */
-		public static final function generate_input_color($name, $value){
+        public static final function generate_input_color($name, $value){
 
-		}
+        }
 
-		/**
+        /**
 		 * Generate a text input
 		 * 
 		 * @todo Describe options
@@ -242,46 +242,52 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Input generated
 		 */
-		public static final function generate_input_text($name, $options){
-			$str;
-			if(isset($options["textarea"]) && $options["textarea"]){
-				$str = '<textarea';
-			} else {
-				$str = '<input';
-			}
+        public static final function generate_input_text($name, $options){
+            $str;
+            if(isset($options["textarea"]) && $options["textarea"]){
+                $str = '<textarea';
+            } else {
+                $str = '<input';
+            }
 
-			$attrs = array(
-				"name" => $name
-			);
-			if(!isset($options["attributes"]))
-				$options["attributes"] = array();
-			if(!isset($options["attributes"]["id"]))
-				$options["attributes"]["id"] = $name;
-			if(!isset($options["attributes"]["autocomplete"]) && isset($options["textarea"]) && $options["textarea"] == false)
-				$options["attributes"]["autocomplete"] = "off";
-			if(isset($options["required"]) && $options["required"])
-				$options["attributes"]["required"] = "required";
-			$attrs = array_merge($attrs,$options["attributes"]);
+            $attrs = array(
+                "name" => $name
+            );
+            if(!isset($options["attributes"]))
+                $options["attributes"] = array();
+            if(!isset($options["attributes"]["id"]))
+                $options["attributes"]["id"] = $name;
+            if(isset($options["textarea"]) && $options["textarea"] == false){
+                unset($options["attributes"]["autocomplete"]);
+            } else {
+                if(!isset($options["attributes"]["autocomplete"]) || $options["attributes"]["autocomplete"] == false)
+                    $options["attributes"]["autocomplete"] = "off";
+                else
+                    unset($options["attributes"]["autocomplete"]);
+            }
+            if(isset($options["required"]) && $options["required"])
+                $options["attributes"]["required"] = "required";
+            $attrs = array_merge($attrs,$options["attributes"]);
 
 
-			if(isset($options["textarea"]) && $options["textarea"]){
-				$str .= Toolbox::concat_attrs($attrs);
-				$str .= '>';
-				if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
-					$str .= $options["value"];
-				$str .= "</textarea>";
-			} else {
-				if(isset($options["type"]))
-					$attrs["type"] = $options["type"];
-				if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
-					$attrs["value"] = $options["value"];
-				$str .= Toolbox::concat_attrs($attrs);
-				$str .= '/>';
-			}
-			return $str;
-		}
+            if(isset($options["textarea"]) && $options["textarea"]){
+                $str .= Toolbox::concat_attrs($attrs);
+                $str .= '>';
+                if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
+                    $str .= $options["value"];
+                $str .= "</textarea>";
+            } else {
+                if(isset($options["type"]))
+                    $attrs["type"] = $options["type"];
+                if(isset($options["value"]) && $options["value"] !== NULL && trim($options["value"]) != "")
+                    $attrs["value"] = $options["value"];
+                $str .= Toolbox::concat_attrs($attrs);
+                $str .= '/>';
+            }
+            return $str;
+        }
 
-		/**
+        /**
 		 * Replace all characters of set `$from` by those in `$to` set.
 		 * 
 		 * By default, this function behave to return the unaccented equivalent of the input string.
@@ -294,21 +300,21 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Encoded string ready to be put into attribute
 		 */
-		public static final function unaccent( $text, $from = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", $to = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn", $encoding = "UTF-8" ){
-			$l = mb_strlen($text, $encoding);
-			$out = "";
-			for($i = 0; $i < $l; $i++){
-				$c = mb_substr($text, $i, 1, $encoding);
-				$t = mb_strpos($from,$c,0,$encoding);
-				if($t === false)
-					$out .= $c;
-				else
-					$out .= mb_substr($to, $t, 1, $encoding);
-			}
-			return $out;
-		}
+        public static final function unaccent( $text, $from = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", $to = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn", $encoding = "UTF-8" ){
+            $l = mb_strlen($text, $encoding);
+            $out = "";
+            for($i = 0; $i < $l; $i++){
+                $c = mb_substr($text, $i, 1, $encoding);
+                $t = mb_strpos($from,$c,0,$encoding);
+                if($t === false)
+                    $out .= $c;
+                else
+                    $out .= mb_substr($to, $t, 1, $encoding);
+            }
+            return $out;
+        }
 
-		/**
+        /**
 		 * Decode JSON attribute to array.
 		 * 
 		 * Encoding an object this way allow you to encode JSON to put it into HTML attributes. `"` are replaced by `&aquot;`. Note the `a` to avoid conflict with HTML entities
@@ -320,14 +326,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Encoded string ready to be put into attribute
 		 */
-		public static final function decode_json_attr($str, $ampEncoded = false){
-			if($ampEncoded)
-				return json_decode(str_replace("&amp;aquot;", '"', $str), true);
-			else
-				return json_decode(str_replace('\\"', '"', $str), true);
-		}
+        public static final function decode_json_attr($str, $ampEncoded = false){
+            if($ampEncoded)
+                return json_decode(str_replace("&amp;aquot;", '"', $str), true);
+            else
+                return json_decode(str_replace('\\"', '"', $str), true);
+        }
 
-		/**
+        /**
 		 * Encode array to string attribute
 		 * 
 		 * Encoding an array this way allow you to encode JSON to put it into HTML attributes with special html-entity like escaping. `"` are replaced by `&aquot;`. Note the `a` to avoid conflict with HTML entities
@@ -336,12 +342,12 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return string Encoded string ready to be put into attribute
 		 */
-		public static final function encode_json_attr($array){
-			return str_replace('"', "&aquot;", json_encode($array));
-		}
+        public static final function encode_json_attr($array){
+            return str_replace('"', "&aquot;", json_encode($array));
+        }
 
 
-		/**
+        /**
 		 * Reduce a nested array to a single level array
 		 * 
 		 * <p>
@@ -354,21 +360,21 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return mixed[]    Return a single level array
 		 */
-		public static final function array_flatten($array) {
-			$return = array();
-			foreach ($array as $key => $value) {
-				if (is_array($value)){
-					$return = array_merge(Toolbox::array_flatten($value),$return);
-				} else {
-					$return[$key] = $value;
-				}
-			}
+        public static final function array_flatten($array) {
+            $return = array();
+            foreach ($array as $key => $value) {
+                if (is_array($value)){
+                    $return = array_merge(Toolbox::array_flatten($value),$return);
+                } else {
+                    $return[$key] = $value;
+                }
+            }
 
-			return $return;
-		}
+            return $return;
+        }
 
 
-		/**
+        /**
 		 * Conver a checkbox value to a boolean that indicates if it was checked
 		 * 
 		 * @param mixed[] $values    The associative array supposed to contain the key $key
@@ -377,31 +383,31 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 *                           
 		 * @return bool    Returns true if the checkbox was checked
 		 */
-		public static final function checkbox_to_bool($values,$key, $truevalues){
-			if(is_array($truevalues)){
-				$ret = array();
-				if(!isset($values[$key])){
-					foreach($truevalues as $truevalue){
-						$ret[$truevalue] = false;
-					}
-				} else {
-					if(!is_array($values[$key]))
-						$values[$key] = array($values[$key]);
-					foreach($truevalues as $truevalue){
-						$ret[$truevalue] = in_array($truevalue, $values[$key]);
-					}
-				}
-				return $ret;
-			} else {
-				if(!isset($values[$key])){
-					return false;
-				} else {
-					return $values[$key] === $truevalues;
-				}
-			}
-		}
+        public static final function checkbox_to_bool($values,$key, $truevalues){
+            if(is_array($truevalues)){
+                $ret = array();
+                if(!isset($values[$key])){
+                    foreach($truevalues as $truevalue){
+                        $ret[$truevalue] = false;
+                    }
+                } else {
+                    if(!is_array($values[$key]))
+                        $values[$key] = array($values[$key]);
+                    foreach($truevalues as $truevalue){
+                        $ret[$truevalue] = in_array($truevalue, $values[$key]);
+                    }
+                }
+                return $ret;
+            } else {
+                if(!isset($values[$key])){
+                    return false;
+                } else {
+                    return $values[$key] === $truevalues;
+                }
+            }
+        }
 
-		/**
+        /**
 		 * Generates the permalink for given post type depending on $post
 		 * @author Gerkin
 		 * @param  \WP_Post $post				The      light post
@@ -411,29 +417,29 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * @return string   The post permalink
 		 * @since 1.2
 		 */
-		public static function get_permalink_light(\WP_Post $post, $post_t){
-			global $wp_rewrite;
+        public static function get_permalink_light(\WP_Post $post, $post_t){
+            global $wp_rewrite;
 
-			$post_link = $wp_rewrite->get_extra_permastruct($post_t);
+            $post_link = $wp_rewrite->get_extra_permastruct($post_t);
 
-			$post_type = get_post_type_object($post_t);
-			if ( $post_type->hierarchical ) {
-				$slug = get_page_uri( $post->ID );
-			} else {
-				$slug = $post->post_name;
-			}
-			if ( !empty($post_link)) {
-				$post_link = str_replace("%$post_t%", $slug, $post_link);
-				$post_link = home_url( user_trailingslashit($post_link) );
-			} else {
-				if ( $post_type->query_var )
-					$post_link = add_query_arg($post_type->query_var, $slug, '');
-				else
-					$post_link = add_query_arg(array('post_type' => $post_type, 'p' => $post->ID), '');
-				$post_link = home_url($post_link);
-			}
+            $post_type = get_post_type_object($post_t);
+            if ( $post_type->hierarchical ) {
+                $slug = get_page_uri( $post->ID );
+            } else {
+                $slug = $post->post_name;
+            }
+            if ( !empty($post_link)) {
+                $post_link = str_replace("%$post_t%", $slug, $post_link);
+                $post_link = home_url( user_trailingslashit($post_link) );
+            } else {
+                if ( $post_type->query_var )
+                    $post_link = add_query_arg($post_type->query_var, $slug, '');
+                else
+                    $post_link = add_query_arg(array('post_type' => $post_type, 'p' => $post->ID), '');
+                $post_link = home_url($post_link);
+            }
 
-			return $post_link;
-		}
-	}
+            return $post_link;
+        }
+    }
 }
