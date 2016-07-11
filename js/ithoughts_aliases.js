@@ -66,7 +66,7 @@ var Ithoughts = {};
                             }
                         }
                         return newT;
-                    }break;
+                    } break;
 
                     case Array:{
                         newT = [];
@@ -76,7 +76,7 @@ var Ithoughts = {};
                             }
                         }
                         return newT;
-                    }break;
+                    } break;
 
                     default:{
                         return obj;
