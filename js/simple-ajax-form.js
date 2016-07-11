@@ -5,7 +5,10 @@
  *
  * @version 2.0
  */
-(function(){
+(function(ithoughts){
+    'use strict';
+    
+    var $ = ithoughts.$;
 	$.fn.extend({
 		/**
          * Send a form through ajax
@@ -105,10 +108,8 @@
 			});
 		}
 	});
-})();
-
-(function(){
-	$d.ready(function(){
+    
+	ithoughts.$d.ready(function(){
 		$('.simpleajaxform').simpleAjaxForm();
 	});
-})();
+})(Ithoughts);
