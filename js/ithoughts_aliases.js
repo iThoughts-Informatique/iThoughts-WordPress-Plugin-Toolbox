@@ -366,12 +366,7 @@ var Ithoughts = {};
         } }
     }
     s.go = s.triggerEvent = go;
-}(Ithoughts));
-
-
-(function(s){
-    'use strict';
-
+    
     if(jQuery){
         s.$ = jQuery;
         s.$d = s.$(document);
@@ -380,4 +375,4 @@ var Ithoughts = {};
 
     s.isIos = navigator.userAgent.match(/(iPad|iPhone|iPod)/g); // Used to enable some iOS specific piece of code to catch click on body, for example
     s.baseTouch = (s.isIos || navigator.userAgent.match(/(Android|webOS|BlackBerry)/i) ) ? 1 : 0;
-}(Ithoughts))
+}(Ithoughts));
