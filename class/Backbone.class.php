@@ -90,13 +90,19 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
         }
 
         public function backbone_enqueue_scripts_hight_priority(){
-            wp_register_script('ithoughts_aliases', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts_aliases'.$this->get_minify().'.js',									array('jquery'), "1.0.0", false);
+            wp_register_script('ithoughts_aliases', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts_aliases'.$this->get_minify().'.js',									array('jquery'), "2.0.0", false);
 
             wp_register_script(
                 'ithoughts-simple-ajax',
                 $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form'.$this->get_minify().'.js',
                 array('jquery-form',"ithoughts_aliases"),
-                "1.1.0"
+                "2.0.0"
+            );
+            wp_register_script(
+                'ithoughts-serialize-object',
+                $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object'.$this->get_minify().'.js',
+                array("ithoughts_aliases"),
+                "2.0.0"
             );
         }
 
