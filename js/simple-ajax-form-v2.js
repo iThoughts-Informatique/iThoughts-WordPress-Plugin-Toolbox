@@ -1,9 +1,12 @@
 /**
  * @file Simple AJAX Form
- * @description  jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
- * @author tcbarrett
+ * @description jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
  *
- * @version 2.0
+ * @author Gerkin, tcbarrett
+ * @copyright 2016 
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv2
+ * @package iThoughts-toolbox
+ *
  */
 (function(ithoughts){
     'use strict';

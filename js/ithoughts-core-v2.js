@@ -3,10 +3,9 @@
  *
  * @author Alexandre Germain
  * @copyright 2016 iThoughts informatique
- * @license none none
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv2
  * @package iThoughts-toolbox
  *
- * @version 0.2.0
  */
 
 /**

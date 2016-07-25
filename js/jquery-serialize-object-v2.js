@@ -1,3 +1,13 @@
+/**
+ * @file jQuery extension to help serializing forms
+ *
+ * @author Gerkin
+ * @copyright 2016 
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv2
+ * @package iThoughts-toolbox
+ *
+ */
+
 (function (ithoughts) {
 	'use strict';
 
