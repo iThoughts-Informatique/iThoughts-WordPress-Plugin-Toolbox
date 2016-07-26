@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 2.0
+ * @version 3.0
  */
 
-namespace ithoughts\v2_0;
+namespace ithoughts\v3_0;
 
 if ( ! defined( 'ABSPATH' ) ) { 
 	exit; // Exit if accessed directly
@@ -90,18 +90,18 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		}
 
 		public function backbone_enqueue_scripts_hight_priority(){
-			wp_register_script('ithoughts-core-v2', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v2'.$this->get_minify().'.js',									array('jquery'), "2.0.0", false);
+			wp_register_script('ithoughts-core-v3', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v3'.$this->get_minify().'.js',									array('jquery'), "2.0.0", false);
 
 			wp_register_script(
-				'ithoughts-simple-ajax-v2',
-				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v2'.$this->get_minify().'.js',
-				array('jquery-form',"ithoughts-core-v2"),
+				'ithoughts-simple-ajax-v3',
+				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v3'.$this->get_minify().'.js',
+				array('jquery-form',"ithoughts-core-v3"),
 				"2.0.0"
 			);
 			wp_register_script(
-				'ithoughts-serialize-object-v2',
-				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v2'.$this->get_minify().'.js',
-				array("ithoughts-core-v2"),
+				'ithoughts-serialize-object-v3',
+				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v3'.$this->get_minify().'.js',
+				array("ithoughts-core-v3"),
 				"2.0.0"
 			);
 		}
