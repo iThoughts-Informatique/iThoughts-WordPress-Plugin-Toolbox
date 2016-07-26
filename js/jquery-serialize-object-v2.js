@@ -86,4 +86,4 @@
 			return value;
 		}
 	});
-}(Ithoughts));
+}(Ithoughts.v2));
