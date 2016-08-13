@@ -4,7 +4,7 @@
  *
  * @author Gerkin, tcbarrett
  * @copyright 2016 
- * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv3
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts-toolbox
  *
  */

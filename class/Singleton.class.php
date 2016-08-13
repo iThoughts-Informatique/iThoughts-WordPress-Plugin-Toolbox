@@ -3,11 +3,11 @@
  * Singleton class file
  *
  * @copyright 2015-2016 iThoughts Informatique
- * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv2
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *         
- * @version 1.0
+ * @version 3.0
  */
 
 namespace ithoughts\v1_0;

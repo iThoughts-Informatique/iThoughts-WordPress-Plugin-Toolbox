@@ -3,35 +3,19 @@
  *
  * @author Alexandre Germain
  * @copyright 2016 iThoughts informatique
- * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html GPLv2
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts-toolbox
  *
  */
 
 /**
- * @class EventTarget
- * @description Extended `EvenTarget` class
- * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
+ * @namespace iThoughts
+ * @description iThoughts Helpers versions
  */
 /**
- * @class Element
- * @description Extended `Element` class
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Element
- */
-/**
- * @class Document
- * @description Extended `Document` class
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Document
- */
-/**
- * @class Object
- * @description Extended `Object` class
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
- */
-/**
- * @class NodeList
- * @description Extended `NodeList` class
- * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList
+ * @namespace iThoughts.v3
+ * @@memberof iThoughts
+ * @description iThoughts v3 Helpers
  */
 
 if(typeof Ithoughts == "undefined")
@@ -92,10 +76,31 @@ if(typeof Ithoughts == "undefined")
 				return obj;
 			}
 		}
+	/**
+     * @function isNA
+     * @description Check if value is null or undefined
+     * @author Gerkin
+     * @memberof iThoughts.v3
+     * @instance
+     * @param {*} value The value tu check
+     * @returns {boolean} True if null or undefined, false otherwise
+     */
 	v3.isNA = isNA;
 
 
 
+	/**
+     * @function waitFor
+     * @description Look into `scope` for property `prop` every `every`ms, then execute `callback` when the property exists
+     * @author Gerkin
+     * @memberof iThoughts.v3
+     * @instance
+     * @param {*} scope The parent scope to check for property in
+     * @param {string} prop Name of the property to wait for
+     * @param {integer} [every] Time in ms between each checks
+     * @param {function} callback Function to execute once property exists
+     * @returns {undefined} Async
+     */
 	v3.waitFor = function(scope, prop, every, callback){
 		if(typeof every == "function"){
 			callback = every;
@@ -119,6 +124,15 @@ if(typeof Ithoughts == "undefined")
 		var timer = null;
 	}
 
+	/**
+     * @function mergeRecursive
+     * @description Combine each object from left to right, keeping the left-most value
+     * @author Gerkin
+     * @memberof iThoughts.v3
+     * @instance
+     * @param {...(object|array)} objects Any number of objects/arrays to merge
+     * @returns {boolean} True if null or undefined, false otherwise
+     */
 	v3.mergeRecursive = function(/* Any number of Object/Array */) {
 		var newObj = null,
 			j,
@@ -193,7 +207,7 @@ if(typeof Ithoughts == "undefined")
      * @function gei
      * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById Document.getElementById}
      * @author Gerkin
-     * @memberof Document
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} s The id of the searched element
      * @returns {Element|null} The Element, or null if not found
@@ -204,7 +218,7 @@ if(typeof Ithoughts == "undefined")
      * @function qs
      * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector Element.querySelector}
      * @author Gerkin
-     * @memberof Element
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} s The selector of the searched element
      * @returns {Element|null} The Element, or null if not found
@@ -215,7 +229,7 @@ if(typeof Ithoughts == "undefined")
      * @function qsa
      * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll Element.querySelectorAll}
      * @author Gerkin
-     * @memberof Element
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} s The selector of the searched element
      * @returns {NodeList} The NodeList containing every elements matching the selector
@@ -226,7 +240,7 @@ if(typeof Ithoughts == "undefined")
      * @function geiN
      * @description Like {@link Document.gei}, but returns an empty object instead of null to allow 1lvl attribute definition without tests
      * @author Gerkin
-     * @memberof Document
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} s The selector of the searched element
      * @returns {Element|{}} The Element, or an empty object if not found
@@ -236,7 +250,7 @@ if(typeof Ithoughts == "undefined")
      * @function qsN
      * @description Like {@link Element.qsN}, but returns an empty object instead of null to allow 1lvl attribute definition without tests
      * @author Gerkin
-     * @memberof Element
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} s The selector of the searched element
      * @returns {Element|{}} The Element, or an empty object if not found
@@ -246,7 +260,7 @@ if(typeof Ithoughts == "undefined")
      * @function hop
      * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty Object.hasOwnProperty}
      * @author Gerkin
-     * @memberof Object
+     * @memberof iThoughts.v3
      * @instance
      * @param {string} v The name of the attribute
      * @returns {Boolean} Returns the same than {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty Object.hasOwnProperty}
@@ -257,7 +271,7 @@ if(typeof Ithoughts == "undefined")
      * @function waitUntil
      * @description Minification shorthand for {@link HTMLDocument}.getElementById
      * @author Gerkin
-     * @memberof Function
+     * @memberof iThoughts.v3
      * @instance
      * @param {Function} until Function executed on each loop.
      * @param {Number} every Time to wait between each test.
@@ -278,7 +292,8 @@ if(typeof Ithoughts == "undefined")
 	/**
      * @function on
      * @description Bind events with specified functions on specified elements
-     * @global
+	 * @memberof iThoughts.v3
+	 * @alias iThoughts.v3.attachEvent
      * @param {EventTarget|EventTarget[]}					a	EventTarget to bind
      * @param {string|string[]}					b	Events to bind
      * @param {EventFunction|EventFunction[]}	c	Functions to attach
@@ -289,11 +304,10 @@ if(typeof Ithoughts == "undefined")
          * @function _on
          * @description Same as {@link EventTarget#on}
          * @alias EventTarget.on
-         * @memberof EventTarget
          * @param {string}			e Event to bind
          * @param {EventFunction}	f Function to attach
-         * @instance
-         * @see EventTarget#on
+         * @private
+         * @see iThoughts.v3#on
          * @since 0.1.0
          */
 		function _on(s, e, f) {
@@ -312,7 +326,8 @@ if(typeof Ithoughts == "undefined")
 	/**
      * @function off
      * @description Unbind events with specified functions on specified elements
-     * @global
+	 * @memberof iThoughts.v3
+	 * @alias iThoughts.v3.detachEvent
      * @param {EventTarget|EventTarget[]}					a	EventTarget to unbind
      * @param {string|string[]}					b	Events to unbind
      * @param {EventFunction|EventFunction[]}	c	Functions to detach
@@ -322,11 +337,10 @@ if(typeof Ithoughts == "undefined")
 		/**
          * @function _off
          * @description Same as {@link EventTarget#off}
-         * @memberof EventTarget
          * @param {string}			e Event to unbind
          * @param {EventFunction}	f Function to detach
-         * @instance
-         * @see EventTarget#off
+         * @private
+         * @see iThoughts.v3#off
          * @since 0.1.0
          */
 		function _off(s, e, f) {
@@ -342,15 +356,23 @@ if(typeof Ithoughts == "undefined")
 	}
 	v3.off = v3.detachEvent = off;
 
+	/**
+     * @function go
+     * @description Unbind events with specified functions on specified elements
+	 * @memberof iThoughts.v3
+	 * @alias iThoughts.v3.triggerEvent
+     * @param {EventTarget|EventTarget[]}					a	EventTarget to trigger event on
+     * @param {string|string[]}					b	Name of the events
+     * @since 0.1.0
+     */
 	function go(a, b) {
 		/**
          * @function _go
          * @description Same as {@link EventTarget#go}
-         * @memberof EventTarget
          * @param {string}			b Event name
          * @param e Minification helper. Do not use
-         * @instance
-         * @see EventTarget#go
+         * @private
+         * @see iThoughts.v3#go
          * @since 0.1.0
          */
 		function _go(s, b, e) {
