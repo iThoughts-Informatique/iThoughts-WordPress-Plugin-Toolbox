@@ -115,4 +115,4 @@
 	ithoughts.$d.ready(function(){
 		$('.simpleajaxform').simpleAjaxForm();
 	});
-})(Ithoughts.v3);
+})(Ithoughts.v4);
