@@ -6,14 +6,14 @@
  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
- *         
+ *
  * @version 3.0
  */
 
 namespace ithoughts\v1_0;
 
-if ( ! defined( 'ABSPATH' ) ) { 
-    exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Singleton")){
@@ -29,7 +29,7 @@ if(!class_exists(__NAMESPACE__."\\Singleton")){
 		/**
 		 * Returns the instance
 		 * @author Gerkin
-		 *           
+		 *
 		 * @return mixed The class instance
 		 */
 		public static final function get_instance(){

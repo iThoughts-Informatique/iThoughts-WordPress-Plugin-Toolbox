@@ -6,21 +6,21 @@
  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
- *         
+ *
  * @version 3.0
  */
 
 namespace ithoughts\v1_0;
 
-if ( ! defined( 'ABSPATH' ) ) { 
-    exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Module")){
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
 	 */
-	abstract class Module extends Singleton{		
+	abstract class Module extends Singleton{
 		/**
 		 * @var	mixed	$options			Plugin options
 		 */
@@ -49,7 +49,7 @@ if(!class_exists(__NAMESPACE__."\\Module")){
 		/**
 		 * Returns the plugin options
 		 * @param bool $defaults = false Return only default options of the plugin
-		 *                                                                  
+		 *
 		 * @return array Options
 		 */
 		abstract static protected function get_options($defaults = false);

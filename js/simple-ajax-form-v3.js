@@ -34,7 +34,8 @@
 				$form.find("button[name=\"actionB\"]").click(function(){
 					$form.find("[name=\"action\"]").val(this.getAttribute("value"));
 				});
-				var post_text = (this.getAttribute("post_text") ? this.getAttribute("post_text") : 'Updating, please wait...');
+				var post_text = (this.getAttribute("post_text") ? this.getAttribute("post_text") : 'Updating, please wait...'),
+                    loader;
 
 				$form.ajaxForm({
 					beforeSubmit: function(formData, jqForm, options) {
@@ -42,12 +43,15 @@
 						if( formopts.target && $('#'+formopts.target).length ){
 							$('#'+formopts.target).html('<p>' + post_text + '</p>').removeClass().addClass('clear updating').fadeTo(100,1);
 						}
+                        loader = ithoughts.makeLoader();
 						return true;
 					},
 					error: function(){
+                        loader.remove();
 						$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Form submission failed.</p>');
 					},
 					success: function(responseText, statusText, xhr, jQForm){
+                        loader.remove();
 						if( typeof(jQForm) === 'undefined' )
 							jQForm = xhr;
 

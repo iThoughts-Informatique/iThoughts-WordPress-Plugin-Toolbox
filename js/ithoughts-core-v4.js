@@ -396,9 +396,9 @@ if(typeof Ithoughts == "undefined")
     v4.go = v4.triggerEvent = go;
 
     if(jQuery){
-        v4.$ = jQuery;
-        v4.$d = v4.$(document);
-        v4.$w = v4.$(window);
+        var $ = v4.$ = jQuery;
+        v4.$d = $(document);
+        v4.$w = $(window);
     }
 
     v4.isIos = navigator.userAgent.match(/(iPad|iPhone|iPod)/g); // Used to enable some iOS specific piece of code to catch click on body, for example
@@ -406,8 +406,9 @@ if(typeof Ithoughts == "undefined")
 
 
     v4.initLoggers = (function(){
-        function generateLogArray(prefix, args){
+        function generateLogArray(prefix, mode, args){
             args = Array.prototype.slice.call(args, 1);
+            args.unshift(mode + "");
             args.unshift(prefix + " => ");
             return args;
         }
@@ -422,10 +423,18 @@ if(typeof Ithoughts == "undefined")
                 mode = modes[i];
                 if(!plugin_core.hasOwnProperty(mode)){
                     plugin_core[mode] = verbosity > i ? (function(modeIn){
-                        console[modeIn].apply(null, generateLogArray(text_prefix, arguments));
+                        console[modeIn].apply(null, generateLogArray(text_prefix, modeIn.toUpperCase(), arguments));
                     }).bind(null, mode) : function(){};
                 }
             }
         };
     }());
+    v4.makeLoader = function(){
+        $("#publish,#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, #adminmenu li.current a.menu-top, .folded #adminmenu li.wp-has-current-submenu, .folded #adminmenu li.current.menu-top, #adminmenu .wp-menu-arrow, #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu .wp-menu-arrow div")
+        var loader = $($.parseHTML('<div class="ithoughts_tt_gl-loader" data-loader-status="shown"><div class="centerer"><div class="loader"></div></div></div>'));
+        loader.find(".loader,.loader:before,.loader:after").css({borderTopColor: $("#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, #adminmenu li.current a.menu-top, .folded #adminmenu li.wp-has-current-submenu, .folded #adminmenu li.current.menu-top, #adminmenu .wp-menu-arrow, #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu .wp-menu-arrow div,#publish").css("background-color")})
+        loader.find(".centerer").css({backgroundColor: $("#wpadminbar").css("background-color")})
+        $("body").append(loader);
+        return loader;
+    }
 }(Ithoughts));
