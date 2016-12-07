@@ -3,15 +3,15 @@
  * @description jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
  *
  * @author Gerkin, tcbarrett
- * @copyright 2016 
+ * @copyright 2016
  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @package iThoughts-toolbox
  *
  */
 (function(ithoughts){
-    'use strict';
-    
-    var $ = ithoughts.$;
+	'use strict';
+
+	var $ = ithoughts.$;
 	$.fn.extend({
 		/**
          * Send a form through ajax
@@ -35,7 +35,7 @@
 					$form.find("[name=\"action\"]").val(this.getAttribute("value"));
 				});
 				var post_text = (this.getAttribute("post_text") ? this.getAttribute("post_text") : 'Updating, please wait...'),
-                    loader;
+					loader;
 
 				$form.ajaxForm({
 					beforeSubmit: function(formData, jqForm, options) {
@@ -43,15 +43,15 @@
 						if( formopts.target && $('#'+formopts.target).length ){
 							$('#'+formopts.target).html('<p>' + post_text + '</p>').removeClass().addClass('clear updating').fadeTo(100,1);
 						}
-                        loader = ithoughts.makeLoader();
+						loader = ithoughts.makeLoader();
 						return true;
 					},
 					error: function(){
-                        loader.remove();
+						loader.remove();
 						$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Form submission failed.</p>');
 					},
 					success: function(responseText, statusText, xhr, jQForm){
-                        loader.remove();
+						loader.remove();
 						if( typeof(jQForm) === 'undefined' )
 							jQForm = xhr;
 
@@ -110,12 +110,12 @@
 						} catch(e){
 							$('#'+formopts.target).removeClass().addClass('clear notice notice-error').html("<p>Invalid server response</p>");
 						}
-					}	
+					}
 				});
 			});
 		}
 	});
-    
+
 	ithoughts.$d.ready(function(){
 		$('.simpleajaxform').simpleAjaxForm();
 	});
