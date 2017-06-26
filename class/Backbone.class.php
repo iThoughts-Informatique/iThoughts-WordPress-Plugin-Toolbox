@@ -70,14 +70,12 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			}
 			$paths = $this::preparePaths($this->base_path);
 			$this->base_path = $paths[0];
-			//var_dump($paths);
 			if($this->base_class_path == NULL)
 				$this->base_class_path = $this->base_path."/class";
 			if($this->base_lang_path == NULL)
 				$this->base_lang_path = $this->base_path."/lang";
 			if($this->base_url == NULL)
 				$this->base_url = $paths[1];
-			//var_dump($this->base_url);
 			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))
 				$this->minify = "";
 			else
