@@ -447,5 +447,18 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 			return $post_link;
 		}
+
+		public static function prettydump(){
+			echo '<pre><xmp>';
+			$args = func_get_args();
+			foreach ($args as $arg) {
+				var_dump($arg);
+			}
+			echo '</xmp></pre>';
+		}
+
+		public static function randomString($len = 5){
+			return substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", $len)), 0, $len);
+		}
 	}
 }
