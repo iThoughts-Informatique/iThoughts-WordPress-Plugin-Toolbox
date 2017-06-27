@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *
- * @version 4.0
+ * @version 5.0
  */
 
-namespace ithoughts\v4_0;
+namespace ithoughts\v5_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly

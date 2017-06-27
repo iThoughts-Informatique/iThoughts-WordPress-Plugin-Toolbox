@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *
- * @version 4.0
+ * @version 5.0
  */
 
-namespace ithoughts\v4_0;
+namespace ithoughts\v5_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -305,6 +305,12 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			$resource = $this->get_resource($resourceName);
 			if(isset($resource)){
 				$resource->enqueue();
+			}
+		}
+
+		public function enqueue_resources($resourceNames){
+			foreach($resourceNames as $resourceName){
+				$this->enqueue_resource($resourceName);
 			}
 		}
 
