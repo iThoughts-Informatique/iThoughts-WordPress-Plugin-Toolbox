@@ -158,6 +158,13 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		abstract public function register();
 
 		/**
+		 * Should call wp_enqueue_script or wp_enqueue_style on this resource.
+		 *
+		 * @author Gerkin
+		 */
+		abstract public function enqueue();
+
+		/**
 		 * Get the minified file if required & if the file exists
 		 * @param  string $ext Extension of the resource
 		 * @return string Path of the target file
@@ -231,6 +238,10 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				);
 			}
 		}
+
+		public function enqueue(){
+			wp_enqueue_script($this->identifier);
+		}
 	}
 
 	class Style extends Resource {
@@ -254,6 +265,10 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);
+		}
+
+		public function enqueue(){
+			wp_enqueue_style($this->identifier);
 		}
 	}
 }

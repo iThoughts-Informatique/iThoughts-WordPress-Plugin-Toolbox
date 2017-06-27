@@ -101,17 +101,24 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		}
 
 		public function backbone_enqueue_scripts_hight_priority(){
-			wp_register_script('ithoughts-core-v4', $this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v4'.$this->get_minify().'.js', array('jquery'), "4.0.0", false);
-
-			wp_register_script(
-				'ithoughts-simple-ajax-v3',
-				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v3'.$this->get_minify().'.js', array('jquery-form',"ithoughts-core-v4"),
-				"3.0.0"
+			$this->declare_resource(
+				'ithoughts-core-v4',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v4.js',
+				array('jquery')
 			);
-			wp_register_script(
+
+			$this->declare_resource(
+				'ithoughts-simple-ajax-v3',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v3.js',
+				array(
+					'jquery-form',
+					'ithoughts-core-v4'
+				)
+			);
+			$this->declare_resource(
 				'ithoughts-serialize-object-v3',
-				$this->get_base_url() . '/submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v3'.$this->get_minify().'.js', array("ithoughts-core-v4"),
-				"3.0.0"
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v3.js',
+				array('ithoughts-core-v4')
 			);
 		}
 
@@ -285,6 +292,20 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			array_unshift($args, $this);
 			$this->resources[$resourceName] = call_user_func_array(array(__NAMESPACE__.'\\Resource', 'generate'), $args);
 			$this->resources[$resourceName]->register();
+		}
+
+		public function get_resource($resourceName){
+			if(isset($this->resources[$resourceName])){
+				return $this->resources[$resourceName];
+			}
+			return null;
+		}
+
+		public function enqueue_resource($resourceName){
+			$resource = $this->get_resource($resourceName);
+			if(isset($resource)){
+				$resource->enqueue();
+			}
 		}
 
 		/**
