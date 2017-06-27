@@ -193,7 +193,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 						$filename
 					)
 				)){
-				$this->backbone->log(LogLevel::Info, "Minified version \"{$this->filename}\" not found, falling back to \"$filename\".");
+					$this->backbone->log(LogLevel::Info, "Minified version \"{$this->filename}\" not found, falling back to \"$filename\".");
 					$filename = $this->filename;
 				}
 			}
@@ -230,12 +230,14 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);
-			if($this->localizeId != NULL){
-				wp_localize_script(
-					$this->identifier,
-					$this->localizeId,
-					$this->localizeData
-				);
+			$this->set_localize_data($this->localizeId, $this->localizeData);
+		}
+
+		public function set_localize_data($label, $data){
+			if(isset($label)){
+				$this->localizeId = $label;
+				$this->localizeData = $data;
+				wp_localize_script($this->identifier, $this->localizeId, $this->localizeData);
 			}
 		}
 

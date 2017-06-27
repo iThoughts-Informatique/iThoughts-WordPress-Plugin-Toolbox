@@ -160,21 +160,26 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 
 			// Get the log path & args
 			$filename = "{$this->base_path}/{$this->optionsName}.log";
+			$file = fopen($filename, 'a+');
+			if($file === false){
+				return;
+			}
 			$args = func_get_args();
 			array_shift($args);
 
 			// Do the log
 			$date = gmdate('Y-m-d H:i:s');
-			error_log("$date [$mode_name] => ", 3, $filename);
+			fwrite($file, "$date [$mode_name] => ");
 			foreach($args as $arg){
 				$str = $arg;
 				$type = gettype($arg);
 				if(in_array($type, array('object', 'array', 'resource', 'unknown type'))){
 					$str = print_r($arg, true);
 				}
-				error_log($str, 3, $filename);
+				fwrite($file, $str.' ');
 			}
-			error_log("\n", 3, $filename);
+			fwrite($file, "\n");
+			fclose($file);
 		}
 
 
