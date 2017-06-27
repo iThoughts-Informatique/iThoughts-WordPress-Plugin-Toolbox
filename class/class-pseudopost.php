@@ -11,7 +11,7 @@
  */
 namespace ithoughts\v1_0;
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly
+	exit; // Exit if accessed directly
 }
 if(!interface_exists(__NAMESPACE__."\\PseudoPost")){
 	/**

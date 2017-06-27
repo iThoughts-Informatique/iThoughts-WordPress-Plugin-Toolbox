@@ -17,6 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if(!class_exists(__NAMESPACE__."\\Backbone")){
+	class LogLevel
+	{
+		const Silent = 0;
+		const Error = 1;
+		const Warn = 2;
+		const Info = 3;
+		const Silly = 4;
+		// etc.
+	}
+
 	/**
 	 * Backbone used in all plugins. Should be inherited by Backbone's plugin
 	 */
@@ -61,6 +71,9 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
 		protected $scripts = array();
+
+		protected $resources = array();
+
 		/**
 		 * Construct the generic backbone. Registers global scripts It MUST be called by child backbones.
 		 */
@@ -103,6 +116,59 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		}
 
 
+		public function log($mode){
+			// Check if the log request is valid
+			$verbosity = $this->get_option('verbosity');
+			if($verbosity < $mode || $verbosity == 0){
+				return;
+			}
+
+			// Get level label
+			switch($mode){
+				case LogLevel::Silent: {
+					$mode_name = 'Silent';
+				} break;
+
+				case LogLevel::Error: {
+					$mode_name = 'Error';
+				} break;
+
+				case LogLevel::Warn: {
+					$mode_name = 'Warn ';
+				} break;
+
+				case LogLevel::Info: {
+					$mode_name = 'Info ';
+				} break;
+
+				case LogLevel::Silly: {
+					$mode_name = 'Silly';
+				} break;
+
+				default: {
+					$this->log(LogLevel::Error, "Trying to log with unexistent mode \"$mode\": ", debug_backtrace());
+					return;
+				}
+			}
+
+			// Get the log path & args
+			$filename = "{$this->base_path}/{$this->optionsName}.log";
+			$args = func_get_args();
+			array_shift($args);
+
+			// Do the log
+			$date = gmdate('Y-m-d H:i:s');
+			error_log("$date [$mode_name] => ", 3, $filename);
+			foreach($args as $arg){
+				$str = $arg;
+				$type = gettype($arg);
+				if(in_array($type, array('object', 'array', 'resource', 'unknown type'))){
+					$str = print_r($arg, true);
+				}
+				error_log($str, 3, $filename);
+			}
+			error_log("\n", 3, $filename);
+		}
 
 
 		/**
@@ -139,8 +205,8 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		}
 
 		/**
-         * Try to define options by merging with default if not set
-         */
+		 * Try to define options by merging with default if not set
+		 */
 		private function define_options(){
 			if($this->options == NULL)
 				$this->options = array_merge($this->defaultOptions, get_option( $this->optionsName, $this->get_options(true) ) );
@@ -212,6 +278,13 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 */
 		public function get_base_url(){
 			return $this->base_url;
+		}
+
+		public function declare_resource($resourceName){
+			$args = func_get_args();
+			array_unshift($args, $this);
+			$this->resources[$resourceName] = call_user_func_array(array(__NAMESPACE__.'\\Resource', 'generate'), $args);
+			$this->resources[$resourceName]->register();
 		}
 
 		/**
