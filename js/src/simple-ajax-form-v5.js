@@ -38,8 +38,8 @@
 				if ( formopts.target && $( `#${ formopts.target }` ).length ) {
 					$( `#${ formopts.target }` ).html( '' ).hide();
 				}
-				$form.find( 'button[name="actionB"]' ).click(() => {
-					$form.find( '[name="action"]' ).val( this.getAttribute( 'value' ));
+				$form.find( 'button[name="actionB"]' ).click( function onClick() {
+					$form.find( '[name="action"]' ).val( this.value );
 				});
 				var postText = ( this.getAttribute( 'post_text' ) ? this.getAttribute( 'post_text' ) : 'Updating, please wait...' ),
 					loader;

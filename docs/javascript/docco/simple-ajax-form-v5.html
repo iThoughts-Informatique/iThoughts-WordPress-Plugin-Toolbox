@@ -98,8 +98,8 @@
 				<span class="hljs-keyword">if</span> ( formopts.target &amp;&amp; $( <span class="hljs-string">`#<span class="hljs-subst">${ formopts.target }</span>`</span> ).length ) {
 					$( <span class="hljs-string">`#<span class="hljs-subst">${ formopts.target }</span>`</span> ).html( <span class="hljs-string">''</span> ).hide();
 				}
-				$form.find( <span class="hljs-string">'button[name="actionB"]'</span> ).click(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-					$form.find( <span class="hljs-string">'[name="action"]'</span> ).val( <span class="hljs-keyword">this</span>.getAttribute( <span class="hljs-string">'value'</span> ));
+				$form.find( <span class="hljs-string">'button[name="actionB"]'</span> ).click( <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onClick</span>(<span class="hljs-params"></span>) </span>{
+					$form.find( <span class="hljs-string">'[name="action"]'</span> ).val( <span class="hljs-keyword">this</span>.value );
 				});
 				<span class="hljs-keyword">var</span> postText = ( <span class="hljs-keyword">this</span>.getAttribute( <span class="hljs-string">'post_text'</span> ) ? <span class="hljs-keyword">this</span>.getAttribute( <span class="hljs-string">'post_text'</span> ) : <span class="hljs-string">'Updating, please wait...'</span> ),
 					loader;
