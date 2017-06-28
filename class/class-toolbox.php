@@ -451,5 +451,53 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		public static function randomString($len = 5){
 			return substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", $len)), 0, $len);
 		}
+
+
+		/**
+		 * Check if $string ends with $test
+		 * @param  string  $string Checked string
+		 * @param  string  $test   String to search
+		 * @return boolean True if $test is present at the end of $string
+		 * @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string
+		 */
+		public static function endswith($string, $test) {
+			$strlen = strlen($string);
+			$testlen = strlen($test);
+			if ($testlen > $strlen) return false;
+			return substr_compare($string, $test, $strlen - $testlen, $testlen) === 0;
+		}
+
+		/**
+		 * Join paths segments
+		 * @param string $path,... Segments of path to join
+		 * @return string Resulting paths
+		 * @see https://stackoverflow.com/questions/1091107/how-to-join-filesystem-path-strings-in-php#answer-15575293
+		 */
+		public static function join_paths($base) {
+			$paths = array();
+
+			$args = func_get_args();
+			array_shift($args);
+			foreach ($args as $arg) {
+				if ($arg !== '') { $paths[] = $arg; }
+			}
+
+			$tail = preg_replace('#/+#','/',join('/', $paths));
+			$result;
+			if(Toolbox::endswith($base, '/')){
+				if($tail[0] == '/'){
+					$result = $base.substr($tail, 1);
+				} else {
+					$result = $base.$tail;
+				}
+			} else {
+				if($tail[0] == '/'){
+					$result = $base.$tail;
+				} else {
+					$result = $base.'/'.$tail;
+				}
+			}
+			return $result;
+		}
 	}
 }

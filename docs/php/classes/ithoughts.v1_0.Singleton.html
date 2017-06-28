@@ -114,7 +114,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">87</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">78</span>
                                 </a>
                             </li>
                             <li>
@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1185328664"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1789813872"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1185328664" class="accordion-body collapse in">
+            <div id="namespace-1789813872" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2077995112"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-642380762"></a>
                                 <a href="../namespaces/ithoughts.html" style="margin-left: 30px; padding-left: 0">ithoughts</a>
             </div>
-            <div id="namespace-2077995112" class="accordion-body collapse ">
+            <div id="namespace-642380762" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-637591833"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1234868086"></a>
                                 <a href="../namespaces/ithoughts.v1_0.html" style="margin-left: 30px; padding-left: 0">v1_0</a>
             </div>
-            <div id="namespace-637591833" class="accordion-body collapse ">
+            <div id="namespace-1234868086" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -182,10 +182,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-891105440"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1659875010"></a>
                                 <a href="../namespaces/ithoughts.v5_0.html" style="margin-left: 30px; padding-left: 0">v5_0</a>
             </div>
-            <div id="namespace-891105440" class="accordion-body collapse ">
+            <div id="namespace-1659875010" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -261,7 +261,7 @@
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <em>No protected methods found</em>
+                                                                    <a href="../classes/ithoughts.v1_0.Singleton.html#method___construct" class="">__construct()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No protected properties found</em>
@@ -272,7 +272,7 @@
                         </section>
                         <section class="row-fluid private">
                             <section class="span4">
-                                                                    <a href="../classes/ithoughts.v1_0.Singleton.html#method___construct" class="">__construct()</a><br />
+                                                                    <em>No private methods found</em>
                                                             </section>
                             <section class="span4">
                                                                     <a href="../classes/ithoughts.v1_0.Singleton.html#property_singletons" class="">$singletons</a><br />
@@ -323,21 +323,38 @@
             <a id="property_singletons" name="property_singletons" class="anchor"></a>
             <article class="property">
                 <h3 class="private ">$singletons</h3>
-                <pre class="signature">$singletons : </pre>
+                <pre class="signature">$singletons : \array&lt;string,Singleton&gt;</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                \array<string,Singleton>
+                &mdash; Storage for singletons. This is where `get_instance` search for called class.                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                         <dl>
-                                                            </dl>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            category
+                        </th>
+                        <td>
+                                                            <p>singleton</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -355,14 +372,14 @@
             <article class="method">
                 <h3 class="public ">get_instance()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_instance() : mixed</pre>
-                <p><em>Returns the instance</em></p>
-                
+                <pre class="signature" style="margin-right: 54px;">get_instance() : self</pre>
+                <p><em>Get the singleton instance.</em></p>
+                <p>If the singleton of that class does not exists, it is created. Else, it is simply returned</p>
 
                 
                 
                                     <h4>Returns</h4>
-                    mixed
+                    self
                                             &mdash; <p>The class instance</p>
                                     				
                             </article>
@@ -383,15 +400,23 @@
                                                                                             <p>Gerkin</p>
                                                     </td>
                     </tr>
+                                    <tr>
+                        <th>
+                            category
+                        </th>
+                        <td>
+                                                                                            <p>singleton</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
 
-                                                                    <div class="row-fluid">
+                                                    <div class="row-fluid">
         <div class="span8 content class">
             <a id="method___construct" name="method___construct" class="anchor"></a>
             <article class="method">
-                <h3 class="private ">__construct()</h3>
+                <h3 class="protected ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">__construct() </pre>
                 <p><em></em></p>
@@ -404,7 +429,8 @@
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
+                                        <span class="label label-info">abstract</span>
+                                                <dl>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -413,7 +439,7 @@
         </aside>
     </div>
 
-                                    </div>
+                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
@@ -463,7 +489,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 28th, 2017 at 18:39.
+                    on June 28th, 2017 at 19:26.
                 </section>
             </section>
         </section>

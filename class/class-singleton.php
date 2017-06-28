@@ -22,15 +22,24 @@ if(!class_exists(__NAMESPACE__."\\Singleton")){
 	 */
 	abstract class Singleton{
 
+		/**
+		 * @var \array<string,Singleton> $singletons Storage for singletons. This is where `get_instance` search for called class.
+		 * @see Singleton::get_instance
+		 *
+		 * @author Gerkin
+		 * @category singleton
+		 */
 		private static $singletons = array();
 
-		private function __construct(){}
+		protected abstract function __construct();
 
 		/**
-		 * Returns the instance
-		 * @author Gerkin
+		 * Get the singleton instance.
+		 * If the singleton of that class does not exists, it is created. Else, it is simply returned
+		 * @return self The class instance
 		 *
-		 * @return mixed The class instance
+		 * @author Gerkin
+		 * @category singleton
 		 */
 		public static final function get_instance(){
 			$class = get_called_class();

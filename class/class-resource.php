@@ -35,53 +35,6 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 	}
 
 	/**
-	 * Check if $string ends with $test
-	 * @param  string  $string Checked string
-	 * @param  string  $test   String to search
-	 * @return boolean True if $test is present at the end of $string
-	 * @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string
-	 */
-	function endswith($string, $test) {
-		$strlen = strlen($string);
-		$testlen = strlen($test);
-		if ($testlen > $strlen) return false;
-		return substr_compare($string, $test, $strlen - $testlen, $testlen) === 0;
-	}
-
-	/**
-	 * Join paths segments
-	 * @param string $path,... Segments of path to join
-	 * @return string Resulting paths
-	 * @see https://stackoverflow.com/questions/1091107/how-to-join-filesystem-path-strings-in-php#answer-15575293
-	 */
-	function join_paths($base) {
-		$paths = array();
-
-		$args = func_get_args();
-		array_shift($args);
-		foreach ($args as $arg) {
-			if ($arg !== '') { $paths[] = $arg; }
-		}
-
-		$tail = preg_replace('#/+#','/',join('/', $paths));
-		$result;
-		if(endswith($base, '/')){
-			if($tail[0] == '/'){
-				$result = $base.substr($tail, 1);
-			} else {
-				$result = $base.$tail;
-			}
-		} else {
-			if($tail[0] == '/'){
-				$result = $base.$tail;
-			} else {
-				$result = $base.'/'.$tail;
-			}
-		}
-		return $result;
-	}
-
-	/**
 	 * Abstract class to generate {@link Script} or {@link Style} class instances
 	 *
 	 * @author Gerkin
@@ -137,9 +90,9 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public static final function generate($backbone, $identifier, $filename, $dependencies = NULL, $admin = false, $localizeId = NULL, $localizeData = NULL){
 			// First, get the class to handle this file
 			$className;
-			if(endswith($filename, 'js')){
+			if(Toolbox::endswith($filename, 'js')){
 				$className = 'Script';
-			} else if(endswith($filename, 'css')){
+			} else if(Toolbox::endswith($filename, 'css')){
 				$className = 'Style';
 			} else {
 				$backbone->log(LogLevel::Warn, "Unable to get the type of \"$filename\"");
@@ -173,9 +126,9 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 */
 		protected function get_maybe_minified($ext){
 			$filename = $this->filename;
-			$min_suffix = $this->backbone->get_minify();
+			$min_suffix = '.min';
 			if ($this->backbone->get_minify()){
-				if(endswith(
+				if(Toolbox::endswith(
 					$this->filename,
 					$min_suffix.$ext
 				) == false){
@@ -188,7 +141,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			}
 			if($filename != $this->filename){
 				if(!file_exists(
-					join_paths(
+					Toolbox::join_paths(
 						$this->backbone->get_base_path(),
 						$filename
 					)
@@ -197,7 +150,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 					$filename = $this->filename;
 				}
 			}
-			return join_paths(
+			return Toolbox::join_paths(
 				$this->backbone->get_base_url(),
 				$filename
 			);
