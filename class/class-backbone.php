@@ -102,23 +102,23 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 
 		public function backbone_enqueue_scripts_hight_priority(){
 			$this->declare_resource(
-				'ithoughts-core-v4',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v4.js',
+				'ithoughts-core-v5',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v5.js',
 				array('jquery')
 			);
 
 			$this->declare_resource(
-				'ithoughts-simple-ajax-v3',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v3.js',
+				'ithoughts-simple-ajax-v5',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v5.js',
 				array(
 					'jquery-form',
-					'ithoughts-core-v4'
+					'ithoughts-core-v5'
 				)
 			);
 			$this->declare_resource(
-				'ithoughts-serialize-object-v3',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v3.js',
-				array('ithoughts-core-v4')
+				'ithoughts-serialize-object-v5',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v5.js',
+				array('ithoughts-core-v5')
 			);
 		}
 
@@ -295,8 +295,11 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		public function declare_resource($resourceName){
 			$args = func_get_args();
 			array_unshift($args, $this);
-			$this->resources[$resourceName] = call_user_func_array(array(__NAMESPACE__.'\\Resource', 'generate'), $args);
-			$this->resources[$resourceName]->register();
+			$resource = call_user_func_array(array(__NAMESPACE__.'\\Resource', 'generate'), $args);
+			if(isset($resource)){
+				$resource->register();
+				$this->resources[$resourceName] = $resource;
+			}
 		}
 
 		public function get_resource($resourceName){

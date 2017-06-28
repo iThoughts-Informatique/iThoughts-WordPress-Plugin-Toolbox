@@ -142,7 +142,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			} else if(endswith($filename, 'css')){
 				$className = 'Style';
 			} else {
-				$this->backbone->log(LogLevel::Warn, "Unable to get the type of \"$filename\"");
+				$backbone->log(LogLevel::Warn, "Unable to get the type of \"$filename\"");
 				return null;
 			}
 			// Then, get the reflection class that will be used to spawn the instance with variadic args

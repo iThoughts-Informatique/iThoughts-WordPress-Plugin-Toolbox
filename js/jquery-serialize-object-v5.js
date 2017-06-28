@@ -12,15 +12,15 @@
 	'use strict';
 
 	/*jslint plusplus: true*/
-	/*globals Ithoughts*/
+	/*globals iThoughts*/
 
 	var $ = ithoughts.$;
 
 	/**
-     * Send a form through ajax
+	 * Send a form through ajax
 	 * @method	external:"jQuery".fn.serializeObject
-     * @returns {object}	Associative object representing the form
-     */
+	 * @returns {object}	Associative object representing the form
+	 */
 	$.fn.extend({
 		serializeObject: function () {
 			var json = {};
@@ -86,4 +86,4 @@
 			return value;
 		}
 	});
-}(Ithoughts.v4));
+}(iThoughts.v5));

@@ -14,11 +14,11 @@
 	var $ = ithoughts.$;
 	$.fn.extend({
 		/**
-         * Send a form through ajax
+		 * Send a form through ajax
 		 * @method	external:"jQuery".fn.simpleAjaxForm
-         * @param   {object} opts Options to be merged with { validate: false } and jQuery elements selected attributes ["target","callback","validate"]
-         * @returns {array}	Forms handlers
-         */
+		 * @param   {object} opts Options to be merged with { validate: false } and jQuery elements selected attributes ["target","callback","validate"]
+		 * @returns {array}	Forms handlers
+		 */
 		simpleAjaxForm: function( opts ){
 			var defaults = { validate: false };
 			var options  = $.extend( defaults, opts );
@@ -119,4 +119,4 @@
 	ithoughts.$d.ready(function(){
 		$('.simpleajaxform').simpleAjaxForm();
 	});
-})(Ithoughts.v4);
+})(iThoughts.v5);
