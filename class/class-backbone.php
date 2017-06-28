@@ -81,20 +81,25 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			if($this->base_path == NULL){
 				throw new \Exception("Missing definition of Backbone::\$basepath");
 			}
-			$paths = $this::preparePaths($this->base_path);
-			$this->base_path = $paths[0];
+			// First, get the path to this file
+			$dirname = dirname($file);
+			$this->base_path = $dirname;
+			// If `base_class_path` is not set, define it
 			if($this->base_class_path == NULL)
 				$this->base_class_path = $this->base_path."/class";
+			// If `base_lang_path` is not set, define it
 			if($this->base_lang_path == NULL)
 				$this->base_lang_path = $this->base_path."/lang";
+			// If `base_url` is not set, define it by getting the url to this plugin
 			if($this->base_url == NULL)
-				$this->base_url = $paths[1];
+				$this->base_url = plugins_url()."/".dirname(plugin_basename($file));
+
+			// Set the minify flag depending on debug constants
 			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))
-				$this->minify = "";
+				$this->minify = false;
 			else
-				$this->minify = ".min";
-
-
+				+
+				$this->minify = true;
 
 			if($this->js_aliases_include)
 				add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
@@ -103,13 +108,13 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		public function backbone_enqueue_scripts_hight_priority(){
 			$this->declare_resource(
 				'ithoughts-core-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/ithoughts-core-v5.js',
 				array('jquery')
 			);
 
 			$this->declare_resource(
 				'ithoughts-simple-ajax-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/simple-ajax-form-v5.js',
 				array(
 					'jquery-form',
 					'ithoughts-core-v5'
@@ -117,7 +122,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			);
 			$this->declare_resource(
 				'ithoughts-serialize-object-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/jquery-serialize-object-v5.js',
 				array('ithoughts-core-v5')
 			);
 		}
