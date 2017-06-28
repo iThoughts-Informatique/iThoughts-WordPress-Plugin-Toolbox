@@ -41,10 +41,6 @@ if(!class_exists(__NAMESPACE__."\\Module")){
 		 * @var	string	$base_url			URL to the root directory
 		 */
 		static protected $base_url;
-		/**
-		 * @var string	$minify				Minifying prefix
-		 */
-		static protected $minify;
 
 		/**
 		 * Returns the plugin options
@@ -55,3 +51,4 @@ if(!class_exists(__NAMESPACE__."\\Module")){
 		abstract static protected function get_options($defaults = false);
 	}
 }
+

@@ -32,46 +32,60 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 	 */
 	abstract class Backbone extends \ithoughts\v1_0\Singleton{
 		/**
-		 * @var	mixed	$options			Plugin options
+		 * @var	mixed	$options			Plugin options.
+		 * This value is set by first call to `get_option` or `get_options` with `onlyDefaults` set to false
+		 * @see Backbone::get_option
+		 * @see Backbone::get_options
 		 */
 		protected $options = NULL;
-		/**
-		 * @var	boolean	$js_aliases_include=TRUE	Include JS Aliases
-		 */
-		protected $js_aliases_include = TRUE;
+
 		/**
 		 * @var	mixed	$defaultOptions		Plugin default options
+		 * This value is used as options when calling `get_option` or `get_options` with `onlyDefaults` set to true
+		 * @see Backbone::get_option
+		 * @see Backbone::get_options
 		 */
 		protected $defaultOptions;
+
 		/**
 		 * @var	string	$optionsName		Identifier of the plugin options
+		 * Used in the wordpress option table, as the `option_name` column value
 		 */
 		protected $optionsName;
+
 		/**
 		 * @var	string	$base_class_path_path	Path to the root directory of the plugin, eg the one containing readme.txt
 		 */
 		protected $base_path;
+
 		/**
 		 * @var	string	$base_lang_path		Path to the lang directory
 		 */
 		protected $base_lang_path;
+
 		/**
 		 * @var	string	$base_class_path	Path to the class directory
 		 */
 		protected $base_class_path;
+
 		/**
 		 * @var	string	$base_url			URL to the root directory
 		 */
 		protected $base_url;
+
 		/**
-		 * @var string	$minify				Minifying prefix
+		 * @var boolean	$minify				Minifying prefix
 		 */
 		protected $minify;
+
 		/**
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
 		protected $scripts = array();
 
+		/**
+		 * @var Resource[]	$resources		Resources managed by this plugin
+		 */
 		protected $resources = array();
 
 		/**
@@ -98,14 +112,12 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))
 				$this->minify = false;
 			else
-				+
 				$this->minify = true;
 
-			if($this->js_aliases_include)
-				add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
+			add_action( 'init',			array(&$this,	'declare_scripts'),	0 );
 		}
 
-		public function backbone_enqueue_scripts_hight_priority(){
+		public function declare_scripts(){
 			$this->declare_resource(
 				'ithoughts-core-v5',
 				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/ithoughts-core-v5.js',

@@ -32,46 +32,60 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 	 */
 	abstract class Backbone extends \ithoughts\v1_0\Singleton{
 		/**
-		 * @var	mixed	$options			Plugin options
+		 * @var	mixed	$options			Plugin options.
+		 * This value is set by first call to `get_option` or `get_options` with `onlyDefaults` set to false
+		 * @see Backbone::get_option
+		 * @see Backbone::get_options
 		 */
 		protected $options = NULL;
-		/**
-		 * @var	boolean	$js_aliases_include=TRUE	Include JS Aliases
-		 */
-		protected $js_aliases_include = TRUE;
+
 		/**
 		 * @var	mixed	$defaultOptions		Plugin default options
+		 * This value is used as options when calling `get_option` or `get_options` with `onlyDefaults` set to true
+		 * @see Backbone::get_option
+		 * @see Backbone::get_options
 		 */
 		protected $defaultOptions;
+
 		/**
 		 * @var	string	$optionsName		Identifier of the plugin options
+		 * Used in the wordpress option table, as the `option_name` column value
 		 */
 		protected $optionsName;
+
 		/**
 		 * @var	string	$base_class_path_path	Path to the root directory of the plugin, eg the one containing readme.txt
 		 */
 		protected $base_path;
+
 		/**
 		 * @var	string	$base_lang_path		Path to the lang directory
 		 */
 		protected $base_lang_path;
+
 		/**
 		 * @var	string	$base_class_path	Path to the class directory
 		 */
 		protected $base_class_path;
+
 		/**
 		 * @var	string	$base_url			URL to the root directory
 		 */
 		protected $base_url;
+
 		/**
-		 * @var string	$minify				Minifying prefix
+		 * @var boolean	$minify				Minifying prefix
 		 */
 		protected $minify;
+
 		/**
 		 * @var string[]	$scripts		Scripts to enqueue
 		 */
 		protected $scripts = array();
 
+		/**
+		 * @var Resource[]	$resources		Resources managed by this plugin
+		 */
 		protected $resources = array();
 
 		/**
@@ -81,35 +95,38 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			if($this->base_path == NULL){
 				throw new \Exception("Missing definition of Backbone::\$basepath");
 			}
-			$paths = $this::preparePaths($this->base_path);
-			$this->base_path = $paths[0];
+			// First, get the path to this file
+			$dirname = dirname($file);
+			$this->base_path = $dirname;
+			// If `base_class_path` is not set, define it
 			if($this->base_class_path == NULL)
 				$this->base_class_path = $this->base_path."/class";
+			// If `base_lang_path` is not set, define it
 			if($this->base_lang_path == NULL)
 				$this->base_lang_path = $this->base_path."/lang";
+			// If `base_url` is not set, define it by getting the url to this plugin
 			if($this->base_url == NULL)
-				$this->base_url = $paths[1];
+				$this->base_url = plugins_url()."/".dirname(plugin_basename($file));
+
+			// Set the minify flag depending on debug constants
 			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))
-				$this->minify = "";
+				$this->minify = false;
 			else
-				$this->minify = ".min";
+				$this->minify = true;
 
-
-
-			if($this->js_aliases_include)
-				add_action( 'init',			array(&$this,	'backbone_enqueue_scripts_hight_priority'),	0 );
+			add_action( 'init',			array(&$this,	'declare_scripts'),	0 );
 		}
 
-		public function backbone_enqueue_scripts_hight_priority(){
+		public function declare_scripts(){
 			$this->declare_resource(
 				'ithoughts-core-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/ithoughts-core-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/ithoughts-core-v5.js',
 				array('jquery')
 			);
 
 			$this->declare_resource(
 				'ithoughts-simple-ajax-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/simple-ajax-form-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/simple-ajax-form-v5.js',
 				array(
 					'jquery-form',
 					'ithoughts-core-v5'
@@ -117,7 +134,7 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 			);
 			$this->declare_resource(
 				'ithoughts-serialize-object-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/jquery-serialize-object-v5.js',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/jquery-serialize-object-v5.js',
 				array('ithoughts-core-v5')
 			);
 		}
