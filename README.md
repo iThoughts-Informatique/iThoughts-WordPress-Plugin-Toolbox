@@ -8,4 +8,4 @@ Feel free to upgrade it.
 
 ## Documentation
 
-Check out the [PHP Documentation](php/), the JavaScript [API documentation](javascript/jsdoc) or the JavaScript commented code (javascript/docco)
+Check out the [PHP Documentation](docs/php/), the JavaScript [API documentation](docs/javascript/jsdoc) or the JavaScript [commented code](docs/javascript/docco)
