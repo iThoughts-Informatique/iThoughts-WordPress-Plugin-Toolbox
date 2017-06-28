@@ -90,11 +90,11 @@
 			};
 			<span class="hljs-keyword">var</span> options  = $.extend( defaults, opts );
 			<span class="hljs-keyword">this</span>.each( <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bindEach</span>(<span class="hljs-params"></span>) </span>{
-				<span class="hljs-keyword">var</span> $form = $( <span class="hljs-keyword">this</span> );
-				<span class="hljs-keyword">var</span> formopts = $.extend({
-					<span class="hljs-attr">target</span>:   $form.data( <span class="hljs-string">'target'</span> ),
-					<span class="hljs-attr">callback</span>: $form.data( <span class="hljs-string">'callback'</span> ),
-				}, options );
+				<span class="hljs-keyword">var</span> $form = $( <span class="hljs-keyword">this</span> ),
+					formopts = $.extend({
+						<span class="hljs-attr">target</span>:   $form.data( <span class="hljs-string">'target'</span> ),
+						<span class="hljs-attr">callback</span>: $form.data( <span class="hljs-string">'callback'</span> ),
+					}, options );
 				<span class="hljs-keyword">if</span> ( formopts.target &amp;&amp; $( <span class="hljs-string">`#<span class="hljs-subst">${ formopts.target }</span>`</span> ).length ) {
 					$( <span class="hljs-string">`#<span class="hljs-subst">${ formopts.target }</span>`</span> ).html( <span class="hljs-string">''</span> ).hide();
 				}

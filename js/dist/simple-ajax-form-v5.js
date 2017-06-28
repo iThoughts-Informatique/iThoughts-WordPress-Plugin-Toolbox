@@ -32,8 +32,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			};
 			var options = $.extend(defaults, opts);
 			this.each(function bindEach() {
-				var $form = $(this);
-				var formopts = $.extend({
+				var $form = $(this),
+				    formopts = $.extend({
 					target: $form.data('target'),
 					callback: $form.data('callback')
 				}, options);

@@ -30,11 +30,11 @@
 			};
 			var options  = $.extend( defaults, opts );
 			this.each( function bindEach() {
-				var $form = $( this );
-				var formopts = $.extend({
-					target:   $form.data( 'target' ),
-					callback: $form.data( 'callback' ),
-				}, options );
+				var $form = $( this ),
+					formopts = $.extend({
+						target:   $form.data( 'target' ),
+						callback: $form.data( 'callback' ),
+					}, options );
 				if ( formopts.target && $( `#${ formopts.target }` ).length ) {
 					$( `#${ formopts.target }` ).html( '' ).hide();
 				}
