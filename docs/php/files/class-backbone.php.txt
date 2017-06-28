@@ -4,7 +4,7 @@
  *
  * @copyright 2015-2016 iThoughts Informatique
  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
- * @package iThoughts\iThoughts_WordPress_Plugin_Toolbox
+ * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *
  * @version 5.0
@@ -24,7 +24,6 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		const Warn = 2;
 		const Info = 3;
 		const Silly = 4;
-		// etc.
 	}
 
 	/**
@@ -127,21 +126,19 @@ if(!class_exists(__NAMESPACE__."\\Backbone")){
 		 */
 		protected function __construct(){
 			if($this->base_path == NULL){
-				throw new \Exception("Missing definition of Backbone::\$basepath");
+				throw new \Exception('Missing definition of Backbone::$basepath');
 			}
-			// First, get the path to this file
-			$dirname = dirname($file);
-			$this->base_path = $dirname;
+			// If `base_url` is not set, define it by getting the url to this plugin
+			if($this->base_url == NULL)
+				$this->base_url = plugins_url()."/".dirname(plugin_basename($this->base_path));
+			// Then change to parent directory
+			$this->base_path = dirname($this->base_path);
 			// If `base_class_path` is not set, define it
 			if($this->base_class_path == NULL)
 				$this->base_class_path = $this->base_path."/class";
 			// If `base_lang_path` is not set, define it
 			if($this->base_lang_path == NULL)
 				$this->base_lang_path = $this->base_path."/lang";
-			// If `base_url` is not set, define it by getting the url to this plugin
-			if($this->base_url == NULL)
-				$this->base_url = plugins_url()."/".dirname(plugin_basename($file));
-			var_dump($this);
 
 			// Set the minify flag depending on debug constants
 			if((defined("WP_DEBUG") && WP_DEBUG) || (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG))

@@ -41,7 +41,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 	 */
 	abstract class Resource {
 		/**
-		 * Identifier of this resource.
+		 * @var string $identifier Identifier of this resource.
 		 * This identifier is used to "name" that resource. It will be used as 1st parameter of wp_register_*
 		 *
 		 * @author Gerkin
@@ -49,7 +49,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $identifier;
 
 		/**
-		 * Filename of this resource.
+		 * @var string $filenameFilename of this resource.
 		 * Path to the resource file relative to the plugin folder. It will be used as 2nd parameter of wp_register_*
 		 *
 		 * @author Gerkin
@@ -57,7 +57,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $filename;
 
 		/**
-		 * Dependencies of this resource.
+		 * @var string[] $dependencies Dependencies of this resource.
 		 * Dependencies to print before this resource. It will be used as 3rd parameter of wp_register_*
 		 *
 		 * @author Gerkin
@@ -65,18 +65,25 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $dependencies = array();
 
 		/**
-		 *  Set to true if this resource is admin only
+		 * @var boolean $admin Flag set to true if this resource is admin only
 		 *
 		 * @author Gerkin
 		 */
 		public $admin = false;
 
 		/**
-		 * Backbone instance that owns that resource
+		 * @var Backbone $backbone Backbone instance that owns that resource
 		 *
 		 * @author Gerkin
 		 */
 		protected $backbone;
+
+		/**
+		 * @var string $file_url Url to this resource
+		 *
+		 * @author Gerkin
+		 */
+		protected $file_url;
 
 		/**
 		 * Check the filename and switch to generate {@link Script} or {@link Style}
@@ -155,6 +162,16 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				$filename
 			);
 		}
+
+		/**
+		 * Get the resource's url
+		 * @return string Url to this resource
+		 *
+		 * @author Gerkin
+		 */
+		public function get_file_url(){
+			return $this->file_url;
+		}
 	}
 
 	class Script extends Resource {
@@ -169,6 +186,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->admin = $admin;
 			$this->localizeId = $localizeId;
 			$this->localizeData = $localizeData;
+			$this->file_url = $this->get_maybe_minified('.js');
 		}
 
 		public function register(){
@@ -176,10 +194,9 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				return;
 			}
 
-			$file_url = $this->get_maybe_minified('.js');
 			wp_register_script(
 				$this->identifier,
-				$file_url,
+				$this->file_url,
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);
@@ -206,6 +223,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->filename = $filename;
 			$this->dependencies = $dependencies;
 			$this->admin = $admin;
+			$this->file_url = $this->get_maybe_minified('.js');
 		}
 
 		public function register(){
@@ -216,7 +234,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$file_url = $this->get_maybe_minified('.css');
 			wp_register_style(
 				$this->identifier,
-				$file_url,
+				$this->file_url,
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);

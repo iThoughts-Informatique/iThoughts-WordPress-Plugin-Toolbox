@@ -66,10 +66,10 @@
 		},
 		serializeInputsObject( forceValue ) {
 			var value = {};
-			this.each(() => {
+			this.each(( index, element ) => {
 				var valueThis = {},
 					valuePtr = valueThis,
-					name = this.name,
+					name = element.name,
 					nestings = name.replace( /\]/gi, '' ).split( '[' ),
 					i = 0,
 					nestingsCount = nestings.length;

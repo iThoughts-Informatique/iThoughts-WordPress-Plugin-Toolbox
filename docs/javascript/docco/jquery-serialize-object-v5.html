@@ -126,10 +126,10 @@
 		},
 		serializeInputsObject( forceValue ) {
 			<span class="hljs-keyword">var</span> value = {};
-			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function">(<span class="hljs-params"> index, element </span>) =&gt;</span> {
 				<span class="hljs-keyword">var</span> valueThis = {},
 					valuePtr = valueThis,
-					name = <span class="hljs-keyword">this</span>.name,
+					name = element.name,
 					nestings = name.replace( <span class="hljs-regexp">/\]/gi</span>, <span class="hljs-string">''</span> ).split( <span class="hljs-string">'['</span> ),
 					i = <span class="hljs-number">0</span>,
 					nestingsCount = nestings.length;

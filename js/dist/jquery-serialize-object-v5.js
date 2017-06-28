@@ -68,10 +68,10 @@
 			var _this = this;
 
 			var value = {};
-			this.each(function () {
+			this.each(function (index, element) {
 				var valueThis = {},
 				    valuePtr = valueThis,
-				    name = _this.name,
+				    name = element.name,
 				    nestings = name.replace(/\]/gi, '').split('['),
 				    i = 0,
 				    nestingsCount = nestings.length;

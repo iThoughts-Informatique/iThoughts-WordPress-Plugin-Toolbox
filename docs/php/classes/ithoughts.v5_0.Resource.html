@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-244190901"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1539459634"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-244190901" class="accordion-body collapse in">
+            <div id="namespace-1539459634" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1664044589"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1906706814"></a>
                                 <a href="../namespaces/ithoughts.html" style="margin-left: 30px; padding-left: 0">ithoughts</a>
             </div>
-            <div id="namespace-1664044589" class="accordion-body collapse ">
+            <div id="namespace-1906706814" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-89700322"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1391339541"></a>
                                 <a href="../namespaces/ithoughts.v1_0.html" style="margin-left: 30px; padding-left: 0">v1_0</a>
             </div>
-            <div id="namespace-89700322" class="accordion-body collapse ">
+            <div id="namespace-1391339541" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -182,10 +182,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1460464388"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-91049456"></a>
                                 <a href="../namespaces/ithoughts.v5_0.html" style="margin-left: 30px; padding-left: 0">v5_0</a>
             </div>
-            <div id="namespace-1460464388" class="accordion-body collapse ">
+            <div id="namespace-91049456" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -253,6 +253,7 @@
                                                                     <a href="../classes/ithoughts.v5_0.Resource.html#method_generate" class="">generate()</a><br />
                                                                     <a href="../classes/ithoughts.v5_0.Resource.html#method_register" class="">register()</a><br />
                                                                     <a href="../classes/ithoughts.v5_0.Resource.html#method_enqueue" class="">enqueue()</a><br />
+                                                                    <a href="../classes/ithoughts.v5_0.Resource.html#method_get_file_url" class="">get_file_url()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <a href="../classes/ithoughts.v5_0.Resource.html#property_identifier" class="">$identifier</a><br />
@@ -270,6 +271,7 @@
                                                             </section>
                             <section class="span4">
                                                                     <a href="../classes/ithoughts.v5_0.Resource.html#property_backbone" class="">$backbone</a><br />
+                                                                    <a href="../classes/ithoughts.v5_0.Resource.html#property_file_url" class="">$file_url</a><br />
                                                             </section>
                             <section class="span4">
                                 <em>N/A</em>
@@ -335,13 +337,14 @@
             <a id="property_identifier" name="property_identifier" class="anchor"></a>
             <article class="property">
                 <h3 class="public ">$identifier</h3>
-                <pre class="signature">$identifier : </pre>
-                <p><em>Identifier of this resource.</em></p>
-                <p>This identifier is used to "name" that resource. It will be used as 1st parameter of wp<em>register</em>*</p>
+                <pre class="signature">$identifier : string</pre>
+                <p><em></em></p>
+                
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                string
+                &mdash; Identifier of this resource.
+This identifier is used to &quot;name&quot; that resource. It will be used as 1st parameter of wp_register_*                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -366,13 +369,14 @@
             <a id="property_filename" name="property_filename" class="anchor"></a>
             <article class="property">
                 <h3 class="public ">$filename</h3>
-                <pre class="signature">$filename : </pre>
-                <p><em>Filename of this resource.</em></p>
-                <p>Path to the resource file relative to the plugin folder. It will be used as 2nd parameter of wp<em>register</em>*</p>
+                <pre class="signature">$filename : string</pre>
+                <p><em></em></p>
+                
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                string
+                &mdash; of this resource.
+Path to the resource file relative to the plugin folder. It will be used as 2nd parameter of wp_register_*                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -397,13 +401,14 @@
             <a id="property_dependencies" name="property_dependencies" class="anchor"></a>
             <article class="property">
                 <h3 class="public ">$dependencies</h3>
-                <pre class="signature">$dependencies : </pre>
-                <p><em>Dependencies of this resource.</em></p>
-                <p>Dependencies to print before this resource. It will be used as 3rd parameter of wp<em>register</em>*</p>
+                <pre class="signature">$dependencies : array&lt;mixed,string&gt;</pre>
+                <p><em></em></p>
+                
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                array&lt;mixed,string&gt;
+                &mdash; Dependencies of this resource.
+Dependencies to print before this resource. It will be used as 3rd parameter of wp_register_*                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -428,13 +433,13 @@
             <a id="property_admin" name="property_admin" class="anchor"></a>
             <article class="property">
                 <h3 class="public ">$admin</h3>
-                <pre class="signature">$admin : </pre>
-                <p><em>Set to true if this resource is admin only</em></p>
+                <pre class="signature">$admin : boolean</pre>
+                <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                boolean
+                &mdash; Flag set to true if this resource is admin only                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -459,13 +464,44 @@
             <a id="property_backbone" name="property_backbone" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$backbone</h3>
-                <pre class="signature">$backbone : </pre>
-                <p><em>Backbone instance that owns that resource</em></p>
+                <pre class="signature">$backbone : \ithoughts\v5_0\Backbone</pre>
+                <p><em></em></p>
                 
 
                                 <h4>Type</h4>
+                <a href="../classes/ithoughts.v5_0.Backbone.html">\ithoughts\v5_0\Backbone</a>
+                &mdash; Backbone instance that owns that resource                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_file_url" name="property_file_url" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$file_url</h3>
+                <pre class="signature">$file_url : string</pre>
+                <p><em></em></p>
                 
-                                            </article>
+
+                                <h4>Type</h4>
+                string
+                &mdash; Url to this resource                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -646,6 +682,42 @@
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_file_url" name="method_get_file_url" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_file_url()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_file_url() : string</pre>
+                <p><em>Get the resource&#039;s url</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Url to this resource</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
                                                     <div class="row-fluid">
         <div class="span8 content class">
             <a id="method_get_maybe_minified" name="method_get_maybe_minified" class="anchor"></a>
@@ -740,7 +812,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 28th, 2017 at 19:26.
+                    on June 28th, 2017 at 20:10.
                 </section>
             </section>
         </section>
