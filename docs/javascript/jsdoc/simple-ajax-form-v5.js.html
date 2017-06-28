@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: simple-ajax-form-v5.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: simple-ajax-form-v5.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Simple AJAX Form
+ * @description jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
+ *
+ * @author Gerkin, tcbarrett
+ * @copyright 2016
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * @package iThoughts-toolbox
+ *
+ */
+
+'use strict';
+
+( ithoughts => {
+
+	var $ = ithoughts.$;
+	$.fn.extend({
+		/**
+		 * Send a form through ajax
+		 * @function simpleAjaxForm
+		 * @memberof	external:jQuery
+		 * @param   {object} opts Options
+		 * @param   {boolean} [opts.validate=false] Options
+		 * @param   {function} [opts.callback=false] Options
+		 * @returns {undefined}
+		 */
+		simpleAjaxForm( opts ) {
+			var defaults = {
+				validate: false,
+			};
+			var options  = $.extend( defaults, opts );
+			this.each( function bindEach() {
+				var $form = $( this );
+				var formopts = $.extend({
+					target:   $form.data( 'target' ),
+					callback: $form.data( 'callback' ),
+				}, options );
+				if ( formopts.target &amp;&amp; $( `#${ formopts.target }` ).length ) {
+					$( `#${ formopts.target }` ).html( '' ).hide();
+				}
+				$form.find( 'button[name="actionB"]' ).click(() => {
+					$form.find( '[name="action"]' ).val( this.getAttribute( 'value' ));
+				});
+				var postText = ( this.getAttribute( 'post_text' ) ? this.getAttribute( 'post_text' ) : 'Updating, please wait...' ),
+					loader;
+
+				$form.ajaxForm({
+					beforeSubmit() {
+						//if( !jqForm.valid() ) return false;
+						if ( formopts.target &amp;&amp; $( `#${ formopts.target }` ).length ) {
+							$( `#${ formopts.target }` ).html( `&lt;p>${  postText  }&lt;/p>` ).removeClass().addClass( 'clear updating' ).fadeTo( 100, 1 );
+						}
+						loader = ithoughts.makeLoader();
+						return true;
+					},
+					error() {
+						loader.remove();
+						$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '&lt;p>Form submission failed.&lt;/p>' );
+					},
+					success( responseText, statusText, xhr, jQForm ) {
+						loader.remove();
+						if ( 'undefined' === typeof( jQForm )) {
+							jQForm = xhr;
+						}
+
+						try {
+							var res;
+							if ( 'String' === responseText.constructor.name ) {
+								res = JSON.parse( responseText );
+							} else if ( 'Object' === responseText.constructor.name ) {
+								res = responseText;
+							} else {
+								throw `Unhandled type ${  typeof responseText }`;
+							}
+
+							if ( '0' === res || !res ) {
+								$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-warning' ).html( '&lt;p>Server did not respond anything&lt;/p>' );
+							} else {
+								if ( typeof res.success != 'undefined' &amp;&amp; res.success != null &amp;&amp; typeof res.data != 'undefined' &amp;&amp; res.data != null ) { // handle wp_send_json_{success|error}
+									res.data.valid = res.success;
+									res = res.data;
+								}
+								// Handle raw response
+								if ( !res.valid ) {
+									if ( formopts.target &amp;&amp; $( `#${ formopts.target }` ).length ) {
+										$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( res.text );
+									}
+								} else {
+									if ( res.reload ) {
+										window.location.href = `${ window.location.href  }&amp;json-res-txt=${  window.encodeURI( res.text ) }`;
+									}
+
+									if ( formopts.target &amp;&amp; $( `#${ formopts.target }` ).length ) {
+										$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-success' ).html( res.text );
+									}
+
+									if ( res.redirect ) {
+										if ( res.text ) {
+											setTimeout(() => {
+												window.location.href = res.redirect;
+											}, 2500 );
+										} else {
+											window.location.href = res.redirect;
+										}
+									}
+								}
+								try {
+									if ( 'function' == typeof $form[0].simple_ajax_callback )										{
+										$form[0].simple_ajax_callback( res );
+									}
+									if ( 'function' == typeof formopts.callback )										{
+										formopts.callback( res );
+									}
+								} catch ( e ) {
+									$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '&lt;p>Error with received data&lt;/p>' );
+									console.error( e );
+								}
+							}
+						} catch ( e ) {
+							$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '&lt;p>Invalid server response&lt;/p>' );
+						}
+					},
+				});
+			});
+		},
+	});
+
+	ithoughts.$d.ready(() => {
+		$( '.simpleajaxform' ).simpleAjaxForm();
+	});
+})( iThoughts.v5 );
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="iThoughts.html">iThoughts</a></li><li><a href="iThoughts.v5.html">v5</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_go">_go</a></li><li><a href="global.html#_off">_off</a></li><li><a href="global.html#_on">_on</a></li><li><a href="global.html#isNA">isNA</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jun 28 2017 19:59:06 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ithoughts-core-v5.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="ithoughts-core-v5.html">
+                  ithoughts-core-v5.js
+                </a>
+              
+                
+                <a class="source" href="jquery-serialize-object-v5.html">
+                  jquery-serialize-object-v5.js
+                </a>
+              
+                
+                <a class="source" href="simple-ajax-form-v5.html">
+                  simple-ajax-form-v5.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ithoughts-core-v5.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @file Minify compliant generic shorthands
+ *
+ * @author Alexandre Germain
+ * @copyright 2016 iThoughts informatique
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * @package iThoughts-toolbox
+ *
+ */</span>
+
+<span class="hljs-comment">/**
+ * @namespace iThoughts
+ * @description iThoughts Helpers versions
+ */</span>
+<span class="hljs-comment">/**
+ * @namespace iThoughts.v5
+ * @@memberof iThoughts
+ * @description iThoughts v5 Helpers
+ */</span>
+<span class="hljs-meta">
+'use strict'</span>;
+
+<span class="hljs-keyword">if</span> ( <span class="hljs-string">'undefined'</span> == <span class="hljs-keyword">typeof</span> iThoughts )	{
+	<span class="hljs-built_in">window</span>.iThoughts = {};
+}
+
+( <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> {
+	<span class="hljs-comment">/**
+	 * @function isNA
+	 * @description Tests if the value is null or undefined
+	 * @author Gerkin
+	 * @param {*} value The value to test
+	 * @returns {Boolean} Returns true if `value` is null or undefined
+	 */</span>
+	<span class="hljs-keyword">const</span> isNA = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> === value || <span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> value;
+	};
+
+	<span class="hljs-keyword">if</span> ( isNA( s.v5 ))		{
+		s.v5 = {};
+	}	<span class="hljs-keyword">else</span>		{
+		<span class="hljs-keyword">return</span>;
+	}
+
+	<span class="hljs-keyword">var</span> v5 = s.v5,
+		d = <span class="hljs-built_in">document</span>,
+		w = <span class="hljs-built_in">window</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <pre><code>el = Element,
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		et = <span class="hljs-keyword">typeof</span> EventTarget != <span class="hljs-string">'undefined'</span> &amp;&amp; !isNA( EventTarget ) ? EventTarget : <span class="hljs-built_in">document</span>.createDocumentFragment().constructor,
+		dc = v5.deepClone = <span class="hljs-function">(<span class="hljs-params"> obj </span>) =&gt;</span> {
+			<span class="hljs-keyword">let</span> newT;
+			<span class="hljs-keyword">if</span> ( !isNA( obj )) {
+				<span class="hljs-keyword">switch</span> ( obj.constructor ) {
+					<span class="hljs-keyword">case</span> <span class="hljs-built_in">Object</span>: {
+						newT = {};
+						<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> obj ) {
+							<span class="hljs-keyword">if</span> ( v5.hop( obj, i )) {
+								newT[i] = dc( obj[i]);
+							}
+						}
+						<span class="hljs-keyword">return</span> newT;
+					}
+
+					<span class="hljs-keyword">case</span> <span class="hljs-built_in">Array</span>: {
+						newT = [];
+						<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> obj ) {
+							<span class="hljs-keyword">if</span> ( v5.hop( obj, i )) {
+								newT[i] = dc( obj[i]);
+							}
+						}
+						<span class="hljs-keyword">return</span> newT;
+					}
+
+					<span class="hljs-keyword">default</span>: {
+						<span class="hljs-keyword">return</span> obj;
+					}
+										 }
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> obj;
+			}
+		};
+	<span class="hljs-comment">/**
+	 * @function isNA
+	 * @description Check if value is null or undefined
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {*} value The value tu check
+	 * @returns {boolean} True if null or undefined, false otherwise
+	 */</span>
+	v5.isNA = isNA;
+
+
+
+	<span class="hljs-comment">/**
+	 * @function waitFor
+	 * @description Look into `scope` for property `prop` every `every`ms, then execute `callback` when the property exists
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {*} scope The parent scope to check for property in
+	 * @param {string} prop Name of the property to wait for
+	 * @param {integer} [every] Time in ms between each checks
+	 * @param {function} callback Function to execute once property exists
+	 * @returns {undefined} Async
+	 */</span>
+	v5.waitFor = <span class="hljs-function">(<span class="hljs-params"> scope, prop, every, callback </span>) =&gt;</span> {
+		<span class="hljs-keyword">if</span> ( <span class="hljs-string">'function'</span> == <span class="hljs-keyword">typeof</span> every ) {
+			callback = every;
+			every = <span class="hljs-literal">undefined</span>;
+		}
+		<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> scope != <span class="hljs-string">'object'</span> || <span class="hljs-keyword">typeof</span> prop != <span class="hljs-string">'string'</span> || ( <span class="hljs-string">'number'</span> == <span class="hljs-keyword">typeof</span> every &amp;&amp; <span class="hljs-keyword">typeof</span> callback != <span class="hljs-string">'function'</span> ) || <span class="hljs-keyword">typeof</span> callback != <span class="hljs-string">'function'</span> ) {
+			<span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>( <span class="hljs-string">'"waitFor" expects following types combinations:\n'</span> +
+							<span class="hljs-string">'\t{Object} scope\, {String} prop, {Number} every, {Function} callback\n'</span> +
+							<span class="hljs-string">'\t{Object} scope\, {String} prop, {Function} callback'</span> );
+		}
+		<span class="hljs-keyword">if</span> ( v5.hop( scope, prop )) {
+			callback();
+		} <span class="hljs-keyword">else</span> {
+			timer = setInterval(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+				<span class="hljs-keyword">if</span> ( v5.hop( scope, prop )) {
+					clearInterval( timer );
+					callback();
+				}
+			}, every || <span class="hljs-number">100</span> );
+		}
+		<span class="hljs-keyword">var</span> timer = <span class="hljs-literal">null</span>;
+	};
+
+	<span class="hljs-comment">/**
+	 * @function mergeRecursive
+	 * @description Combine each object from left to right, keeping the left-most value
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {...(object|array)} objects Any number of objects/arrays to merge
+	 * @returns {boolean} True if null or undefined, false otherwise
+	 */</span>
+	v5.mergeRecursive = <span class="hljs-function">(<span class="hljs-params"> ...objects </span>) =&gt;</span> {
+		<span class="hljs-keyword">var</span> newObj = <span class="hljs-literal">null</span>,
+			j,
+			curObj,
+			recurse = <span class="hljs-function">(<span class="hljs-params"> obj1, obj2 </span>) =&gt;</span> {
+				<span class="hljs-keyword">var</span> i,
+					newT;
+
+				<span class="hljs-keyword">if</span> ( !isNA( obj2 )) {
+					<span class="hljs-keyword">switch</span> ( obj2.constructor ) {
+						<span class="hljs-keyword">case</span> <span class="hljs-built_in">Object</span>: {
+							<span class="hljs-keyword">if</span> ( !isNA( obj1 ) &amp;&amp; obj1.constructor === <span class="hljs-built_in">Object</span> ) {
+								newT = dc( obj1 );
+							} <span class="hljs-keyword">else</span> {
+								newT = {};
+							}
+							<span class="hljs-keyword">for</span> ( i <span class="hljs-keyword">in</span> obj2 ) {
+								<span class="hljs-keyword">if</span> ( v5.hop( obj2, i )) {
+									newT[i] = recurse( newT[i], obj2[i]);
+								}
+							}
+							<span class="hljs-keyword">return</span> newT;
+						}
+
+						<span class="hljs-keyword">case</span> <span class="hljs-built_in">Array</span>: {
+							<span class="hljs-keyword">if</span> ( !isNA( obj1 ) &amp;&amp; obj1.constructor === <span class="hljs-built_in">Array</span> ) {
+								newT = dc( obj1 );
+							} <span class="hljs-keyword">else</span> {
+								newT = [];
+							}
+							<span class="hljs-keyword">for</span> ( i <span class="hljs-keyword">in</span> obj2 ) {
+								<span class="hljs-keyword">if</span> ( v5.hop( obj2, i )) {
+									newT[i] = recurse( newT[i], obj2[i]);
+								}
+							}
+							<span class="hljs-keyword">return</span> newT;
+						}
+
+						<span class="hljs-keyword">default</span>: {
+							<span class="hljs-keyword">return</span> obj2;
+						}
+											  }
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> obj2;
+				}
+			};
+		<span class="hljs-keyword">for</span> ( j <span class="hljs-keyword">in</span> objects ) {
+			curObj = objects[j];
+			<span class="hljs-keyword">if</span> ( !isNA( curObj ) &amp;&amp; ( curObj.constructor === <span class="hljs-built_in">Object</span> || curObj.constructor === <span class="hljs-built_in">Array</span> )) {
+				newObj = recurse( newObj, curObj );
+			}
+		}
+		<span class="hljs-keyword">return</span> newObj;
+	};
+
+	v5.docWidth = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+		<span class="hljs-keyword">return</span> w.innerWidth ||
+			w.documentElement.clientWidth ||
+			w.body.clientWidth ||
+			w.body.offsetWidth;
+	};
+
+	v5.docHeight = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+		<span class="hljs-keyword">return</span> w.innerHeight ||
+			w.documentElement.clientHeight ||
+			w.body.clientHeight ||
+			w.body.offsetHeight;
+	};
+
+	<span class="hljs-comment">/**
+	 * @function gei
+	 * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById Document.getElementById}
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {string} s The id of the searched element
+	 * @param {Element} [e=document] Element to search in
+	 * @returns {Element|null} The Element, or null if not found
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
+	 */</span>
+	v5.gei = <span class="hljs-function">(<span class="hljs-params"> s, e </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> ( e||d ).getElementById( s );
+	};
+
+	<span class="hljs-comment">/**
+	 * @function qs
+	 * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector Element.querySelector}
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {string} s The selector of the searched element
+	 * @param {Element} [e=document] Element to search in
+	 * @returns {Element|null} The Element, or null if not found
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector
+	 */</span>
+	v5.qs = <span class="hljs-function">(<span class="hljs-params"> s, e </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> ( e||d ).querySelector( s );
+	};
+
+	<span class="hljs-comment">/**
+	 * @function qsa
+	 * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll Element.querySelectorAll}
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {string} s The selector of the searched element
+	 * @param {Element} [e=document] Element to search in
+	 * @returns {NodeList} The NodeList containing every elements matching the selector
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll
+	 */</span>
+	v5.qsa = <span class="hljs-function">(<span class="hljs-params"> s, e </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> ( e||d ).querySelectorAll( s );
+	};
+
+	<span class="hljs-comment">/**
+	 * @function geiN
+	 * @description Like {@link Document.gei}, but returns an empty object instead of null to allow 1lvl attribute definition without tests
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {string} s The selector of the searched element
+	 * @param {Element} [e=document] Element to search in
+	 * @returns {Element|{}} The Element, or an empty object if not found
+	 */</span>
+	v5.geiN = <span class="hljs-function">(<span class="hljs-params"> s, e </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> v5.gei( s, e ) || {};
+	};
+
+	<span class="hljs-comment">/**
+	 * @function qsN
+	 * @description Like {@link Element.qsN}, but returns an empty object instead of null to allow 1lvl attribute definition without tests
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {string} s The selector of the searched element
+	 * @param {Element} [e=document] Element to search in
+	 * @returns {Element|{}} The Element, or an empty object if not found
+	 */</span>
+	v5.qsN = <span class="hljs-function">(<span class="hljs-params"> s, e </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> v5.qs( s, e ) || {};
+	};
+
+	<span class="hljs-comment">/**
+	 * @function hop
+	 * @description Minification shorthand for {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty Object.hasOwnProperty}
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {Object} s The object to check
+	 * @param {string} v The name of the attribute
+	 * @returns {Boolean} Returns the same than {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty Object.hasOwnProperty}
+	 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+	 */</span>
+	v5.hop = <span class="hljs-function">(<span class="hljs-params"> s, v </span>) =&gt;</span> {
+		<span class="hljs-keyword">return</span> s.hasOwnProperty( v );
+	};
+
+	<span class="hljs-comment">/**
+	 * @function waitUntil
+	 * @description Minification shorthand for {@link HTMLDocument}.getElementById
+	 * @author Gerkin
+	 * @memberof iThoughts.v5
+	 * @instance
+	 * @param {Function} fct Function executed on resolution.
+	 * @param {Function} until Function executed on each loop.
+	 * @param {Number} every Time to wait between each test.
+	 * @param {Number|false} [max=false]  Time after which `fct` will be executed even if `until` still returns false. Set it to false to not set max timeout
+	 * @returns {undefined}
+	 */</span>
+	v5.waitUntil = <span class="hljs-function">(<span class="hljs-params"> fct, until, every, max </span>) =&gt;</span> {
+		<span class="hljs-keyword">if</span> ( isNA( until ) || until.constructor.name !== <span class="hljs-string">'Function'</span> )			{
+			<span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>( <span class="hljs-string">'Calling "Function.waitUntil" without test function. Call setTimeout instead'</span> );
+		}
+
+		max = !isNA( max ) &amp;&amp; !<span class="hljs-built_in">isNaN</span>( <span class="hljs-built_in">parseInt</span>( max )) ? <span class="hljs-built_in">parseInt</span>( max ) : <span class="hljs-literal">false</span>;
+		setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+			until() || ( max !== <span class="hljs-literal">false</span> &amp;&amp; max &lt; <span class="hljs-number">1</span> ) ? fct() : v5.waitUntil( fct, until, every, max ? max - every : max );
+		}, every );
+	};
+
+
+	<span class="hljs-comment">/**
+	 * @function on
+	 * @description Bind events with specified functions on specified elements
+	 * @memberof iThoughts.v5
+	 * @alias iThoughts.v5.attachEvent
+	 * @param {EventTarget|EventTarget[]}					a	EventTarget to bind
+	 * @param {string|string[]}					b	Events to bind
+	 * @param {EventFunction|EventFunction[]}	c	Functions to attach
+	 * @returns {undefined}
+	 * @since 0.1.0
+	 */</span>
+	v5.on = v5.attachEvent = <span class="hljs-function">(<span class="hljs-params"> a, b, c </span>) =&gt;</span> {
+		<span class="hljs-comment">/**
+		 * @function _on
+		 * @description Same as {@link EventTarget#on}
+		 * @alias EventTarget.on
+		 * @param {Element}			s Subject of the binding
+		 * @param {string}			e Event to bind
+		 * @param {EventFunction}	f Function to attach
+		 * @returns {undefined}
+		 * @private
+		 * @see iThoughts.v5#on
+		 * @since 0.1.0
+		 */</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_on</span>(<span class="hljs-params"> s, e, f </span>) </span>{
+			e &amp;&amp; f &amp;&amp; ( s.addEventListener || s.attachEvent ).call( s, e, f );
+		}
+		<span class="hljs-keyword">if</span> ( isNA( a ) || a.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			a = [ a ];
+		}
+		<span class="hljs-keyword">if</span> ( isNA( b ) || b.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			b = [ b ];
+		}
+		<span class="hljs-keyword">if</span> ( isNA( c ) || c.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			c = [ c ];
+		}
+		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = <span class="hljs-number">0</span>, I = a.length, J = b.length, K = c.length;
+		<span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; I; i++ ) {
+			<span class="hljs-keyword">for</span> ( j = <span class="hljs-number">0</span>; j &lt; J; j++ ) {
+				<span class="hljs-keyword">for</span> ( k = <span class="hljs-number">0</span>; k &lt; K; k++ ) {
+					a[i] <span class="hljs-keyword">instanceof</span> et &amp;&amp; _on( a[i], b[j], c[k]);
+				}
+			}
+		}
+	};
+
+	<span class="hljs-comment">/**
+	 * @function off
+	 * @description Unbind events with specified functions on specified elements
+	 * @memberof iThoughts.v5
+	 * @alias iThoughts.v5.detachEvent
+	 * @param {EventTarget|EventTarget[]}					a	EventTarget to unbind
+	 * @param {string|string[]}					b	Events to unbind
+	 * @param {EventFunction|EventFunction[]}	c	Functions to detach
+	 * @returns {undefined}
+	 * @since 0.1.0
+	 */</span>
+	v5.off = v5.detachEvent = <span class="hljs-function">(<span class="hljs-params"> a, b, c </span>) =&gt;</span> {
+		<span class="hljs-comment">/**
+		 * @function _off
+		 * @description Same as {@link EventTarget#off}
+		 * @param {Element}			s Subject of the unbinding
+		 * @param {string}			e Event to unbind
+		 * @param {EventFunction}	f Function to detach
+		 * @returns {undefined}
+		 * @private
+		 * @see iThoughts.v5#off
+		 * @since 0.1.0
+		 */</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_off</span>(<span class="hljs-params"> s, e, f </span>) </span>{
+			e &amp;&amp; f &amp;&amp; ( s.removeEventListener || s.detachEvent ).call( s, e, f );
+		}
+		<span class="hljs-keyword">if</span> ( isNA( a ) || a.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			a = [ a ];
+		}
+		<span class="hljs-keyword">if</span> ( isNA( b ) || b.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			b = [ b ];
+		}
+		<span class="hljs-keyword">if</span> ( isNA( c ) || c.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			c = [ c ];
+		}
+		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = <span class="hljs-number">0</span>, I = a.length, J = b.length, K = c.length;
+		<span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; I; i++ ) {
+			<span class="hljs-keyword">for</span> ( j = <span class="hljs-number">0</span>; j &lt; J; j++ ) {
+				<span class="hljs-keyword">for</span> ( k = <span class="hljs-number">0</span>; k &lt; K; k++ ) {
+					a[i] <span class="hljs-keyword">instanceof</span> et &amp;&amp; _off( a[i], b[j], c[k]);
+				}
+			}
+		}
+	};
+
+	<span class="hljs-comment">/**
+	 * @function go
+	 * @description Unbind events with specified functions on specified elements
+	 * @memberof iThoughts.v5
+	 * @alias iThoughts.v5.triggerEvent
+	 * @param {EventTarget|EventTarget[]}					a	EventTarget to trigger event on
+	 * @param {string|string[]}					b	Name of the events
+	 * @returns {undefined}
+	 * @since 0.1.0
+	 */</span>
+	v5.go = v5.triggerEvent = <span class="hljs-function">(<span class="hljs-params"> a, b </span>) =&gt;</span> {
+		<span class="hljs-comment">/**
+		 * @function _go
+		 * @description Same as {@link EventTarget#go}
+		 * @param {Element}			s Subject of the trigger
+		 * @param {string}			b Event name
+		 * @returns {undefined}
+		 * @private
+		 * @see iThoughts.v5#go
+		 * @since 0.1.0
+		 */</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_go</span>(<span class="hljs-params"> s, b </span>) </span>{
+			<span class="hljs-keyword">let</span> e;
+			<span class="hljs-keyword">if</span> ( b ) {
+				<span class="hljs-keyword">if</span> ( d.createEvent ) {
+					e = <span class="hljs-keyword">new</span> Event( b );
+					s.dispatchEvent( e );
+				} <span class="hljs-keyword">else</span> {
+					e = d.createEventObject();
+					s.fireEvent( <span class="hljs-string">`on<span class="hljs-subst">${  b }</span>`</span>, e );
+				}
+			}
+		}
+		<span class="hljs-keyword">if</span> ( isNA( a ) || a.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			a = [ a ];
+		}
+		<span class="hljs-keyword">if</span> ( isNA( b ) || b.constructor.name !== <span class="hljs-string">'Array'</span> ) {
+			b = [ b ];
+		}
+		<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, I = a.length; i &lt; I; i++ ) {
+			<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>, J = b.length; j &lt; J; j++ ) {
+				a[i] <span class="hljs-keyword">instanceof</span> et &amp;&amp; _go( a[i], b[j]);
+			}
+		}
+	};
+
+	<span class="hljs-keyword">if</span> ( <span class="hljs-built_in">window</span>.jQuery ) {
+		<span class="hljs-keyword">var</span> $ = v5.$ = <span class="hljs-built_in">window</span>.jQuery;
+		v5.$d = $( <span class="hljs-built_in">document</span> );
+		v5.$w = $( <span class="hljs-built_in">window</span> );
+	}
+
+	v5.isIos = navigator.userAgent.match( <span class="hljs-regexp">/(iPad|iPhone|iPod)/g</span> ); <span class="hljs-comment">// Used to enable some iOS specific piece of code to catch click on body, for example</span>
+	v5.baseTouch = ( v5.isIos || navigator.userAgent.match( <span class="hljs-regexp">/(Android|webOS|BlackBerry)/i</span> )) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+
+
+	v5.initLoggers = <span class="hljs-function">(<span class="hljs-params">(</span>) =&gt;</span> {
+		<span class="hljs-keyword">const</span> generateLogArray = <span class="hljs-function">(<span class="hljs-params"> prefix, mode, args </span>) =&gt;</span> {
+			args.unshift( <span class="hljs-string">`<span class="hljs-subst">${ mode  }</span>`</span> );
+			args.unshift( <span class="hljs-string">`<span class="hljs-subst">${ prefix  }</span> =&gt; `</span> );
+			<span class="hljs-keyword">return</span> args;
+		};
+		<span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params"> pluginCore, textPrefix, verbosity </span>) =&gt;</span> {
+			<span class="hljs-keyword">if</span> ( <span class="hljs-string">'string'</span> == <span class="hljs-keyword">typeof</span> verbosity ) {
+				verbosity = <span class="hljs-built_in">parseInt</span>( verbosity );
+			}
+
+			<span class="hljs-keyword">var</span> modes = [ <span class="hljs-string">'error'</span>, <span class="hljs-string">'warn'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'log'</span> ],
+				mode;
+			<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, I = modes.length; i &lt; I; i++ ) {
+				mode = modes[i];
+				<span class="hljs-keyword">if</span> ( !pluginCore.hasOwnProperty( mode )) {
+					pluginCore[mode] = verbosity &gt; i ? <span class="hljs-function">(<span class="hljs-params">( modeIn, ...args </span>) =&gt;</span> {
+						<span class="hljs-built_in">console</span>[modeIn].apply( <span class="hljs-literal">null</span>, generateLogArray( textPrefix, modeIn.toUpperCase(), args ));
+					}).bind( <span class="hljs-literal">null</span>, mode ) : <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {};
+				}
+			}
+		};
+	})();
+	v5.makeLoader = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+		<span class="hljs-keyword">var</span> loader = $( $.parseHTML( <span class="hljs-string">'&lt;div class="ithoughts_tt_gl-loader" data-loader-status="shown"&gt;&lt;div class="centerer"&gt;&lt;div class="loader"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'</span> ));
+		loader.find( <span class="hljs-string">'.loader,.loader:before,.loader:after'</span> ).css({
+			<span class="hljs-attr">borderTopColor</span>: $( <span class="hljs-string">'#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, #adminmenu li.current a.menu-top, .folded #adminmenu li.wp-has-current-submenu, .folded #adminmenu li.current.menu-top, #adminmenu .wp-menu-arrow, #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu .wp-menu-arrow div,#publish'</span> ).css( <span class="hljs-string">'background-color'</span> ),
+		});
+		loader.find( <span class="hljs-string">'.centerer'</span> ).css({
+			<span class="hljs-attr">backgroundColor</span>: $( <span class="hljs-string">'#wpadminbar'</span> ).css( <span class="hljs-string">'background-color'</span> ),
+		});
+		$( <span class="hljs-string">'body'</span> ).append( loader );
+		<span class="hljs-keyword">return</span> loader;
+	};
+})( iThoughts );</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
