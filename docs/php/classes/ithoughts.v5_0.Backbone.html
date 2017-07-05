@@ -114,7 +114,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">78</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">58</span>
                                 </a>
                             </li>
                             <li>
@@ -144,35 +144,34 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-837664022"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2017574109"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-837664022" class="accordion-body collapse in">
+            <div id="namespace-2017574109" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1805051688"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1109928399"></a>
                                 <a href="../namespaces/ithoughts.html" style="margin-left: 30px; padding-left: 0">ithoughts</a>
             </div>
-            <div id="namespace-1805051688" class="accordion-body collapse ">
+            <div id="namespace-1109928399" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-315795073"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-385003606"></a>
                                 <a href="../namespaces/ithoughts.v1_0.html" style="margin-left: 30px; padding-left: 0">v1_0</a>
             </div>
-            <div id="namespace-315795073" class="accordion-body collapse ">
+            <div id="namespace-385003606" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                     <li class="interface"><a href="../classes/ithoughts.v1_0.PseudoPost.html">PseudoPost</a></li>
-                                                                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Module.html">Module</a></li>
-                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Singleton.html">Singleton</a></li>
+                                                                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Singleton.html">Singleton</a></li>
                                             </ul>
                 </div>
             </div>
@@ -182,10 +181,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1457186255"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-137450841"></a>
                                 <a href="../namespaces/ithoughts.v5_0.html" style="margin-left: 30px; padding-left: 0">v5_0</a>
             </div>
-            <div id="namespace-1457186255" class="accordion-body collapse ">
+            <div id="namespace-137450841" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -317,7 +316,7 @@
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/class-backbone.html"><div class="path-wrapper">class-backbone.php</div></a></dd>
+                            <dd><a href="../files/class.class-backbone.html"><div class="path-wrapper">class/class-backbone.php</div></a></dd>
                                                 <dt>Package</dt>
                             <dd><div class="namespace-wrapper">iThoughts\iThoughts WordPress Plugin Toolbox</div></dd>
                                                 <dt>Class hierarchy</dt>
@@ -361,13 +360,12 @@
             <article class="property">
                 <h3 class="protected ">$options</h3>
                 <pre class="signature">$options : mixed</pre>
-                <p><em></em></p>
-                
+                <p><em>Plugin options.</em></p>
+                <p>This value is set by first call to <code>get_option</code> or <code>get_options</code> with <code>onlyDefaults</code> set to false</p>
 
                                 <h4>Type</h4>
                 mixed
-                &mdash; Plugin options.
-This value is set by first call to `get_option` or `get_options` with `onlyDefaults` set to false                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -404,13 +402,12 @@ This value is set by first call to `get_option` or `get_options` with `onlyDefau
             <article class="property">
                 <h3 class="protected ">$defaultOptions</h3>
                 <pre class="signature">$defaultOptions : mixed</pre>
-                <p><em></em></p>
-                
+                <p><em>Plugin default options.</em></p>
+                <p>This value is used as options when calling <code>get_option</code> or <code>get_options</code> with <code>onlyDefaults</code> set to true</p>
 
                                 <h4>Type</h4>
                 mixed
-                &mdash; Plugin default options
-This value is used as options when calling `get_option` or `get_options` with `onlyDefaults` set to true                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -447,13 +444,12 @@ This value is used as options when calling `get_option` or `get_options` with `o
             <article class="property">
                 <h3 class="protected ">$optionsName</h3>
                 <pre class="signature">$optionsName : string</pre>
-                <p><em></em></p>
-                
+                <p><em>Identifier of the plugin options.</em></p>
+                <p>Used in the wordpress option table, as the <code>option_name</code> column value</p>
 
                                 <h4>Type</h4>
                 string
-                &mdash; Identifier of the plugin options
-Used in the wordpress option table, as the `option_name` column value                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -487,12 +483,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$base_path</h3>
                 <pre class="signature">$base_path : string</pre>
-                <p><em></em></p>
+                <p><em>Path to the root directory of the plugin, eg the one containing readme.txt</em></p>
                 
 
                                 <h4>Type</h4>
                 string
-                &mdash; Path to the root directory of the plugin, eg the one containing readme.txt                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -526,12 +522,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$base_lang_path</h3>
                 <pre class="signature">$base_lang_path : string</pre>
-                <p><em></em></p>
+                <p><em>Path to the lang directory</em></p>
                 
 
                                 <h4>Type</h4>
                 string
-                &mdash; Path to the lang directory                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -565,12 +561,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$base_class_path</h3>
                 <pre class="signature">$base_class_path : string</pre>
-                <p><em></em></p>
+                <p><em>Path to the class directory</em></p>
                 
 
                                 <h4>Type</h4>
                 string
-                &mdash; Path to the class directory                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -604,12 +600,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$base_url</h3>
                 <pre class="signature">$base_url : string</pre>
-                <p><em></em></p>
+                <p><em>URL to the root directory</em></p>
                 
 
                                 <h4>Type</h4>
                 string
-                &mdash; URL to the root directory                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -644,12 +640,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$minify</h3>
                 <pre class="signature">$minify : boolean</pre>
-                <p><em></em></p>
+                <p><em>Minifying prefix</em></p>
                 
 
                                 <h4>Type</h4>
                 boolean
-                &mdash; Minifying prefix                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -683,12 +679,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$scripts</h3>
                 <pre class="signature">$scripts : array&lt;mixed,string&gt;</pre>
-                <p><em></em></p>
+                <p><em>Scripts to enqueue</em></p>
                 
 
                                 <h4>Type</h4>
                 array&lt;mixed,string&gt;
-                &mdash; Scripts to enqueue                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -714,12 +710,12 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="property">
                 <h3 class="protected ">$resources</h3>
                 <pre class="signature">$resources : array&lt;mixed,Resource&gt;</pre>
-                <p><em></em></p>
+                <p><em>Resources managed by this plugin</em></p>
                 
 
                                 <h4>Type</h4>
                 array&lt;mixed,Resource&gt;
-                &mdash; Resources managed by this plugin                            </article>
+                                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -911,12 +907,12 @@ Used in the wordpress option table, as the `option_name` column value           
                                                     <tr>
                                 <td><a href="../classes/ithoughts.v5_0.LogLevel.html">\ithoughts\v5_0\LogLevel</a></td>
                                 <td>$level </td>
-                                <td><p>Log level of this message. Must be one of the constants of LogLevel class</p></td>
+                                <td><p>Log level of this message. Must be one of the constants of LogLevel class.</p></td>
                             </tr>
                                                     <tr>
                                 <td>mixed</td>
                                 <td>$data </td>
-                                <td><p>Datas to log. You can put unlimited number of parameters.</p></td>
+                                <td><p>Datas to log. You can put unlimited number of parameters..</p></td>
                             </tr>
                                             </table>
                 
@@ -1065,16 +1061,16 @@ Used in the wordpress option table, as the `option_name` column value           
             <article class="method">
                 <h3 class="public ">set_options()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_options(  <span class="argument">$options</span>, boolean  <span class="argument">$update = true</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">set_options(array  <span class="argument">$options</span>, boolean  <span class="argument">$update = true</span>) : array</pre>
                 <p><em>Set plugin options</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>array</td>
                                 <td>$options </td>
-                                <td></td>
+                                <td><p>Set options of the plugin</p></td>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
@@ -1654,7 +1650,7 @@ Used in the wordpress option table, as the `option_name` column value           
                                                     <tr>
                                 <td>string</td>
                                 <td>$scriptName </td>
-                                <td><p>Name of the script</p></td>
+                                <td><p>Name of the script.</p></td>
                             </tr>
                                             </table>
                 
@@ -1697,7 +1693,7 @@ Used in the wordpress option table, as the `option_name` column value           
                                                     <tr>
                                 <td>array&lt;mixed,string&gt;</td>
                                 <td>$scriptNames </td>
-                                <td><p>Name of scripts</p></td>
+                                <td><p>Name of scripts.</p></td>
                             </tr>
                                             </table>
                 
@@ -1772,6 +1768,11 @@ Used in the wordpress option table, as the `option_name` column value           
                 
 
                 
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>if basepath is not set before calling the constructor.</p></dd>
+                                                                    </dl>
                 
                 				
                             </article>
@@ -1844,7 +1845,7 @@ Used in the wordpress option table, as the `option_name` column value           
             <h3 id="source-view-label">class-backbone.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/class-backbone.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/class/class-backbone.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
@@ -1885,7 +1886,7 @@ Used in the wordpress option table, as the `option_name` column value           
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 28th, 2017 at 20:49.
+                    on July 5th, 2017 at 13:21.
                 </section>
             </section>
         </section>

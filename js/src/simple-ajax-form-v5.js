@@ -80,6 +80,10 @@
 									res.data.valid = res.success;
 									res = res.data;
 								}
+								// If a nonce refresh token is present, try to update it
+								if ( res.nonce_refresh ) {
+									$form.find( '[name="_wpnonce"]' ).val( res.nonce_refresh );
+								}
 								// Handle raw response
 								if ( !res.valid ) {
 									if ( formopts.target && $( `#${ formopts.target }` ).length ) {

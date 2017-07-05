@@ -9,13 +9,16 @@
  *
  * @version 3.0
  */
+
 namespace ithoughts\v1_0;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 if(!interface_exists(__NAMESPACE__."\\PseudoPost")){
 	/**
-	 * PseudoPost interface is a way to create custom WP_Post castable to WordPress core
+	 * PseudoPost interface is a way to create custom posts castable to WordPress core WP_Post
+	 *
+	 * @author Gerkin
 	 */
 	interface PseudoPost{
 		function to_WP_Post();

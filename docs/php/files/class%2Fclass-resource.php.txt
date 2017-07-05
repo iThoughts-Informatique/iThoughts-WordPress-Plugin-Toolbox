@@ -13,7 +13,7 @@
 namespace ithoughts\v5_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__.'\\Resource')){
@@ -35,9 +35,11 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 	}
 
 	/**
-	 * Abstract class to generate {@link Script} or {@link Style} class instances
+	 * Abstract class to generate Script or Style class instances
 	 *
 	 * @author Gerkin
+	 * @see Script Resouce for a js file
+	 * @see Style Resource for a css file
 	 */
 	abstract class Resource {
 		/**
@@ -49,7 +51,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $identifier;
 
 		/**
-		 * @var string $filenameFilename of this resource.
+		 * @var string $filename Filename of this resource.
 		 * Path to the resource file relative to the plugin folder. It will be used as 2nd parameter of wp_register_*
 		 *
 		 * @author Gerkin
@@ -57,8 +59,8 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $filename;
 
 		/**
-		 * @var string[] $dependencies Dependencies of this resource.
-		 * Dependencies to print before this resource. It will be used as 3rd parameter of wp_register_*
+		 * @var string[] $dependencies List of resource identifiers to load before this one.
+		 * It will be used as 3rd parameter of wp_register_*
 		 *
 		 * @author Gerkin
 		 */
@@ -102,7 +104,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			} else if(Toolbox::endswith($filename, 'css')){
 				$className = 'Style';
 			} else {
-				$backbone->log(LogLevel::Warn, "Unable to get the type of \"$filename\"");
+				$backbone->log(LogLevel::WARN, "Unable to get the type of \"$filename\"");
 				return null;
 			}
 			// Then, get the reflection class that will be used to spawn the instance with variadic args
@@ -153,7 +155,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 						$filename
 					)
 				)){
-					$this->backbone->log(LogLevel::Info, "Minified version \"{$this->filename}\" not found, falling back to \"$filename\".");
+					$this->backbone->log(LogLevel::INFO, "Minified version \"{$this->filename}\" not found, falling back to \"$filename\".");
 					$filename = $this->filename;
 				}
 			}
@@ -178,6 +180,19 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public $localizeId;
 		public $localizeData = array();
 
+		/**
+		 * Build a new Script
+		 * @private
+		 * @param Backbone $backbone              Backbone plugin instance. Paths & urls of this script will be relative to this plugin
+		 * @param string   $identifier            Unique identifier of this script.
+		 * @param string   $filename              Path to the script relative to the plugin of `backbone`
+		 * @param string[] [$dependencies = NULL] Other scripts identifiers to load before this script
+		 * @param boolean  [$admin = false]       Indicates if this resource should be loaded only on admin pages
+		 * @param string   [$localizeId = NULL]   Identifier of JavaScript data related to this script
+		 * @param mixed    [$localizeData = NULL] Data to attach to this script. This data will be stored in window[$localizeId]
+		 *
+		 * @author Gerkin
+		 */
 		public function __construct($backbone, $identifier, $filename, $dependencies = NULL, $admin = false, $localizeId = NULL, $localizeData = NULL){
 			$this->backbone = $backbone;
 			$this->identifier = $identifier;
@@ -189,6 +204,12 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->file_url = $this->get_maybe_minified('.js');
 		}
 
+		/**
+		 * Register the script if admin conditions are met
+		 *
+		 * @see wp_register_script Wordpress function to register script
+		 * @author Gerkin
+		 */
 		public function register(){
 			if( $this->admin === true && is_admin() !== true){
 				return;
@@ -203,6 +224,14 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->set_localize_data($this->localizeId, $this->localizeData);
 		}
 
+		/**
+		 * Attach data to this script
+		 * @param string $label Identifier of JavaScript data
+		 * @param mixed  $data  Data to store on the global JavaScript scope
+		 *
+		 * @see wp_localize_script Wordpress function to attach data to a script
+		 * @author Gerkin
+		 */
 		public function set_localize_data($label, $data){
 			if(isset($label)){
 				$this->localizeId = $label;
@@ -211,12 +240,29 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			}
 		}
 
+		/**
+		 * Request to load this script on client side
+		 *
+		 * @see wp_enqueue_script Wordpress function to load a script
+		 * @author Gerkin
+		 */
 		public function enqueue(){
 			wp_enqueue_script($this->identifier);
 		}
 	}
 
 	class Style extends Resource {
+		/**
+		 * Build a new Style
+		 * @private
+		 * @param Backbone $backbone              Backbone plugin instance. Paths & urls of this stylesheet will be relative to this plugin
+		 * @param string   $identifier            Unique identifier of this stylesheet.
+		 * @param string   $filename              Path to the stylesheet relative to the plugin of `backbone`
+		 * @param string[] [$dependencies = NULL] Other stylesheets identifiers to load before this stylesheet
+		 * @param boolean  [$admin = false]       Indicates if this resource should be loaded only on admin pages
+		 *
+		 * @author Gerkin
+		 */
 		public function __construct($backbone, $identifier, $filename, $dependencies = NULL, $admin = false){
 			$this->backbone = $backbone;
 			$this->identifier = $identifier;
@@ -226,6 +272,12 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->file_url = $this->get_maybe_minified('.js');
 		}
 
+		/**
+		 * Register the stylesheet if admin conditions are met
+		 *
+		 * @see wp_register_style Wordpress function to register stylesheets
+		 * @author Gerkin
+		 */
 		public function register(){
 			if( $this->admin === true && is_admin() !== true){
 				return;
@@ -240,6 +292,12 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			);
 		}
 
+		/**
+		 * Request to load this stylesheet on client side
+		 *
+		 * @see wp_enqueue_style Wordpress function to load a stylesheet
+		 * @author Gerkin
+		 */
 		public function enqueue(){
 			wp_enqueue_style($this->identifier);
 		}

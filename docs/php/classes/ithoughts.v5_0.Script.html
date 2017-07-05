@@ -114,7 +114,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">78</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">58</span>
                                 </a>
                             </li>
                             <li>
@@ -144,35 +144,34 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-704072574"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-817800758"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-704072574" class="accordion-body collapse in">
+            <div id="namespace-817800758" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-801852772"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-341353162"></a>
                                 <a href="../namespaces/ithoughts.html" style="margin-left: 30px; padding-left: 0">ithoughts</a>
             </div>
-            <div id="namespace-801852772" class="accordion-body collapse ">
+            <div id="namespace-341353162" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1273449048"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1632677867"></a>
                                 <a href="../namespaces/ithoughts.v1_0.html" style="margin-left: 30px; padding-left: 0">v1_0</a>
             </div>
-            <div id="namespace-1273449048" class="accordion-body collapse ">
+            <div id="namespace-1632677867" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                     <li class="interface"><a href="../classes/ithoughts.v1_0.PseudoPost.html">PseudoPost</a></li>
-                                                                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Module.html">Module</a></li>
-                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Singleton.html">Singleton</a></li>
+                                                                                                    <li class="class"><a href="../classes/ithoughts.v1_0.Singleton.html">Singleton</a></li>
                                             </ul>
                 </div>
             </div>
@@ -182,10 +181,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-374212098"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-805712594"></a>
                                 <a href="../namespaces/ithoughts.v5_0.html" style="margin-left: 30px; padding-left: 0">v5_0</a>
             </div>
-            <div id="namespace-374212098" class="accordion-body collapse ">
+            <div id="namespace-805712594" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -231,7 +230,7 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\ithoughts\v5_0</small>Script</h1>
-                    <p><em>Abstract class to generate {@link Script} or {@link Style} class instances</em></p>
+                    <p><em>Abstract class to generate Script or Style class instances</em></p>
                     
                     
                                         
@@ -299,7 +298,7 @@
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/class-resource.html"><div class="path-wrapper">class-resource.php</div></a></dd>
+                            <dd><a href="../files/class.class-resource.html"><div class="path-wrapper">class/class-resource.php</div></a></dd>
                                                 <dt>Package</dt>
                             <dd><div class="namespace-wrapper">iThoughts\iThoughts WordPress Plugin Toolbox</div></dd>
                                                 <dt>Class hierarchy</dt>
@@ -375,7 +374,7 @@ This identifier is used to &quot;name&quot; that resource. It will be used as 1s
 
                                 <h4>Type</h4>
                 string
-                &mdash; of this resource.
+                &mdash; Filename of this resource.
 Path to the resource file relative to the plugin folder. It will be used as 2nd parameter of wp_register_*                            </article>
         </div>
         <aside class="span4 detailsbar">
@@ -409,8 +408,8 @@ Path to the resource file relative to the plugin folder. It will be used as 2nd 
 
                                 <h4>Type</h4>
                 array&lt;mixed,string&gt;
-                &mdash; Dependencies of this resource.
-Dependencies to print before this resource. It will be used as 3rd parameter of wp_register_*                            </article>
+                &mdash; List of resource identifiers to load before this one.
+It will be used as 3rd parameter of wp_register_*                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -681,7 +680,7 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
                 <h3 class="public ">register()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">register() </pre>
-                <p><em>Should call wp_register_script or wp_register_style on this resource.</em></p>
+                <p><em>Register the script if admin conditions are met</em></p>
                 
 
                 
@@ -692,10 +691,19 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
-                                                                            </dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">Wordpress function to register script</span></a></dd>
+                                                                </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -707,7 +715,7 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
                 <h3 class="public ">enqueue()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">enqueue() </pre>
-                <p><em>Should call wp_enqueue_script or wp_enqueue_style on this resource.</em></p>
+                <p><em>Request to load this script on client side</em></p>
                 
 
                 
@@ -718,10 +726,19 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
-                                                                            </dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">Wordpress function to load a script</span></a></dd>
+                                                                </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -770,26 +787,26 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(  <span class="argument">$backbone</span>,   <span class="argument">$identifier</span>,   <span class="argument">$filename</span>,   <span class="argument">$dependencies = NULL</span>,   <span class="argument">$admin = false</span>,   <span class="argument">$localizeId = NULL</span>,   <span class="argument">$localizeData = NULL</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">__construct(\ithoughts\v5_0\Backbone  <span class="argument">$backbone</span>, string  <span class="argument">$identifier</span>, string  <span class="argument">$filename</span>,   <span class="argument">$dependencies = NULL</span>,   <span class="argument">$admin = false</span>,   <span class="argument">$localizeId = NULL</span>,   <span class="argument">$localizeData = NULL</span>) </pre>
+                <p><em>Build a new Script</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td><a href="../classes/ithoughts.v5_0.Backbone.html">\ithoughts\v5_0\Backbone</a></td>
                                 <td>$backbone </td>
-                                <td></td>
+                                <td><p>Backbone plugin instance. Paths &amp; urls of this script will be relative to this plugin</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$identifier </td>
-                                <td></td>
+                                <td><p>Unique identifier of this script.</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$filename </td>
-                                <td></td>
+                                <td><p>Path to the script relative to the plugin of <code>backbone</code></p></td>
                             </tr>
                                                     <tr>
                                 <td></td>
@@ -823,7 +840,22 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                    <tr>
+                        <th>
+                            private
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -834,21 +866,21 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
             <article class="method">
                 <h3 class="public ">set_localize_data()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_localize_data(  <span class="argument">$label</span>,   <span class="argument">$data</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">set_localize_data(string  <span class="argument">$label</span>, mixed  <span class="argument">$data</span>) </pre>
+                <p><em>Attach data to this script</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$label </td>
-                                <td></td>
+                                <td><p>Identifier of JavaScript data</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>mixed</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>Data to store on the global JavaScript scope</p></td>
                             </tr>
                                             </table>
                 
@@ -859,10 +891,19 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
-                                                                            </dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">Wordpress function to attach data to a script</span></a></dd>
+                                                                </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Gerkin</p>
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -922,7 +963,7 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
             <h3 id="source-view-label">class-resource.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/class-resource.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/class/class-resource.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
@@ -963,7 +1004,7 @@ Dependencies to print before this resource. It will be used as 3rd parameter of 
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 28th, 2017 at 20:49.
+                    on July 5th, 2017 at 13:21.
                 </section>
             </section>
         </section>

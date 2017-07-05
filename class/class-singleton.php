@@ -13,7 +13,7 @@
 namespace ithoughts\v1_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Singleton")){
@@ -31,7 +31,12 @@ if(!class_exists(__NAMESPACE__."\\Singleton")){
 		 */
 		private static $singletons = array();
 
-		protected abstract function __construct();
+		/**
+		 * Singletons are not constructible directly
+		 *
+		 * @author Gerkin
+		 */
+		private function __construct(){}
 
 		/**
 		 * Get the singleton instance.

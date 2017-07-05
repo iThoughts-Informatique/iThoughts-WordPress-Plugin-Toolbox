@@ -163,6 +163,23 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
+              <p>If a nonce refresh token is present, try to update it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>								<span class="hljs-keyword">if</span> ( res.nonce_refresh ) {
+									$form.find( <span class="hljs-string">'[name="_wpnonce"]'</span> ).val( res.nonce_refresh );
+								}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
               <p>Handle raw response</p>
 
             </div>

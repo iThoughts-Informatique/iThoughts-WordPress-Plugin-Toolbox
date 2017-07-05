@@ -13,24 +13,25 @@
 namespace ithoughts\v5_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Toolbox")){
 	/**
 	 * General toolbox class used across all plugins
+	 *
+	 * @author Gerkin
 	 */
 	abstract class Toolbox {
-
 		/**
 		 * Concatenate attributes to generate a string to use in HTML tags
-		 *
 		 * @param string[] $attrs Associative array of key/values to concatenate
-		 *
 		 * @return string Concatenated attributes
+		 *
+		 * @author Gerkin
 		 */
 		public static final function concat_attrs($attrs){
-			$str = "";
+			$str = '';
 			foreach($attrs as $key => $value){
 				if(isset($value) && $value !== NULL){
 					$str .= ' '.$key.'="'.htmlentities($value).'"';
@@ -41,113 +42,92 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Generate a select input
-		 *
-		 * @todo Describe options
-		 *
 		 * @param string $name Name (and default id) of the input
-		 * @param mixed[] $options Options for the input
+		 * @param mixed $options Options for the input
+		 * @return string Input generated
 		 *
 		 * @uses Toolbox::concat_attrs()
-		 *
-		 * @return string Input generated
+		 * @todo Describe options
+		 * @author Gerkin
 		 */
 		public static final function generate_input_select($name, $options){
 			$strret = '<select name="'.$name.'"';
-			if(!isset($options["attributes"]))
-				$options["attributes"] = array();
-			if(!isset($options["attributes"]["id"]))
-				$options["attributes"]["id"] = $name;
-			if(!isset($options["attributes"]["autocomplete"]))
-				$options["attributes"]["autocomplete"] = "off";
-			if(isset($options["required"]) && $options["required"])
-				$options["attributes"]["required"] = "required";
 
-			$strret .= Toolbox::concat_attrs($options["attributes"]);
-			if(isset($options["multiple"]) && $options["multiple"])
-				$strret .= " multiple";
-			$strret .= ">";
+			// Set defaults
+			if(!isset($options['attributes']))
+				$options['attributes'] = array();
+			if(!isset($options['attributes']['id']))
+				$options['attributes']['id'] = $name;
+			if(!isset($options['attributes']['autocomplete']))
+				$options['attributes']['autocomplete'] = 'off';
+			if(isset($options['required']) && $options['required'])
+				$options['attributes']['required'] = 'required';
 
-			if(isset($options["allow_blank"])){ // Blank is allowed, so it is the default if no selection
-				if(!isset($options["selected"]) || $options["selected"] == NULL || $options["selected"] == "" || $options["selected"] == array())
-					$strret .= '<option value="" selected>'.$options["allow_blank"].'</option>';
-				else
-					$strret .= '<option value="">'.$options["allow_blank"].'</option>';
+			// Add attributes to the HTML tag
+			$strret .= Toolbox::concat_attrs($options['attributes']);
+			if(isset($options['multiple']) && $options['multiple'])
+				$strret .= ' multiple';
+			$strret .= '>';
+
+			// Set behavior when nothing is selected
+			if(isset($options['allow_blank'])){ // Blank is allowed, so it is the default if no selection
+				if(!isset($options['selected']) || $options['selected'] == NULL || $options['selected'] == "" || $options['selected'] == array()) {
+					$strret .= '<option value="" selected>'.$options['allow_blank'].'</option>';
+				} else {
+					$strret .= '<option value="">'.$options['allow_blank'].'</option>';
+				}
 			}
 
-			if(isset($options["options"]) && is_array($options["options"])){
-				if(array_values($options["options"]) === $options["options"]){
-					foreach($options["options"] as $value){
+			// Print children options
+			if(isset($options['options']) && is_array($options['options'])){
+				if(array_values($options['options']) === $options['options']){
+					// If pure array, value & label are identical
+					foreach($options['options'] as $value){
 						$strret .= '<option value="'.$value.'">'.$value.'</option>';
 					}
 				} else {
-					foreach($options["options"] as $key => $value){
+					// If associative array, array key is the value, and array value describe options
+					foreach($options['options'] as $key => $value){
 						$strret .= '<option value="'.$key.'" ';
 						if(is_array($value)){
-							if(!isset($value["attributes"]))
-								$value["attributes"] = array();
-							$strret .= Toolbox::concat_attrs($value["attributes"]);
+							// Attributes on each options
+							if(!isset($value['attributes']))
+								$value['attributes'] = array();
+							$strret .= Toolbox::concat_attrs($value['attributes']);
 						}
-						if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($key, $options["selected"])) || (!is_array($options["selected"]) && $options["selected"] == $key)))
+						// Select option if required
+						if(isset($options['selected']) && ((is_array($options['selected']) && in_array($key, $options['selected'])) || (!is_array($options['selected']) && $options['selected'] == $key)))
 							$strret .= ' selected="selected"';
 						$strret .= '>';
+						// Text of this option
 						if(is_array($value)){
-							if(isset($value["text"]) && $value["text"]){
-								$strret .= $value["text"];
+							if(isset($value['text']) && $value['text']){
+								$strret .= $value['text'];
 							} else {
 								$strret .= $key;
 							}
 						} else {
 							$strret .= $value;
 						}
+						// Close the tag
 						$strret .= '</option>';
 					}
 				}
 			}
 
-			$strret .= "</select>";
+			$strret .= '</select>';
 			return $strret;
 		}
 
-
-
-		/* Format:
-		$ret = Toolbox::generate_input_check(
-			"name",
-			array(
-				"radio" => false, // Will display the inputs as radio buttons if true, checkboxes elsewhere
-				"selected" => array("opt1", "opt2"), // The current value(s) selected. If one single, accepts string
-				"options" => array(
-					"opt1" => array(
-						"attributes" => array() // Optionnal. All attributes in this array will be concatenated in the input, eg styles, ID, class, etc
-					),
-					"opt2" => array(
-						"attributes" => array(
-							"style" => "color: #fff;"
-						)
-					),
-					"opt3" => array()
-					),
-				)
-			)
-		);
-
-		// Will return an array, then display each checkbox that way:
-		> echo $ret["opt2"];
-
-		>> <input type="checkbox" checked="checked" style="color:#fff;" name="name" value="opt2" id="name_opt2"/>
-		*/
-
 		/**
-		 * Generate one or several check/radio input
-		 *
-		 * @todo Describe options
-		 *
+		 * Generate one or several check/radio inputs
 		 * @param string $name Name (and default base id) of the input(s)
-		 * @param mixed[] $options Options for the input(s)
+		 * @param mixed $options Options for the input(s)
+		 * @return string|string[] Input(s) generated
 		 *
 		 * @uses Toolbox::concat_attrs()
-		 *
-		 * @return string|string[] Input(s) generated
+		 * @todo Describe options
+		 * @author Gerkin
 		 */
 		public static final function generate_input_check($name, $options){
 			$ret = array();
@@ -215,16 +195,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Generate a color input
-		 *
-		 * @todo Describe options
 		 * @ignore
-		 *
 		 * @param string $name Name (and default id) of the input
 		 * @param mixed[] $options Options for the input
+		 * @return string Input generated
 		 *
 		 * @uses Toolbox::concat_attrs()
-		 *
-		 * @return string Input generated
+		 * @todo Describe options
+		 * @author Gerkin
 		 */
 		public static final function generate_input_color($name, $value){
 
@@ -232,15 +210,13 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Generate a text input
-		 *
-		 * @todo Describe options
-		 *
 		 * @param string $name Name (and default id) of the input
 		 * @param mixed[] $options Options for the input
+		 * @return string Input generated
 		 *
 		 * @uses Toolbox::concat_attrs()
-		 *
-		 * @return string Input generated
+		 * @todo Describe options
+		 * @author Gerkin
 		 */
 		public static final function generate_input_text($name, $options){
 			$str;
@@ -295,16 +271,15 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Replace all characters of set `$from` by those in `$to` set.
-		 *
 		 * By default, this function behave to return the unaccented equivalent of the input string.
-		 *
 		 * @param string $text String to transform
 		 * @param string $from (optional) Characters to replace
 		 * @param string $to (optional) Replacement set
-		 * @param string $encoding (optional) Encoding used for replacement
+		 * @param string [$encoding = 'UTF-8'] Encoding used for replacement
 		 * @uses mb_strpos mb_strpos for handling multiple encodings
-		 *
 		 * @return string Encoded string ready to be put into attribute
+		 *
+		 * @author Gerkin
 		 */
 		public static final function unaccent( $text, $from = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", $to = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn", $encoding = "UTF-8" ){
 			$l = mb_strlen($text, $encoding);
@@ -322,15 +297,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Decode JSON attribute to array.
-		 *
 		 * Encoding an object this way allow you to encode JSON to put it into HTML attributes. `"` are replaced by `&aquot;`. Note the `a` to avoid conflict with HTML entities
-		 *
 		 * @param string $str String to decode
 		 * @param bool $ampEncoded (optional) Decode JSON encoded like with encode_json_attribute in form if true or escaped by TinyMCE if false
+		 * @return string Encoded string ready to be put into attribute
+		 *
 		 * @see Toolbox::encode_json_attr()
 		 * @todo Check behavior and usage to better explain usage
-		 *
-		 * @return string Encoded string ready to be put into attribute
+		 * @author Gerkin
 		 */
 		public static final function decode_json_attr($str, $ampEncoded = false){
 			if($ampEncoded)
@@ -341,30 +315,27 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Encode array to string attribute
-		 *
 		 * Encoding an array this way allow you to encode JSON to put it into HTML attributes with special html-entity like escaping. `"` are replaced by `&aquot;`. Note the `a` to avoid conflict with HTML entities
-		 *
-		 * @param mixed[] $array Array to encode
-		 *
+		 * @param mixed $array Array to encode
 		 * @return string Encoded string ready to be put into attribute
+		 *
+		 * @author Gerkin
 		 */
 		public static final function encode_json_attr($array){
 			return str_replace('"', "&aquot;", json_encode($array));
 		}
 
-
 		/**
 		 * Reduce a nested array to a single level array
-		 *
 		 * <p>
 		 * Reduce a nested array (associative or simple) to a single level array. Simple arrays will be unwrapped and stacked at the same position. In associative array, the less deep key is kept.
 		 * <pre><code>Toolbox::array_flatten(array(array(1,2),array(3,4))); // will output array(1,2,3,4)
 		 * Toolbox::array_flatten(array(1 => 1,2 => array(1 => "A",3 => 3)));	// will output array(1 => 1, 3 => 3)
 		 * </code></pre>
-		 *
 		 * @param mixed[] $array    The multilevel array to flatten
-		 *
 		 * @return mixed[]    Return a single level array
+		 *
+		 * @author Gerkin
 		 */
 		public static final function array_flatten($array) {
 			$return = array();
@@ -379,15 +350,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			return $return;
 		}
 
-
 		/**
 		 * Conver a checkbox value to a boolean that indicates if it was checked
-		 *
 		 * @param mixed[] $values    The associative array supposed to contain the key $key
 		 * @param string  $key       The key to check. Usually, it is the name of the input
 		 * @param string|string[]  $truevalues The value of the checkbox
-		 *
 		 * @return bool    Returns true if the checkbox was checked
+		 *
+		 * @author Gerkin
 		 */
 		public static final function checkbox_to_bool($values,$key, $truevalues){
 			if(is_array($truevalues)){
@@ -415,13 +385,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 		/**
 		 * Generates the permalink for given post type depending on $post
-		 * @author Gerkin
 		 * @param  \WP_Post $post				The      light post
 		 * @param  {string} [$post.post_name]	The post_name (slug) of the post we generate permalink for
 		 * @param  {string} [$post.ID]	        Id of the post
 		 * @param  string   $post_type			The   post type of the given post
 		 * @return string   The post permalink
+		 *
 		 * @since 1.2
+		 * @author Gerkin
 		 */
 		public static function get_permalink_light(\WP_Post $post, $post_t){
 			global $wp_rewrite;
@@ -452,13 +423,15 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			return substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", $len)), 0, $len);
 		}
 
-
 		/**
 		 * Check if $string ends with $test
 		 * @param  string  $string Checked string
 		 * @param  string  $test   String to search
 		 * @return boolean True if $test is present at the end of $string
-		 * @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string
+		 *
+		 * @link https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string
+		 * @since 5.0.0
+		 * @author Gerkin
 		 */
 		public static function endswith($string, $test) {
 			$strlen = strlen($string);
@@ -471,7 +444,10 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * Join paths segments
 		 * @param string $path,... Segments of path to join
 		 * @return string Resulting paths
-		 * @see https://stackoverflow.com/questions/1091107/how-to-join-filesystem-path-strings-in-php#answer-15575293
+		 *
+		 * @link https://stackoverflow.com/questions/1091107/how-to-join-filesystem-path-strings-in-php#answer-15575293
+		 * @since 5.0.0
+		 * @author Gerkin
 		 */
 		public static function join_paths($base) {
 			$paths = array();

@@ -10,4 +10,3 @@ require_once("class/class-backbone.php");
 require_once("class/class-toolbox.php");
 require_once("class/class-pseudopost.php");
 require_once("class/class-resource.php");
-
