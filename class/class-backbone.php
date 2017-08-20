@@ -13,7 +13,7 @@
 namespace ithoughts\v5_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly.
+	status_header( 403 );wp_die("Forbidden");// Exit if accessed directly.
 }
 
 if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
@@ -40,25 +40,25 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 * Plugin default options.
 		 * This value is used as options when calling `get_option` or `get_options` with `onlyDefaults` set to true
 		 *
-		 * @var	mixed	$defaultOptions
+		 * @var	mixed	$default_options
 		 *
 		 * @see Backbone::get_option	Retrieve a single option
 		 * @see Backbone::get_options	Retrieve all options
 		 * @author Gerkin
 		 * @category Options
 		 */
-		protected $defaultOptions;
+		protected $default_options;
 
 		/**
 		 * Identifier of the plugin options.
 		 * Used in the wordpress option table, as the `option_name` column value
 		 *
-		 * @var	string	$optionsName
+		 * @var	string	$options_name
 		 *
 		 * @author Gerkin
 		 * @category Options
 		 */
-		protected $optionsName;
+		protected $options_name;
 
 		/**
 		 * Path to the root directory of the plugin, eg the one containing readme.txt
@@ -142,7 +142,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			}
 			// If `base_url` is not set, define it by getting the url to this plugin.
 			if ( null === $this->base_url ) {
-				$this->base_url = plugins_url() . '/' . dirname( plugin_basename( $this->base_path ) );
+				$this->base_url = plugins_url() . '/' . plugin_basename( $this->base_path );
 			}
 			// Then change to parent directory.
 			$this->base_path = dirname( $this->base_path );
@@ -241,7 +241,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			}
 
 			// Get the log path & args.
-			$filename = "{$this->base_path}/{$this->optionsName}.log";
+			$filename = "{$this->base_path}/{$this->options_name}.log";
 			$file = fopen( $filename, 'a+' );
 			if ( false === $file ) {
 				return;
@@ -249,19 +249,47 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			$args = func_get_args();
 			array_shift( $args );
 
-			// Do the log.
+			// Generate & write the log header
 			$date = gmdate( 'Y-m-d H:i:s' );
-			fwrite( $file, "$date [$mode_name] => " );
+			$bt = debug_backtrace();
+			$caller = array_shift($bt);
+			$plugin_name = plugin_basename( $this->base_path );
+			$call_file = preg_replace("/.*?$plugin_name\\/(.*)/", '$1', $caller['file']);
+			$call_line = $caller['line'];
+			$header = "$date [$mode_name] (from $call_file l.$call_line) => \"";
+			fwrite( $file, $header );
+
+			// Do the log.
 			foreach ( $args as $arg ) {
 				$str = $arg;
 				$type = gettype( $arg );
 				if ( in_array( $type, array( 'object', 'array', 'resource', 'unknown type' ) ) ) {
 					$str = print_r( $arg, true );
 				}
-				fwrite( $file, $str . ' ' );
+				fwrite( $file, preg_replace('/"/', '\\"', $str) . ' ' );
 			}
-			fwrite( $file, "\n" );
+			fwrite( $file, "\"\n" );
 			fclose( $file );
+		}
+
+		public function parse_log_file(){
+			// Open and read the log file.
+			$filename = "{$this->base_path}/{$this->options_name}.log";
+			$file = fopen( $filename, 'a+' );
+			$content = fread($file, filesize($filename));
+
+			// Parse log messages.
+			$regex = '/^(?\'year\'\d{4})-(?\'month\'\d{2})-(?\'day\'\d{2}) (?\'hour\'\d{2}):(?\'min\'\d{2}):(?\'sec\'\d{2}) \[(?\'level\'\w+)\] \(from (?\'file\'[a-zA-Z0-9\/\-\._]+) l\.(?\'line\'\d+)\) => "(?\'message\'.*?)(?<!\\\\)"$/ms';
+			preg_match_all($regex, $content, $matches, PREG_SET_ORDER, 0);
+
+			// Filter indexes to keep only named groups.
+			foreach($matches as $k => $v) {
+				if(is_int($k)) {
+					unset($matches[$k]);
+				}
+			}
+
+			return $matches;
 		}
 
 
@@ -276,7 +304,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		public function get_options( $onlyDefaults = false ) {
 			if ( $onlyDefaults ) {
-				return $this->defaultOptions;
+				return $this->default_options;
 			}
 
 			// If options are not set, retrieve from DB
@@ -296,14 +324,14 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		public function get_option( $name, $onlyDefaults = false ) {
 			if ( $onlyDefaults ) {
-				return (isset( $this->defaultOptions[ $name ] ) ? $this->defaultOptions[ $name ] : null);
+				return (isset( $this->default_options[ $name ] ) ? $this->default_options[ $name ] : null);
 			}
 
 			$this->define_options();
 			if ( isset( $this->options[ $name ] ) ) {
 				return $this->options[ $name ];
-			} else { return (isset( $this->defaultOptions[ $name ] ) ? $this->defaultOptions[ $name ] : null);
-			}
+			} else { return (isset( $this->default_options[ $name ] ) ? $this->default_options[ $name ] : null);
+				   }
 		}
 
 		/**
@@ -314,7 +342,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		private function define_options() {
 			if ( null === $this->options ) {
-				$this->options = array_merge( $this->defaultOptions, get_option( $this->optionsName, $this->get_options( true ) ) );
+				$this->options = array_merge( $this->default_options, get_option( $this->options_name, $this->get_options( true ) ) );
 			}
 		}
 
@@ -332,7 +360,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			$this->options = array_merge( $this->options, $options );
 			if ( $update ) {
 				wp_cache_delete( 'alloptions', 'options' );
-				update_option( $this->optionsName, $this->options );
+				update_option( $this->options_name, $this->options );
 				wp_cache_delete( 'alloptions', 'options' );
 			}
 			return $this->options;
@@ -351,7 +379,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		public function set_option( $name, $value, $update = true ) {
 			$this->options[ $name ] = $value;
 			if ( $update ) {
-				update_option( $this->optionsName, $this->options );
+				update_option( $this->options_name, $this->options );
 			}
 			return $this->options;
 		}
