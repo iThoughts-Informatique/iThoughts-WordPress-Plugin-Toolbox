@@ -138,11 +138,11 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		protected function __construct() {
 			if ( null === $this->base_path ) {
-				throw new \Exception( 'Missing definition of Backbone::$basepath' );
+				throw new \Exception( 'Missing definition of Backbone::$base_path' );
 			}
 			// If `base_url` is not set, define it by getting the url to this plugin.
 			if ( null === $this->base_url ) {
-				$this->base_url = plugins_url() . '/' . plugin_basename( $this->base_path );
+				$this->base_url = plugins_url() . '/' . dirname(plugin_basename( $this->base_path ));
 			}
 			// Then change to parent directory.
 			$this->base_path = dirname( $this->base_path );
