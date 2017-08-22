@@ -34,7 +34,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			$str = '';
 			foreach($attrs as $key => $value){
 				if(isset($value) && $value !== NULL){
-					$str .= ' '.$key.'="'.htmlentities($value).'"';
+					$str .= ' '.esc_attr($key).'="'.esc_attr($value).'"';
 				}
 			}
 			return $str;
@@ -255,10 +255,12 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			if(isset($options["textarea"]) && $options["textarea"]){
 				$str .= Toolbox::concat_attrs($attrs);
 				$str .= '>';
+				$options["value"] = esc_html($options["value"]);
 				if($options["value"] !== NULL && trim($options["value"]) != "")
 					$str .= $options["value"];
 				$str .= "</textarea>";
 			} else {
+				$options["value"] = esc_attr($options["value"]);
 				if(isset($options["type"]))
 					$attrs["type"] = $options["type"];
 				if($options["value"] !== NULL && trim($options["value"]) != "")
