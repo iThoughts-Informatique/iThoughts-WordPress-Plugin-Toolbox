@@ -7,13 +7,13 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *
- * @version 5.0
+ * @version 6.0
  */
 
-namespace ithoughts\v5_0;
+namespace ithoughts\v6_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
+	status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__."\\Toolbox")){
@@ -31,244 +31,21 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * @author Gerkin
 		 */
 		public static final function concat_attrs($attrs){
+			$attrs = array_filter($attrs, '\ithoughts\v6_0\Toolbox::filter_attrs');
 			$str = '';
 			foreach($attrs as $key => $value){
-				if(isset($value) && $value !== NULL){
+				if($value === true){
+					$str .= ' '.esc_attr($key);
+				} else {
 					$str .= ' '.esc_attr($key).'="'.esc_attr($value).'"';
 				}
 			}
 			return $str;
 		}
 
-		/**
-		 * Generate a select input
-		 * @param string $name Name (and default id) of the input
-		 * @param mixed $options Options for the input
-		 * @return string Input generated
-		 *
-		 * @uses Toolbox::concat_attrs()
-		 * @todo Describe options
-		 * @author Gerkin
-		 */
-		public static final function generate_input_select($name, $options){
-			$strret = '<select name="'.$name.'"';
-
-			// Set defaults
-			if(!isset($options['attributes']))
-				$options['attributes'] = array();
-			if(!isset($options['attributes']['id']))
-				$options['attributes']['id'] = $name;
-			if(!isset($options['attributes']['autocomplete']))
-				$options['attributes']['autocomplete'] = 'off';
-			if(isset($options['required']) && $options['required'])
-				$options['attributes']['required'] = 'required';
-
-			// Add attributes to the HTML tag
-			$strret .= Toolbox::concat_attrs($options['attributes']);
-			if(isset($options['multiple']) && $options['multiple'])
-				$strret .= ' multiple';
-			$strret .= '>';
-
-			// Set behavior when nothing is selected
-			if(isset($options['allow_blank'])){ // Blank is allowed, so it is the default if no selection
-				if(!isset($options['selected']) || $options['selected'] == NULL || $options['selected'] == "" || $options['selected'] == array()) {
-					$strret .= '<option value="" selected>'.$options['allow_blank'].'</option>';
-				} else {
-					$strret .= '<option value="">'.$options['allow_blank'].'</option>';
-				}
-			}
-
-			// Print children options
-			if(isset($options['options']) && is_array($options['options'])){
-				if(array_values($options['options']) === $options['options']){
-					// If pure array, value & label are identical
-					foreach($options['options'] as $value){
-						$strret .= '<option value="'.$value.'">'.$value.'</option>';
-					}
-				} else {
-					// If associative array, array key is the value, and array value describe options
-					foreach($options['options'] as $key => $value){
-						$strret .= '<option value="'.$key.'" ';
-						if(is_array($value)){
-							// Attributes on each options
-							if(!isset($value['attributes']))
-								$value['attributes'] = array();
-							$strret .= Toolbox::concat_attrs($value['attributes']);
-						}
-						// Select option if required
-						if(isset($options['selected']) && ((is_array($options['selected']) && in_array($key, $options['selected'])) || (!is_array($options['selected']) && $options['selected'] == $key)))
-							$strret .= ' selected="selected"';
-						$strret .= '>';
-						// Text of this option
-						if(is_array($value)){
-							if(isset($value['text']) && $value['text']){
-								$strret .= $value['text'];
-							} else {
-								$strret .= $key;
-							}
-						} else {
-							$strret .= $value;
-						}
-						// Close the tag
-						$strret .= '</option>';
-					}
-				}
-			}
-
-			$strret .= '</select>';
-			return $strret;
-		}
-
-		/**
-		 * Generate one or several check/radio inputs
-		 * @param string $name Name (and default base id) of the input(s)
-		 * @param mixed $options Options for the input(s)
-		 * @return string|string[] Input(s) generated
-		 *
-		 * @uses Toolbox::concat_attrs()
-		 * @todo Describe options
-		 * @author Gerkin
-		 */
-		public static final function generate_input_check($name, $options){
-			$ret = array();
-			$base_id = preg_replace("/[^\w\d_]/", "", $name);
-			$allLabeled = true;
-			if(!isset($options["options"]))
-				return $ret;
-
-			if(!is_array($options["options"]))
-				$options["options"] = array($options["options"]);
-
-			foreach($options["options"] as $option => $data){
-				$str = "";
-				$strLabel = NULL;
-				if(isset($data["label"]) && $data["label"]){
-					if($data["label"] != null && is_array($data["label"])){
-						if(isset($data["label"]["text"])){
-							$strLabel = $data["label"]["text"];
-							$attrs = "";
-							if(isset($data["label"]["attributes"]) && is_array($data["label"]["attributes"])){
-								$attrs = Toolbox::concat_attrs($data["label"]["attributes"]);
-							}
-							$str .= '<label for="'.$name."_".$option.' '.$attrs.'">&nbsp;';
-						}
-					} else {
-						$str .= '<label for="'.$name."_".$option.'">&nbsp;';
-						$strLabel = $data["label"];
-					}
-				} else {
-					$allLabeled = false;
-				}
-				$str .= '<input name="'.$name.'"';
-				if(isset($options["radio"]) && $options["radio"])
-					$str .= ' type="radio"';
-				else
-					$str .= ' type="checkbox"';
-				$str .= ' value="'.$option.'"';
-				if(!isset($data["attributes"]))
-					$data["attributes"] = array();
-				if(!isset($data["attributes"]["id"]))
-					$data["attributes"]["id"] = $base_id."_".$option;
-				if(!isset($data["attributes"]["autocomplete"]))
-					$data["attributes"]["autocomplete"] = "off";
-				if(isset($data["required"]) && $data["required"])
-					$data["attributes"]["required"] = "required";
-
-				$str .= Toolbox::concat_attrs($data["attributes"]);
-				if(isset($options["selected"]) && ((is_array($options["selected"]) && in_array($option, $options["selected"], true)) || (!is_array($options["selected"]) && $options["selected"] == $option)))
-					$str .= ' checked="checked"';
-				$str .= ' />';
-				if($strLabel != NULL){
-					$str .= '&nbsp;'.$strLabel.'</label>';
-				}
-
-				$ret[$option] = $str;
-			}
-			if($allLabeled && isset($options["implode"])){
-				$ret = implode($options["implode"], $ret);
-			} else if(count($ret) == 1){
-				$keys = array_keys($ret);
-				return $ret[$keys[0]];
-			}
+		public static function filter_attrs($value){
+			$ret = !(NULL === $value || false === $value);
 			return $ret;
-		}
-
-		/**
-		 * Generate a color input
-		 * @ignore
-		 * @param string $name Name (and default id) of the input
-		 * @param mixed[] $options Options for the input
-		 * @return string Input generated
-		 *
-		 * @uses Toolbox::concat_attrs()
-		 * @todo Describe options
-		 * @author Gerkin
-		 */
-		public static final function generate_input_color($name, $value){
-
-		}
-
-		/**
-		 * Generate a text input
-		 * @param string $name Name (and default id) of the input
-		 * @param mixed[] $options Options for the input
-		 * @return string Input generated
-		 *
-		 * @uses Toolbox::concat_attrs()
-		 * @todo Describe options
-		 * @author Gerkin
-		 */
-		public static final function generate_input_text($name, $options){
-			$str;
-			if(isset($options["textarea"]) && $options["textarea"]){
-				$str = '<textarea';
-			} else {
-				$str = '<input';
-			}
-
-			$attrs = array(
-				"name" => $name
-			);
-			if(!isset($options["attributes"]))
-				$options["attributes"] = array();
-			if(!isset($options["attributes"]["id"]))
-				$options["attributes"]["id"] = $name;
-			if(isset($options["textarea"]) && $options["textarea"] == false){
-				unset($options["attributes"]["autocomplete"]);
-			} else {
-				if(!isset($options["attributes"]["autocomplete"]) || $options["attributes"]["autocomplete"] == false)
-					$options["attributes"]["autocomplete"] = "off";
-				else
-					unset($options["attributes"]["autocomplete"]);
-			}
-			if(isset($options["required"]) && $options["required"])
-				$options["attributes"]["required"] = "required";
-			$attrs = array_merge($attrs,$options["attributes"]);
-
-
-			if(isset($options["value"]) && $options["value"] !== NULL){
-				$options["value"] = strval($options["value"]);
-			} else {
-				$options["value"] = NULL;
-			}
-
-			if(isset($options["textarea"]) && $options["textarea"]){
-				$str .= Toolbox::concat_attrs($attrs);
-				$str .= '>';
-				$options["value"] = esc_html($options["value"]);
-				if($options["value"] !== NULL && trim($options["value"]) != "")
-					$str .= $options["value"];
-				$str .= "</textarea>";
-			} else {
-				$options["value"] = esc_attr($options["value"]);
-				if(isset($options["type"]))
-					$attrs["type"] = $options["type"];
-				if($options["value"] !== NULL && trim($options["value"]) != "")
-					$attrs["value"] = $options["value"];
-				$str .= Toolbox::concat_attrs($attrs);
-				$str .= '/>';
-			}
-			return $str;
 		}
 
 		/**

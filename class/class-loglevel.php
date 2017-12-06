@@ -7,10 +7,10 @@
  * @package iThoughts\iThoughts WordPress Plugin Toolbox
  * @author Gerkin
  *
- * @version 5.0
+ * @version 6.0
  */
 
-namespace ithoughts\v5_0;
+namespace ithoughts\v6_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly.
