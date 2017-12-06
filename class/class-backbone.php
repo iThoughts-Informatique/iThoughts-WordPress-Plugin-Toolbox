@@ -254,8 +254,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			$date = gmdate( 'Y-m-d H:i:s' );
 			$bt = debug_backtrace();
 			$caller = array_shift($bt);
-			$plugin_name = plugin_basename( $this->base_path );
-			$call_file = preg_replace("/.*?$plugin_name\\/(.*)/", '$1', $caller['file']);
+			$plugin_name = preg_quote( plugin_basename( $this->base_path ), '/' );
+			$pattern = "/.*?$plugin_name\\/(.*)/";
+			$call_file = preg_replace($pattern, '$1', $caller['file']);
 			$call_line = $caller['line'];
 			$header = "$date [$mode_name] (from $call_file l.$call_line) => \"";
 			fwrite( $file, $header );

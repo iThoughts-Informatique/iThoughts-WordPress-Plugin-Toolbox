@@ -31,7 +31,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * @author Gerkin
 		 */
 		public static final function concat_attrs($attrs){
-			$attrs = array_filter($attrs, '\ithoughts\v6_0\Toolbox::filter_attrs');
+			$attrs = ksort(array_filter($attrs, '\ithoughts\v6_0\Toolbox::filter_attrs'));
 			$str = '';
 			foreach($attrs as $key => $value){
 				if($value === true){
