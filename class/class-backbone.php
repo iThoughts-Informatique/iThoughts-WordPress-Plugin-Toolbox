@@ -50,6 +50,18 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		protected $default_options;
 
+		
+		/**
+		 * Identifier of the plugin.
+		 * This is usually the base name of the php index file
+		 *
+		 * @var	string	$name
+		 *
+		 * @author Gerkin
+		 * @category Options
+		 */
+		protected $name;
+		
 		/**
 		 * Identifier of the plugin options.
 		 * Used in the wordpress option table, as the `option_name` column value
@@ -137,16 +149,15 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 * @throws \Exception if basepath is not set before calling the constructor.
 		 * @author Gerkin
 		 */
-		protected function __construct() {
-			if ( null === $this->base_path ) {
-				throw new \Exception( 'Missing definition of Backbone::$base_path' );
-			}
+		protected function __construct($plugin_base, $plugin_name, $options_name) {
+			$this->base_path = $plugin_base;
+			$this->name = $plugin_name;
+			$this->options_name = $options_name;
+			
 			// If `base_url` is not set, define it by getting the url to this plugin.
 			if ( null === $this->base_url ) {
-				$this->base_url = plugins_url() . '/' . dirname(plugin_basename( $this->base_path ));
+				$this->base_url = plugins_url() . '/' . plugin_basename( $this->base_path );
 			}
-			// Then change to parent directory.
-			$this->base_path = dirname( $this->base_path );
 			// If `base_class_path` is not set, define it.
 			if ( null === $this->base_class_path ) {
 				$this->base_class_path = $this->base_path . '/class';
@@ -565,6 +576,10 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		public function get_minify() {
 			return $this->minify;
+		}
+		
+		public function get_name(){
+			return $this->name;
 		}
 	}
 }// End if().

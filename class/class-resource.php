@@ -13,7 +13,7 @@
 namespace ithoughts\v6_0;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	 status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
+	status_header( 403 );wp_die("Forbidden");// Exit if accessed directly
 }
 
 if(!class_exists(__NAMESPACE__.'\\Resource')){
@@ -99,7 +99,10 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		public static final function generate($backbone, $identifier, $filename, $dependencies = NULL, $admin = false, $localizeId = NULL, $localizeData = NULL){
 			// First, get the class to handle this file
 			$className;
-			if(Toolbox::endswith($filename, 'js')){
+			// If we don't have file, just localized data
+			if(!$filename && $localizeId && $localizeData){
+				$className = 'Script';
+			} else if(Toolbox::endswith($filename, 'js')){
 				$className = 'Script';
 			} else if(Toolbox::endswith($filename, 'css')){
 				$className = 'Style';
@@ -177,7 +180,6 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 	}
 
 	class Script extends Resource {
-		public $localizeId;
 		public $localizeData = array();
 
 		/**
@@ -199,8 +201,9 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 			$this->filename = $filename;
 			$this->dependencies = $dependencies;
 			$this->admin = $admin;
-			$this->localizeId = $localizeId;
-			$this->localizeData = $localizeData;
+			if($localizeId !== NULL){
+				$this->localizeData[$localizeId] = $localizeData;
+			}
 			$this->file_url = $this->get_maybe_minified('.js');
 		}
 
@@ -221,7 +224,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);
-			$this->set_localize_data($this->localizeId, $this->localizeData);
+			$this->add_localized_data(array_keys($this->localizeData)[0], array_values($this->localizeData)[0]);
 		}
 
 		/**
@@ -232,11 +235,10 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 * @see wp_localize_script Wordpress function to attach data to a script
 		 * @author Gerkin
 		 */
-		public function set_localize_data($label, $data){
+		public function add_localized_data($label, $data){
 			if(isset($label)){
-				$this->localizeId = $label;
-				$this->localizeData = $data;
-				wp_localize_script($this->identifier, $this->localizeId, $this->localizeData);
+				wp_localize_script($this->identifier, $label, $data);
+				$this->localizeData[$label] = $data;
 			}
 		}
 

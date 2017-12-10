@@ -89,6 +89,14 @@ if ( 'undefined' == typeof iThoughts )	{
 	 * @returns {boolean} True if null or undefined, false otherwise
 	 */
 	v5.isNA = isNA;
+	
+	
+	// From https://stackoverflow.com/a/6060215/4839162:
+	v5.$merge = (...array_of_jquery_objects) => {
+		return $($.map(array_of_jquery_objects, function(el) {
+			return el.get();
+		}));
+	};
 
 
 
