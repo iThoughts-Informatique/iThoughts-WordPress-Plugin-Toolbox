@@ -224,7 +224,9 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 				$this->dependencies,
 				$this->backbone->get_option('version')
 			);
-			$this->add_localized_data(array_keys($this->localizeData)[0], array_values($this->localizeData)[0]);
+			if(count($this->localizeData) > 0){
+				$this->add_localized_data(array_keys($this->localizeData)[0], array_values($this->localizeData)[0]);
+			}
 		}
 
 		/**
