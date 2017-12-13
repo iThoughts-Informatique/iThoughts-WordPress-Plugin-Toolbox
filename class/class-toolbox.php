@@ -199,10 +199,6 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			return $post_link;
 		}
 
-		public static function randomString($len = 5){
-			return substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", $len)), 0, $len);
-		}
-
 		/**
 		 * Check if $string ends with $test
 		 * @param  string  $string Checked string
@@ -218,6 +214,23 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			$testlen = strlen($test);
 			if ($testlen > $strlen) return false;
 			return substr_compare($string, $test, $strlen - $testlen, $testlen) === 0;
+		}
+
+		/**
+		 * Check if $string starts with $test
+		 * @param  string  $string Checked string
+		 * @param  string  $test   String to search
+		 * @return boolean True if $test is present at the start of $string
+		 *
+		 * @link https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string
+		 * @since 5.0.0
+		 * @author Gerkin
+		 */
+		public static function startswith($string, $test) {
+			$strlen = strlen($string);
+			$testlen = strlen($test);
+			if ($testlen > $strlen) return false;
+			return substr_compare($string, $test, 0, $testlen) === 0;
 		}
 
 		/**
@@ -254,6 +267,46 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 				}
 			}
 			return $result;
+		}
+
+		public static function sort_options($options, $sort_sets, &$unsorted = false){
+			// Define our output array
+			$sorted = array();
+			foreach($sort_sets as $set_name => $set_content){
+				$sorted[$set_name] = array();
+			}
+			// Sort all options
+			foreach($options as $option => $value){
+				// If `$unsorted` is an array, maybe we'll append the option to the unsorted array
+				$was_unsorted = is_array($unsorted);
+				foreach($sort_sets as $set_name => $set_content){
+					if(in_array($option, $set_content, true)){
+						$sorted[$set_name][$option] = $value;
+						$was_unsorted = false;
+					}
+				}
+				if($was_unsorted){
+					$unsorted[$option] = $value;
+				}
+			}
+			return $sorted;
+		}
+
+		public static function maybe_data_prefix($attr_name){
+			static $html_attributes = NULL;
+			// Load attributes list if required.
+			if($html_attributes === NULL){
+				$html_attributes = require(dirname(__FILE__).'/data-list.php');
+			}
+			// Prepend with prefix if required
+			if(!self::startswith($attr_name, 'data-') && !in_array($attr_name, $html_attributes, true)){
+				return "data-$attr_name";
+			}
+			return $attr_name;
+		}
+
+		public static function array_keys_exists(array $keys, array $arr) {
+			return !array_diff_key(array_flip($keys), $arr);
 		}
 	}
 }
