@@ -308,5 +308,14 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		public static function array_keys_exists(array $keys, array $arr) {
 			return !array_diff_key(array_flip($keys), $arr);
 		}
+		
+		public static function pick_option(array $opts, $name, $default = null){
+			if(isset($opts[$name])){
+				$val = $opts[$name];
+				unset($opts[$name]);
+				return $val;
+			}
+			return $default;
+		}
 	}
 }
