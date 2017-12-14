@@ -15,19 +15,17 @@ module.exports = function gruntInit( grunt ) {
 		uglify: {
 			options: {
 				preserveComments: 'some',
+				banner:    '/*! <%= pkg.name %> build on <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> for v<%= pkg.version %> */',
+				sourceMap: true,
+				footer:    '/**/',
 			},
-			header: {
-				options: {
-					banner:    '/*! <%= pkg.name %> build on <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> for v<%= pkg.version %> */',
-					sourceMap: false,
-					footer:    '/**/',
-				},
+			dist: {
 				files: [
 					{
 						expand: true,
 						src:    [
-							'js/dist/**.js',
-							'!js/dist/**.min.js',
+							'js/dist/**/*.js',
+							'!js/dist/**/*.min.js',
 						],
 						rename: ( dst, src ) => src.replace( /.js$/, '.min.js' ),
 					},
@@ -60,20 +58,28 @@ module.exports = function gruntInit( grunt ) {
 					'!js/src/**.min.js',
 				],
 			},
-			strict_browser: {
-				options: {
-					configFile: 'lint/eslint-browser.json',
-				},
-				src: [
-					'js/**.js',
-					'!js/**.min.js',
-				],
-			},
 		},
 		babel: {
 			options: {
 				sourceMap: true,
-				presets:   [ 'es2015' ],
+				presets:   [
+					[ 'env', {
+						//modules: 'umd',
+						//modules: 'systemjs',
+						targets: {
+							browsers: [ 
+								'>1%',
+								'last 4 versions',
+								'Firefox ESR',
+								'not ie < 9',
+							],
+						},
+						//						uglify:      false,
+						loose:       false,
+						debug:       false,
+						useBuiltIns: 'usage',
+					}],
+				],
 			},
 			dist: {
 				files: [{
@@ -148,24 +154,23 @@ module.exports = function gruntInit( grunt ) {
 		]
 	);
 	grunt.registerTask(
-		'refreshScripts',
+		'buildScripts',
 		[
 			'eslint:info_browser',
 			'babel:dist',
-			'changed:uglify:header',
+			'changed:uglify:dist',
 		]
 	);
 	grunt.registerTask(
-		'refreshResources',
+		'build',
 		[
-			'refreshScripts',
+			'buildScripts',
 		]
 	);
 	grunt.registerTask(
 		'lint',
 		[
 			'eslint:info_browser',
-			'eslint:info_nodejs',
 			'lesslint:info',
 			'phplint',
 		]

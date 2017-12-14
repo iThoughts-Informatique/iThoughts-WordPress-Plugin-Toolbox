@@ -96,6 +96,17 @@ if ('undefined' == typeof iThoughts) {
   */
 	v5.isNA = isNA;
 
+	// From https://stackoverflow.com/a/6060215/4839162:
+	v5.$merge = function () {
+		for (var _len = arguments.length, ArrayOfJqueryObjects = Array(_len), _key = 0; _key < _len; _key++) {
+			ArrayOfJqueryObjects[_key] = arguments[_key];
+		}
+
+		return $($.map(ArrayOfJqueryObjects, function (el) {
+			return el.get();
+		}));
+	};
+
 	/**
   * @function waitFor
   * @description Look into `scope` for property `prop` every `every`ms, then execute `callback` when the property exists
@@ -139,8 +150,8 @@ if ('undefined' == typeof iThoughts) {
   * @returns {boolean} True if null or undefined, false otherwise
   */
 	v5.mergeRecursive = function () {
-		for (var _len = arguments.length, objects = Array(_len), _key = 0; _key < _len; _key++) {
-			objects[_key] = arguments[_key];
+		for (var _len2 = arguments.length, objects = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+			objects[_key2] = arguments[_key2];
 		}
 
 		var newObj = null,
@@ -491,8 +502,8 @@ if ('undefined' == typeof iThoughts) {
 				mode = modes[i];
 				if (!pluginCore.hasOwnProperty(mode)) {
 					pluginCore[mode] = verbosity > i ? function (modeIn) {
-						for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-							args[_key2 - 1] = arguments[_key2];
+						for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+							args[_key3 - 1] = arguments[_key3];
 						}
 
 						console[modeIn].apply(null, generateLogArray(textPrefix, modeIn.toUpperCase(), args));

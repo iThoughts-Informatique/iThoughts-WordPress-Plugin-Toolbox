@@ -50,7 +50,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		protected $default_options;
 
-		
+
 		/**
 		 * Identifier of the plugin.
 		 * This is usually the base name of the php index file
@@ -61,7 +61,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 * @category Options
 		 */
 		protected $name;
-		
+
 		/**
 		 * Identifier of the plugin options.
 		 * Used in the wordpress option table, as the `option_name` column value
@@ -153,7 +153,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			$this->base_path = $plugin_base;
 			$this->name = $plugin_name;
 			$this->options_name = $options_name;
-			
+
 			// If `base_url` is not set, define it by getting the url to this plugin.
 			if ( null === $this->base_url ) {
 				$this->base_url = plugins_url() . '/' . plugin_basename( $this->base_path );
@@ -254,7 +254,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 
 			// Get the log path & args.
 			$filename = "{$this->base_path}/{$this->options_name}.log";
-			$file = fopen( $filename, 'a+' );
+			$file = @fopen( $filename, 'a+' );
 			if ( false === $file ) {
 				return;
 			}
@@ -288,7 +288,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		public function parse_log_file(){
 			// Open and read the log file.
 			$filename = "{$this->base_path}/{$this->options_name}.log";
-			$file = fopen( $filename, 'a+' );
+			$file = @fopen( $filename, 'a+' );
 			$content = fread($file, filesize($filename));
 
 			// Parse log messages.
@@ -303,6 +303,17 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			}
 
 			return $matches;
+		}
+
+		public function clear_log_file(){
+			$filename = "{$this->base_path}/{$this->options_name}.log";
+			$file = @fopen($filename, 'r+');
+			if ($file !== false) {
+				ftruncate($file, 0);
+				fclose($file);
+				return true;
+			}
+			return false;
 		}
 
 
@@ -577,7 +588,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		public function get_minify() {
 			return $this->minify;
 		}
-		
+
 		public function get_name(){
 			return $this->name;
 		}

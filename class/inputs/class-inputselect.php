@@ -39,10 +39,13 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputSelect' ) ) {
 		public function __construct($name, $settings){
 			// Store selection
 			$this->selected = isset($settings['selected']) ? $settings['selected'] : NULL;
+			if(!is_string($this->selected)){
+				$this->selected = '';
+			}
 
 			// Transform name and store it in class properties
 			$this->id = self::name_to_id($name);
-			
+
 			// Set <select> tag options
 			$this->attributes = array_merge(
 				array_filter(array(
@@ -67,18 +70,26 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputSelect' ) ) {
 			// Set options.
 			// Define default/blank.
 			$headOpt;
-			if(isset($settings['allow_blank'])){
-				$headOpt = array(
-					array(
-						'text' => $settings['allow_blank'],
+			if(isset($settings['blank'])){
+				if($settings['blank'] === false){
+					$headOpt = array(
+						'text' => __('Please select a value', 'ithoughts-tooltip-glossary'),
+						'attributes' => array(
+							'value' => '',
+							'disabled' => 'disabled'
+						),
+					);
+				} else {
+					$headOpt = array(
+						'text' => $settings['blank'],
 						'attributes' => array(
 							'value' => ''
 						),
-					)
-				);
+					);
+				}
 
 				if($this->has_selected('')) {
-					$headOpt['']['attributes']['selected'] = true;
+					$headOpt['attributes']['selected'] = true;
 				}
 			} else {
 				$headOpt = array();
@@ -130,7 +141,12 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputSelect' ) ) {
 				$options = array();
 			}
 
-			$this->options = $headOpt + $options;
+			if(empty($headOpt)){
+				$this->options = array();
+			} else {
+				$this->options = array($headOpt);
+			}
+			$this->options += $options;
 			// Add <option> attributes to generated list
 			$this->generated_htmlattrs['option'] = array();
 			foreach($this->options as $opt){
