@@ -138,12 +138,15 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 */
 		protected function get_maybe_minified($ext){
 			$filename = $this->filename;
+			if(preg_match('/^https?:\/\//', $filename)){
+				return $filename;
+			}
 			$min_suffix = '.min';
 			if ($this->backbone->get_minify()){
 				if(Toolbox::endswith(
 					$this->filename,
 					$min_suffix.$ext
-				) == false){
+				) === false){
 					$filename = str_replace(
 						$ext,
 						$min_suffix.$ext,
