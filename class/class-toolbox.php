@@ -174,8 +174,12 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 * @since 1.2
 		 * @author Gerkin
 		 */
-		public static function get_permalink_light(\WP_Post $post, $post_t){
+		public static function get_permalink_light($post, $post_t){
 			global $wp_rewrite;
+			
+			if(!($post instanceof \WP_Post || $post instanceof \ithoughts\tooltip_glossary\MicroPost)){
+				throw new \Exception('Wrong type, $post expected to be either a WP_Post or a ithoughts\tooltip_glossary\MicroPost.');
+			}
 
 			$post_link = $wp_rewrite->get_extra_permastruct($post_t);
 
@@ -197,6 +201,24 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			}
 
 			return $post_link;
+		}
+		
+		public static function pretty_log(){
+			$arguments = func_get_args();
+			echo '<pre>';
+			foreach($arguments as $index => $argument){
+				if($index > 0){
+					echo ' ';
+				}
+				if(is_string($argument) || is_int($argument)){
+					echo $argument;
+				} else if(is_bool($argument)){
+					echo $argument ? 'true' : 'false';
+				} else {
+					var_dump($argument);
+				}
+			}
+			echo '</pre>';
 		}
 
 		/**
