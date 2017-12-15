@@ -11,11 +11,14 @@
 
 'use strict';
 
+/* globals jqForm: false, iThoughts: false */
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 (function (ithoughts) {
+	var $ = ithoughts.$,
+	    isNA = ithoughts.isNA;
 
-	var $ = ithoughts.$;
 	$.fn.extend({
 		/**
    * Send a form through ajax
@@ -48,16 +51,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 				$form.ajaxForm({
 					beforeSubmit: function beforeSubmit() {
-						//if( !jqForm.valid() ) return false;
+						if (options.validate && !jqForm.valid()) {
+							return false;
+						}
 						if (formopts.target && $('#' + formopts.target).length) {
 							$('#' + formopts.target).html('<p>' + postText + '</p>').removeClass().addClass('clear updating').fadeTo(100, 1);
 						}
 						loader = ithoughts.makeLoader();
 						return true;
 					},
-					error: function error() {
+					error: function error(_error) {
 						loader.remove();
-						$('#' + formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Form submission failed.</p>');
+						if (formopts.target) {
+							$('#' + formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Form submission failed.</p>');
+						}
+						if ('function' == typeof formopts.error) {
+							formopts.error(_error);
+						}
 					},
 					success: function success(responseText, statusText, xhr, jQForm) {
 						loader.remove();
@@ -66,7 +76,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						}
 
 						try {
-							var res;
+							var res = void 0;
 							if ('String' === responseText.constructor.name) {
 								res = JSON.parse(responseText);
 							} else if ('Object' === responseText.constructor.name) {
@@ -76,7 +86,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							}
 
 							if ('0' === res || !res) {
-								$('#' + formopts.target).removeClass().addClass('clear notice notice-warning').html('<p>Server did not respond anything</p>');
+								var str = 'Server did not respond anything';
+								$('#' + formopts.target).removeClass().addClass('clear notice notice-warning').html('<p>' + str + '</p>');
+
+								if ('function' == typeof formopts.error) {
+									formopts.error(new Error(str));
+								}
 							} else {
 								if (typeof res.success != 'undefined' && res.success != null && typeof res.data != 'undefined' && res.data != null) {
 									// handle wp_send_json_{success|error}
@@ -94,7 +109,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									}
 								} else {
 									if (res.reload) {
-										window.location.href = window.location.href + '&json-res-txt=' + window.encodeURI(res.text);
+										var args = void 0;
+										if (window.location.href.includes('?')) {
+											args = '&';
+										} else {
+											args = '?';
+										}
+										if (res.hasOwnProperty('text') && !isNA(res.text)) {
+											args += 'json-res-txt=' + encodeURI(res.text);
+										}
+										window.location.href += args;
 									}
 
 									if (formopts.target && $('#' + formopts.target).length) {
@@ -118,13 +142,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									if ('function' == typeof formopts.callback) {
 										formopts.callback(res);
 									}
-								} catch (e) {
+								} catch (error) {
 									$('#' + formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Error with received data</p>');
-									console.error(e);
+									if ('function' == typeof formopts.error) {
+										formopts.error(error);
+									}
 								}
 							}
-						} catch (e) {
+						} catch (error) {
 							$('#' + formopts.target).removeClass().addClass('clear notice notice-error').html('<p>Invalid server response</p>');
+							if ('function' == typeof formopts.error) {
+								formopts.error(error);
+							}
 						}
 					}
 				});

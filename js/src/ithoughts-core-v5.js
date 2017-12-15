@@ -111,24 +111,9 @@ if ( 'undefined' == typeof iThoughts )	{
 	v5.waitFor = ( scope, prop, every, callback ) => {
 		if ( 'function' == typeof every ) {
 			callback = every;
-			every = undefined;
+			every = 100;
 		}
-		if ( typeof scope != 'object' || typeof prop != 'string' || ( 'number' == typeof every && typeof callback != 'function' ) || typeof callback != 'function' ) {
-			throw TypeError( '"waitFor" expects following types combinations:\n' +
-							'\t{Object} scope\, {String} prop, {Number} every, {Function} callback\n' +
-							'\t{Object} scope\, {String} prop, {Function} callback' );
-		}
-		if ( v5.hop( scope, prop )) {
-			callback();
-		} else {
-			timer = setInterval(() => {
-				if ( v5.hop( scope, prop )) {
-					clearInterval( timer );
-					callback();
-				}
-			}, every || 100 );
-		}
-		var timer = null;
+		v5.waitUntil( callback, () => v5.hop( scope, prop ), every, false );
 	};
 
 	/**
@@ -309,12 +294,11 @@ if ( 'undefined' == typeof iThoughts )	{
 	 * @param {Number|false} [max=false]  Time after which `fct` will be executed even if `until` still returns false. Set it to false to not set max timeout
 	 * @returns {undefined}
 	 */
-	v5.waitUntil = ( fct, until, every, max ) => {
-		if ( isNA( until ) || until.constructor.name !== 'Function' )			{
+	v5.waitUntil = ( fct, until, every, max = false ) => {
+		if ( isNA( until ) || until.constructor.name !== 'Function' ) {
 			throw TypeError( 'Calling "Function.waitUntil" without test function. Call setTimeout instead' );
 		}
 
-		max = !isNA( max ) && !isNaN( parseInt( max )) ? parseInt( max ) : false;
 		setTimeout(() => {
 			until() || ( max !== false && max < 1 ) ? fct() : v5.waitUntil( fct, until, every, max ? max - every : max );
 		}, every );

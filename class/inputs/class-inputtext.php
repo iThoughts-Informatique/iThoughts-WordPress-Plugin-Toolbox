@@ -60,6 +60,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputText' ) ) {
 			);
 
 			$this->value = isset($settings['value']) ? $settings['value'] : NULL;
+			if($this->value === null && isset($settings['default'])){
+				$this->value = $settings['default'];
+			}
 
 			// Do specific action if textarea
 			if(true === $this->is_textarea){

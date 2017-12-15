@@ -11,9 +11,13 @@
 
 'use strict';
 
+/* globals jqForm: false, iThoughts: false */
+
 ( ithoughts => {
 
-	var $ = ithoughts.$;
+	const {
+$, isNA,
+} = ithoughts;
 	$.fn.extend({
 		/**
 		 * Send a form through ajax
@@ -46,16 +50,23 @@
 
 				$form.ajaxForm({
 					beforeSubmit() {
-						//if( !jqForm.valid() ) return false;
+						if ( options.validate && !jqForm.valid()) {
+							return false; 
+						}
 						if ( formopts.target && $( `#${ formopts.target }` ).length ) {
 							$( `#${ formopts.target }` ).html( `<p>${  postText  }</p>` ).removeClass().addClass( 'clear updating' ).fadeTo( 100, 1 );
 						}
 						loader = ithoughts.makeLoader();
 						return true;
 					},
-					error() {
+					error( error ) {
 						loader.remove();
-						$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '<p>Form submission failed.</p>' );
+						if ( formopts.target ) {
+							$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '<p>Form submission failed.</p>' );
+						}
+						if ( 'function' == typeof formopts.error ) {
+							formopts.error( error );
+						}
 					},
 					success( responseText, statusText, xhr, jQForm ) {
 						loader.remove();
@@ -64,7 +75,7 @@
 						}
 
 						try {
-							var res;
+							let res;
 							if ( 'String' === responseText.constructor.name ) {
 								res = JSON.parse( responseText );
 							} else if ( 'Object' === responseText.constructor.name ) {
@@ -74,7 +85,12 @@
 							}
 
 							if ( '0' === res || !res ) {
-								$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-warning' ).html( '<p>Server did not respond anything</p>' );
+								const str = 'Server did not respond anything';
+								$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-warning' ).html( `<p>${ str }</p>` );
+
+								if ( 'function' == typeof formopts.error ) {
+									formopts.error( new Error( str ));
+								}
 							} else {
 								if ( typeof res.success != 'undefined' && res.success != null && typeof res.data != 'undefined' && res.data != null ) { // handle wp_send_json_{success|error}
 									res.data.valid = res.success;
@@ -91,7 +107,16 @@
 									}
 								} else {
 									if ( res.reload ) {
-										window.location.href = `${ window.location.href  }&json-res-txt=${  window.encodeURI( res.text ) }`;
+										let args;
+										if ( window.location.href.includes( '?' )) {
+											args = '&';
+										} else {
+											args = '?';
+										}
+										if ( res.hasOwnProperty( 'text' ) && !isNA( res.text )) {
+											args += `json-res-txt=${  encodeURI( res.text ) }`;
+										}
+										window.location.href += args;
 									}
 
 									if ( formopts.target && $( `#${ formopts.target }` ).length ) {
@@ -109,19 +134,24 @@
 									}
 								}
 								try {
-									if ( 'function' == typeof $form[0].simple_ajax_callback )										{
+									if ( 'function' == typeof $form[0].simple_ajax_callback ) {
 										$form[0].simple_ajax_callback( res );
 									}
-									if ( 'function' == typeof formopts.callback )										{
+									if ( 'function' == typeof formopts.callback ) {
 										formopts.callback( res );
 									}
-								} catch ( e ) {
+								} catch ( error ) {
 									$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '<p>Error with received data</p>' );
-									console.error( e );
+									if ( 'function' == typeof formopts.error ) {
+										formopts.error( error );
+									}
 								}
 							}
-						} catch ( e ) {
+						} catch ( error ) {
 							$( `#${ formopts.target }` ).removeClass().addClass( 'clear notice notice-error' ).html( '<p>Invalid server response</p>' );
+							if ( 'function' == typeof formopts.error ) {
+								formopts.error( error );
+							}
 						}
 					},
 				});

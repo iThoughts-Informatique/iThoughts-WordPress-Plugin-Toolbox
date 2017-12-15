@@ -39,7 +39,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputSelect' ) ) {
 		public function __construct($name, $settings){
 			// Store selection
 			$this->selected = isset($settings['selected']) ? $settings['selected'] : NULL;
-			if(!is_string($this->selected)){
+			if(is_numeric($this->selected)){
+				$this->selected = "$this->selected";
+			} elseif(!is_string($this->selected)){
 				$this->selected = '';
 			}
 
@@ -141,12 +143,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\InputSelect' ) ) {
 				$options = array();
 			}
 
-			if(empty($headOpt)){
-				$this->options = array();
-			} else {
-				$this->options = array($headOpt);
-			}
-			$this->options += $options;
+			$this->options = array_merge(empty($headOpt) ? array() : array($headOpt), $options);
 			// Add <option> attributes to generated list
 			$this->generated_htmlattrs['option'] = array();
 			foreach($this->options as $opt){
