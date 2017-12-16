@@ -30,7 +30,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Input' ) ) {
 		
 		protected $id;
 
-		public function print(){
+		public function do_print(){
 			echo wp_kses($this->to_html(), $this->generated_htmlattrs);
 		}
 		
