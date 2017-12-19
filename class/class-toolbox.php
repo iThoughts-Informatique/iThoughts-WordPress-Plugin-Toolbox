@@ -163,6 +163,27 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 			}
 		}
 
+		public static final function str_split_trim($str, $delimiter){
+			$segments;
+			if(is_string($delimiter) && $delimiter !== ''){
+				$segments = explode($delimiter, $str);
+			} else {
+				$len = 0;
+				if(is_numeric($delimiter)){
+					$len = intval($delimiter);
+				}
+				$segments = str_split($str, max($len, 1));
+			}
+			$empty_strs_filtered = array();
+			foreach($segments as $index => $segment){
+				$segment = trim($segment);
+				if(strlen($segment) > 0){
+					$empty_strs_filtered[$index] = $segment;
+				}
+			}
+			return $empty_strs_filtered;
+		}
+
 		/**
 		 * Generates the permalink for given post type depending on $post
 		 * @param  \WP_Post $post				The      light post
@@ -176,7 +197,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		 */
 		public static function get_permalink_light($post, $post_t){
 			global $wp_rewrite;
-			
+
 			if(!($post instanceof \WP_Post || $post instanceof \ithoughts\tooltip_glossary\MicroPost)){
 				throw new \Exception('Wrong type, $post expected to be either a WP_Post or a ithoughts\tooltip_glossary\MicroPost.');
 			}
@@ -202,7 +223,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 
 			return $post_link;
 		}
-		
+
 		public static function pretty_log(){
 			$arguments = func_get_args();
 			echo '<pre>';
@@ -330,7 +351,7 @@ if(!class_exists(__NAMESPACE__."\\Toolbox")){
 		public static function array_keys_exists(array $keys, array $arr) {
 			return !array_diff_key(array_flip($keys), $arr);
 		}
-		
+
 		public static function pick_option(array $opts, $name, $default = null){
 			if(isset($opts[$name])){
 				$val = $opts[$name];
