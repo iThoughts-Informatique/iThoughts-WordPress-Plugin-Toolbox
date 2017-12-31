@@ -1,23 +1,17 @@
-const chalk = require( 'chalk' );
-const fs = require( 'fs' );
-const semver = require( 'semver' );
-const _ = require( 'lodash' );
-//const textReplace = require('grunt-text-replace/lib/grunt-text-replace');
+'use strict';
 
-module.exports = function gruntInit( grunt ) {
+module.exports = grunt => {
 	// Project configuration.
 
-	var jsDocPath = 'docs/javascript',
-		wpVersion = {},
-		currentVersion = require( './package.json' ).version;
+	const jsDocPath = 'docs/javascript';
 	const gruntConfig = {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		uglify: {
 			options: {
 				preserveComments: 'some',
-				banner:    '/*! <%= pkg.name %> build on <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> for v<%= pkg.version %> */',
-				sourceMap: true,
-				footer:    '/**/',
+				banner:           '/*! <%= pkg.name %> build on <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> for v<%= pkg.version %> */',
+				sourceMap:        true,
+				footer:           '/**/',
 			},
 			dist: {
 				files: [
@@ -37,23 +31,23 @@ module.exports = function gruntInit( grunt ) {
 				src:     [ 'js/src/**/*.js' ],
 				options: {
 					private:     true,
-					destination: `${jsDocPath}/jsdoc`,
+					destination: `${ jsDocPath }/jsdoc`,
 				},
 			},
 		},
 		eslint: {
 			options: {
-				format: 'stylish',
-				fix:			true,
-				useEslintrc:	false,
+				format:      'stylish',
+				fix:         true,
+				useEslintrc: false,
+				configFile:  'lint/eslint.json',
+				maxWarnings: -1,
+				quiet:       true,
+				silent:      true,
 			},
 			info_browser: {
-				options: {
-					configFile: 'lint/eslint-browser.json',
-					silent:     true,
-					fix:		true,
-				},
 				src: [
+					'Gruntfile.js',
 					'js/src/**.js',
 					'!js/src/**.min.js',
 				],
@@ -64,7 +58,7 @@ module.exports = function gruntInit( grunt ) {
 				sourceMap: true,
 				presets:   [
 					[ 'env', {
-						//modules: 'umd',
+						modules: 'umd',
 						//modules: 'systemjs',
 						targets: {
 							browsers: [ 
@@ -84,7 +78,7 @@ module.exports = function gruntInit( grunt ) {
 			dist: {
 				files: [{
 					expand: true,
-					cwd : 'js/src',
+					cwd:    'js/src',
 					src:    [
 						'**/*.js',
 						'!**/*.min.js',
@@ -107,24 +101,24 @@ module.exports = function gruntInit( grunt ) {
 					'tests/**/*.js',
 				],
 				options: {
-					output: `${jsDocPath}/docco`,
+					output: `${ jsDocPath }/docco`,
 				},
 			},
 		},
 		phpdoc: {
 			dist: {
 				options: {
-					verbose: true
+					verbose: true,
 				},
 				src: [
 					'class/**/*.php',
 					'*.php',
 				],
 				dest: 'docs/php',
-			}
+			},
 		},
 	};
-	grunt.initConfig(gruntConfig);
+	grunt.initConfig( gruntConfig );
 
 	// Load the plugin that provides the 'uglify' task.
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
@@ -137,14 +131,6 @@ module.exports = function gruntInit( grunt ) {
 	grunt.loadNpmTasks( 'grunt-phpdoc' );
 	grunt.loadNpmTasks( 'grunt-babel' );
 
-
-	grunt.registerTask(
-		'build',
-		[
-			'refreshResources',
-			'documentate',
-		]
-	);
 	grunt.registerTask(
 		'documentate',
 		[
@@ -158,7 +144,7 @@ module.exports = function gruntInit( grunt ) {
 		[
 			'eslint:info_browser',
 			'babel:dist',
-			'changed:uglify:dist',
+			'uglify:dist',
 		]
 	);
 	grunt.registerTask(

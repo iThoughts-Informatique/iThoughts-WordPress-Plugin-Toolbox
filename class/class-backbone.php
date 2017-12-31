@@ -187,23 +187,23 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		 */
 		public function declare_scripts() {
 			$this->declare_resource(
-				'ithoughts-core-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/ithoughts-core-v5.js',
+				'ithoughts-core',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/ithoughts-core.js',
 				array( 'jquery' )
 			);
 
 			$this->declare_resource(
-				'ithoughts-simple-ajax-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/simple-ajax-form-v5.js',
+				'ithoughts-simple-ajax',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/simple-ajax-form.js',
 				array(
 					'jquery-form',
-					'ithoughts-core-v5',
+					'ithoughts-core',
 				)
 			);
 			$this->declare_resource(
-				'ithoughts-serialize-object-v5',
-				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/jquery-serialize-object-v5.js',
-				array( 'ithoughts-core-v5' )
+				'ithoughts-serialize-object',
+				'submodules/iThoughts-WordPress-Plugin-Toolbox/js/dist/jquery-serialize-object.js',
+				array( 'ithoughts-core' )
 			);
 		}
 
@@ -521,61 +521,6 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 			foreach ( $resourceNames as $resourceName ) {
 				$this->enqueue_resource( $resourceName );
 			}
-		}
-
-		/**
-		 * Prepare enqueue of plugin script
-		 *
-		 * @param string $scriptName Name of the script
-		 *
-		 * @author Gerkin
-		 */
-		public function add_script( $scriptName ) {
-			$this->scripts[ $scriptName ] = true;
-		}
-
-		/**
-		 * Prepare enqueue of several plugin scripts
-		 *
-		 * @param string[] $scriptName Name of the script
-		 *
-		 * @author Gerkin
-		 */
-		public function add_scripts( $scriptNames ) {
-			foreach ( $scriptNames as $scriptName ) {
-				$this->scripts[ $scriptName ] = true;
-			}
-		}
-
-		/**
-		 * Return true if script was enqueued with {@link add_script} or {@link add_scripts}
-		 *
-		 * @param string $scriptName Name of the script.
-		 * @return boolean
-		 *
-		 * @author Gerkin
-		 */
-		public function get_script( $scriptName ) {
-			return (isset( $this->scripts[ $scriptName ] ) && true === $this->scripts[ $scriptName ]);
-		}
-
-		/**
-		 * Return an associative array with values set to true if script was enqueued with {@link add_script} or {@link add_scripts}
-		 *
-		 * @param string[] $scriptNames Name of scripts.
-		 * @return boolean[]
-		 *
-		 * @author Gerkin
-		 */
-		public function get_scripts( $scriptNames = null ) {
-			if ( null === $scriptName ) {
-				return $this->scripts;
-			}
-			$ret = array();
-			foreach ( $scriptNames as $scriptName ) {
-				$ret[ $scriptName ] = $this->get_script($scriptNames);
-			}
-			return $ret;
 		}
 
 		/**

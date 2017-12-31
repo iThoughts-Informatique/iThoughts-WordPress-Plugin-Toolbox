@@ -1,41 +1,47 @@
-/**
- * @file jQuery extension to help serializing forms
- *
- * @author Gerkin
- * @copyright 2016
- * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
- * @package iThoughts-toolbox
- *
- */
+(function (global, factory) {
+	if (typeof define === "function" && define.amd) {
+		define(['./ithoughts-core.js'], factory);
+	} else if (typeof exports !== "undefined") {
+		factory(require('./ithoughts-core.js'));
+	} else {
+		var mod = {
+			exports: {}
+		};
+		factory(global.ithoughtsCore);
+		global.jquerySerializeObject = mod.exports;
+	}
+})(this, function (ithoughts) {
+	/**
+  * @file jQuery extension to help serializing forms
+  *
+  * @author Gerkin
+  * @copyright 2016
+  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
+  * @package iThoughts-toolbox
+  *
+  */
 
-'use strict';
-
-(function (ithoughts) {
-
-	/*jslint plusplus: true*/
-	/*globals iThoughts*/
+	'use strict';
 
 	var $ = ithoughts.$;
 
+
 	/**
-  * Send a form through ajax
-  * @method	external:"jQuery".fn.serializeObject
-  * @returns {object}	Associative object representing the form
-  */
+ 	 * Send a form through ajax
+ 	 * @method	external:"jQuery".fn.serializeObject
+ 	 * @returns {object}	Associative object representing the form
+ 	 */
 	$.fn.extend({
 		serializeObject: function serializeObject() {
 			var json = {};
 			$.map($(this).serializeArray(), function (formvalue) {
-				var nestingIndex = formvalue.name.indexOf('['),
-				    nestingsCount,
-				    jsonLocal,
-				    nestings,
-				    i,
-				    fvn = formvalue.value || '';
-				if (nestingIndex > -1) {
-					jsonLocal = json;
-					nestings = formvalue.name.replace(/\]/gi, '').split('[');
-					for (i = 0, nestingsCount = nestings.length; i < nestingsCount; i++) {
+				var isNested = formvalue.name.contains('[');
+				var fvn = formvalue.value || '';
+				if (isNested) {
+					var jsonLocal = json;
+					var nestings = formvalue.name.replace(/\]/gi, '').split('[');
+					var nestingsCount = nestings.length;
+					for (var i = 0; i < nestingsCount; i++) {
 						if (i === nestingsCount - 1) {
 							if (nestings[i] !== '') {
 								if (jsonLocal[nestings[i]]) {
@@ -69,13 +75,13 @@
 
 			var value = {};
 			this.each(function (index, element) {
-				var valueThis = {},
-				    valuePtr = valueThis,
-				    name = element.name,
-				    nestings = name.replace(/\]/gi, '').split('['),
-				    i = 0,
-				    nestingsCount = nestings.length;
-				for (i; i < nestingsCount; i++) {
+				var name = element.name;
+				var nestings = name.replace(/\]/gi, '').split('[');
+
+				var valueThis = {};
+				var nestingsCount = nestings.length;
+				var valuePtr = valueThis;
+				for (var i = 0; i < nestingsCount; i++) {
 					if (i === nestingsCount - 1) {
 						valuePtr[nestings[i]] = typeof forceValue !== 'undefined' ? forceValue : _this.value;
 					} else {
@@ -87,5 +93,5 @@
 			return value;
 		}
 	});
-})(iThoughts.v5);
-//# sourceMappingURL=jquery-serialize-object-v5.js.map
+});
+//# sourceMappingURL=jquery-serialize-object.js.map

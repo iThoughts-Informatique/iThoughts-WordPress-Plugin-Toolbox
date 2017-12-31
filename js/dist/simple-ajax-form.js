@@ -1,42 +1,54 @@
-/**
- * @file Simple AJAX Form
- * @description jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
- *
- * @author Gerkin, tcbarrett
- * @copyright 2016
- * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
- * @package iThoughts-toolbox
- *
- */
+(function (global, factory) {
+	if (typeof define === "function" && define.amd) {
+		define(['ithoughts-core'], factory);
+	} else if (typeof exports !== "undefined") {
+		factory(require('ithoughts-core'));
+	} else {
+		var mod = {
+			exports: {}
+		};
+		factory(global.ithoughtsCore);
+		global.simpleAjaxForm = mod.exports;
+	}
+})(this, function (_require) {
+	/**
+  * @file Simple AJAX Form
+  * @description jQuery extension to make forms AJAX enabled. Mainly used in WordPress projects
+  *
+  * @author Gerkin, tcbarrett
+  * @copyright 2016
+  * @license https://www.gnu.org/licenses/gpl-3.0.html GPLv3
+  * @package iThoughts-toolbox
+  *
+  */
 
-'use strict';
+	'use strict';
 
-/* globals jqForm: false, iThoughts: false */
+	/* globals jqForm: false */
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+		return typeof obj;
+	} : function (obj) {
+		return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	};
 
-(function (ithoughts) {
-	var $ = ithoughts.$,
-	    isNA = ithoughts.isNA;
+	var w = _require.w,
+	    $ = _require.$,
+	    $d = _require.$d,
+	    isNA = _require.isNA,
+	    makeLoader = _require.makeLoader;
+
+
+	var DEFAULT_FORM_OPTS = {
+		validate: false
+	};
 
 	$.fn.extend({
-		/**
-   * Send a form through ajax
-   * @function simpleAjaxForm
-   * @memberof	external:jQuery
-   * @param   {object} opts Options
-   * @param   {boolean} [opts.validate=false] Options
-   * @param   {function} [opts.callback=false] Options
-   * @returns {undefined}
-   */
 		simpleAjaxForm: function simpleAjaxForm(opts) {
-			var defaults = {
-				validate: false
-			};
-			var options = $.extend(defaults, opts);
+			var options = $.extend(DEFAULT_FORM_OPTS, opts);
 			this.each(function bindEach() {
-				var $form = $(this),
-				    formopts = $.extend({
+				var $form = $(this);
+				var formopts = $.extend({
 					target: $form.data('target'),
 					callback: $form.data('callback')
 				}, options);
@@ -46,8 +58,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				$form.find('button[name="actionB"]').click(function onClick() {
 					$form.find('[name="action"]').val(this.value);
 				});
-				var postText = this.getAttribute('post_text') ? this.getAttribute('post_text') : 'Updating, please wait...',
-				    loader;
+				var postText = this.getAttribute('post_text') ? this.getAttribute('post_text') : 'Updating, please wait...';
+				var loader = void 0;
 
 				$form.ajaxForm({
 					beforeSubmit: function beforeSubmit() {
@@ -57,7 +69,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						if (formopts.target && $('#' + formopts.target).length) {
 							$('#' + formopts.target).html('<p>' + postText + '</p>').removeClass().addClass('clear updating').fadeTo(100, 1);
 						}
-						loader = ithoughts.makeLoader();
+						loader = makeLoader();
 						return true;
 					},
 					error: function error(_error) {
@@ -110,7 +122,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								} else {
 									if (res.reload) {
 										var args = void 0;
-										if (window.location.href.includes('?')) {
+										if (w.location.href.includes('?')) {
 											args = '&';
 										} else {
 											args = '?';
@@ -118,7 +130,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										if (res.hasOwnProperty('text') && !isNA(res.text)) {
 											args += 'json-res-txt=' + encodeURI(res.text);
 										}
-										window.location.href += args;
+										w.location.href += args;
 									}
 
 									if (formopts.target && $('#' + formopts.target).length) {
@@ -128,10 +140,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									if (res.redirect) {
 										if (res.text) {
 											setTimeout(function () {
-												window.location.href = res.redirect;
+												w.location.href = res.redirect;
 											}, 2500);
 										} else {
-											window.location.href = res.redirect;
+											w.location.href = res.redirect;
 										}
 									}
 								}
@@ -161,8 +173,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		}
 	});
 
-	ithoughts.$d.ready(function () {
+	$d.ready(function () {
 		$('.simpleajaxform').simpleAjaxForm();
 	});
-})(iThoughts.v5);
-//# sourceMappingURL=simple-ajax-form-v5.js.map
+});
+//# sourceMappingURL=simple-ajax-form.js.map
