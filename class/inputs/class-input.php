@@ -53,7 +53,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\Input' ) ) {
 		}
 		
 		protected static function name_to_id($name){
-			return preg_replace("/[^\w\d_]/", "", $name);
+			return preg_replace("/[^\w\d_\-]/", "", $name);
 		}
 	}
 }

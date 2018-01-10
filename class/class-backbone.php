@@ -524,61 +524,6 @@ if ( ! class_exists( __NAMESPACE__ . '\\Backbone' ) ) {
 		}
 
 		/**
-		 * Prepare enqueue of plugin script
-		 *
-		 * @param string $scriptName Name of the script
-		 *
-		 * @author Gerkin
-		 */
-		public function add_script( $scriptName ) {
-			$this->scripts[ $scriptName ] = true;
-		}
-
-		/**
-		 * Prepare enqueue of several plugin scripts
-		 *
-		 * @param string[] $scriptName Name of the script
-		 *
-		 * @author Gerkin
-		 */
-		public function add_scripts( $scriptNames ) {
-			foreach ( $scriptNames as $scriptName ) {
-				$this->scripts[ $scriptName ] = true;
-			}
-		}
-
-		/**
-		 * Return true if script was enqueued with {@link add_script} or {@link add_scripts}
-		 *
-		 * @param string $scriptName Name of the script.
-		 * @return boolean
-		 *
-		 * @author Gerkin
-		 */
-		public function get_script( $scriptName ) {
-			return (isset( $this->scripts[ $scriptName ] ) && true === $this->scripts[ $scriptName ]);
-		}
-
-		/**
-		 * Return an associative array with values set to true if script was enqueued with {@link add_script} or {@link add_scripts}
-		 *
-		 * @param string[] $scriptNames Name of scripts.
-		 * @return boolean[]
-		 *
-		 * @author Gerkin
-		 */
-		public function get_scripts( $scriptNames = null ) {
-			if ( null === $scriptName ) {
-				return $this->scripts;
-			}
-			$ret = array();
-			foreach ( $scriptNames as $scriptName ) {
-				$ret[ $scriptName ] = $this->get_script($scriptNames);
-			}
-			return $ret;
-		}
-
-		/**
 		 * Get the minifying prefix
 		 *
 		 * @return string The minifying suffix

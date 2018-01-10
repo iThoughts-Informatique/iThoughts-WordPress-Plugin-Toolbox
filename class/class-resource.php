@@ -86,6 +86,8 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 * @author Gerkin
 		 */
 		protected $file_url;
+		
+		protected $enqueued = false;
 
 		/**
 		 * Check the filename and switch to generate {@link Script} or {@link Style}
@@ -128,6 +130,10 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 * @author Gerkin
 		 */
 		abstract public function enqueue();
+		
+		public function is_enqueued(){
+			return $this->enqueued;
+		}
 
 		/**
 		 * Get the minified file if required & if the file exists
@@ -255,6 +261,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 */
 		public function enqueue(){
 			wp_enqueue_script($this->identifier);
+			$this->enqueued = true;
 		}
 	}
 
@@ -307,6 +314,7 @@ if(!class_exists(__NAMESPACE__.'\\Resource')){
 		 */
 		public function enqueue(){
 			wp_enqueue_style($this->identifier);
+			$this->enqueued = true;
 		}
 	}
 }
